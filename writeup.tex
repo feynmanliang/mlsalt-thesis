@@ -1,0 +1,47 @@
+\documentclass[a4paper,oneside,reqno,onecolumn]{amsart}
+\usepackage{amsaddr}
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\floatname{algorithm}{Procedure}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\newcommand{\algorithmautorefname}{Procedure}
+
+\usepackage[table]{xcolor}
+
+\input{../cambridge-macros.tex}
+
+%    Set assignment information here
+\newcommand{\authorname}{Feynman Liang}
+\newcommand{\coursename}{MLSALT: MPhil Thesis}
+\newcommand{\assignmentname}{BachBot: Generative music modelling using LSTMs}
+
+\begin{document}
+
+\title{\coursename\\\assignmentname}
+\author{\authorname}
+\email[A1]{fl350@cam.ac.uk}
+\address[A1]{Churchill College}
+\date{\today}
+
+% \begin{abstract}
+% Report my results and summarize here.:w
+% \end{abstract}
+\maketitle
+%\tableofcontents
+
+\section{Introduction}
+
+\bibliographystyle{alpha}
+\nocite{*}
+\bibliography{refs.bib}
+
+\onecolumn
+
+\appendix
+
+\section{Code listings}
+
+\end{document}
+
