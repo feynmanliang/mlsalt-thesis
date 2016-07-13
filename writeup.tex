@@ -28,15 +28,37 @@
 \address[A1]{Churchill College}
 \date{\today}
 
-% \begin{abstract}
-% Report my results and summarize here.:w
-% \end{abstract}
+\begin{abstract}
+Lorem ipsum
+\end{abstract}
+
 \maketitle
-%\tableofcontents
+
+\tableofcontents
 
 \section{Introduction}
 
+Algorithmic composition is the application of a well-defined algorithmic
+procedure to compose music.
+
+An interesting question regarding creativity: if an algorithm faithfully reproduces
+an artist's creative process, what is the difference between music produced by the artist
+and music produced by the algorithm?
+
 \section{Background}
+
+\begin{quote}
+    The overwhelming majority of these state-of-the-art systems address a benchmark
+task by applying linear statistical models to ad-hoc features. In other words, the
+researchers themselves discover intermediate representations by engineering task-specific
+features. These features are often derived from the output of preexisting systems, leading
+to complex runtime dependencies. This approach is effective because researchers leverage
+a large body of linguistic knowledge. On the other hand, there is a great temptation to
+optimize the performance of a system for a specific benchmark. Although such performance
+improvements can be very useful in practice, they teach us little about the means to progress
+toward the broader goals of natural language understanding and the elusive goals of Artificial
+Intelligence.
+\end{quote}\cite{Collobert2011}
 
 \subsection{Data Representation}
 
@@ -56,7 +78,37 @@ We can represent a piano roll transcription as a high-dimensional vecctor
 $X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note velocities
 for note $n$ at time $t$.
 
-\subsection{Recurrent Neural Networks}
+\subsubsection{Psychoacoustic Features and Gray Codes}
+
+Aware, unused.
+
+\subsubsection{Input preprocessing}
+
+\begin{enumerate}
+    \item Transpose to Cmaj/Amin
+    \item Strip all dynamics info
+    \item Restrict to 4/4
+\end{enumerate}
+
+\subsection{Neural Network Sequence Modeling}
+
+\subsubsection{Feedforward Neural Network}
+
+Increasing context window size is not always a good solution:
+\begin{itemize}
+    \item Too small $\implies$ no long-term dependencies captured
+    \item Not all $N$-grams observed $\implies$ need back-off and discounting
+\end{itemize}
+
+How do we handle variable length inputs?
+
+\subsubsection{Recurrent Neural Networks}
+
+Carry memory $s_t$ through time $t$, ``summary of infinite context duration
+i.e.\ all previously processed data''
+
+Share weights $\matr{U}, \matr{V}, \matr{W}$ over $t$ since performing same
+task at each time i.e.\ modeling $P(o_t | s_t, x_t) = \softmax(V s_t)$.
 
 \begin{figure}[htpb]
     \centering
@@ -139,6 +191,9 @@ $f$ is usually $\tanh$ or ReLU.
             \item Memory is called \emph{cells}
             \item 
         \end{enumerate}
+
+    \item LSTM Variants: GRUs have fewer parameters (U and W are smaller) and
+        thus may train a bit faster or need less data to generalize
 \end{enumerate}
 
 \subsection{Invariances}
