@@ -32,3 +32,19 @@ C:\\nppdf32Log\\debuglog.txt
 
 .Rhistory
 .Rproj.user/
+
+*.acn
+*.acr
+*.alg
+*.dvi
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.lof
+*.lot
+*.sbl
+*.xdy
