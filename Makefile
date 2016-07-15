@@ -15,10 +15,10 @@ mlsalt-dissertation.pdf: mlsalt-dissertation.ps
 mlsalt-dissertation.ps: mlsalt-dissertation.dvi
 	$(DVIPS) -Pdownload35 -ta4 mlsalt-dissertation.dvi
 
-#mlsalt-dissertation.dvi: mlsalt-dissertation.tex dissertation.bib
+#mlsalt-dissertation.dvi: mlsalt-dissertation.tex refs.bib
 mlsalt-dissertation.dvi: mlsalt-dissertation.tex titlepage.tex declaration.tex abstract.tex
 	$(LATEX) mlsalt-dissertation
-#       $(BIBTEX) mlsalt-dissertation
+	$(BIBTEX) mlsalt-dissertation
 	$(LATEX) mlsalt-dissertation
 	$(LATEX) mlsalt-dissertation
 
