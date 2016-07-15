@@ -1,0 +1,21 @@
+\chapter{Automatic composition}
+
+\subsection{Monophonic melody modeling}
+
+Following the natural process undertaken by many human composers, we divided
+the music generation task into two subproblems:
+\begin{enumerate}
+    \item Generating a melody line $\vec{m}$
+    \item Given a fixed melody line, generate the four voices $\{\vec{v}_i\}_{i=1}^4$ (solved in chorale harmonization)
+\end{enumerate}
+
+Sample a melody m $\sim$ P(m) where P(m) is given by a LSTM, then load up 4
+encoder/decoder biLSTMs (one for each voice) with m and get their MAP outputs
+
+Equivalent to language modeling problem. Goal is to model $P(\vec{m})$ for $\vec{m}
+\in V^T$, $T \in \NN$. LSTM architecture can capture longer range dependencies.
+
+\subsection{Polyphonic modeling}
+
+We use a 2-layer LSTM with a 128-dimensional word embedding.
+

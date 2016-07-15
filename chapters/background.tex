@@ -1,0 +1,75 @@
+\chapter{Background}
+
+% A more extensive coverage of what's required to understand your
+% work. In general you should assume the reader has a good undergraduate
+% degree in computer science, but is not necessarily an expert in
+% the particular area you've been working on. Hence this chapter
+% may need to summarize some ``text book'' material.
+
+% This is not something you'd normally require in an academic paper,
+% and it may not be appropriate for your particular circumstances.
+% Indeed, in some cases it's possible to cover all of the ``background''
+% material either in the introduction or at appropriate places in
+% the rest of the dissertation.
+
+Algorithmic composition is the application of a well-defined algorithmic
+procedure to compose music.
+
+An interesting question regarding creativity: if an algorithm faithfully reproduces
+an artist's creative process, what is the difference between music produced by the artist
+and music produced by the algorithm?
+
+\section{Music theory}
+
+A score of music is represented using a sequence of notes. Each note represents
+a pitch (i.e.\ frequency) and duration (i.e.\ time interval).
+
+When discussing pitches, it is common to refer to the difference between two
+pitches as \textbf{pitch interval}s. One of the most fundamental pitch intervals is the
+\textbf{octave} defined to be the interval between a frequency and its double.
+
+While in theory an uncountable number of pitches are available, the tuning
+system utilized by a piece of music oftentimes restricts the number of
+available pitches. Western music commonly uses \textbf{twelve-tone equal
+temperament} (12-TET) tuning, which divides an octave into 12 pitch classes
+all equally spaced on a logarithmic scale. The interval between two adjacent
+pitch classes (i.e. 1/12th an octave on log-scale) is called a \textbf{half step}
+and two half steps are called a \textbf{whole step}
+
+Tonal music is characterized by the prevalence of one pitch class (the
+\textbf{tonic} around which the melody and harmony are built. A basic concept
+within tonal music is the \textbf{scale} which defines a subset of pitch classes
+that are ``in key'' with respect to the tonic. Two fundamental scales are the
+major (with step pattern whole-whole-half-whole-whole-whole-half) and minor
+scales (whole-half-whole-whole-half-whole-whole). The choice of tonic and scale
+is referred to as the \textbf{key}and a change in key during a piece is called a
+\textbf{modulation}Many musical phenomena such as stability, expectation, and
+resolution can be attributed to tonal characteristics.
+
+Note that while 12-TET restricts the possible intervals between notes, it does
+not define an absolute reference pitch frequency. This degree of freedom gives
+rise to transposition invariance: a score of music can be offset by a constant
+pitch interval without affecting its tonal characteristics. For practical
+performance purposes, the general tuning standard in modern times tunes the ``A''
+note directly above ``middle C'' to 440 Hz (A440).
+
+The \textbf{tempo} of a piece refers to its speed or pace and is measured by beats
+per minute. In 4/4 time signature, a \textbf{quarter note} or \textbf{crotchet} denotes
+the time interval between two beats. In addition to pitch quantization,
+durations are also commonly quantized to subdivisions and multiples of a
+crotchet.
+
+\subsection{Notation}
+
+We consider note duration, time, and velocity. We neglect changes in timing
+(e.g. ritardandos), dynamics (e.g. crescendos), and stylistic notations (e.g.
+accents, staccatos, legatos).
+
+\emph{Piano roll} music transcriptions are quantized both in time ($t \in T$)
+and note frequencies ($n \in N$). frequencies quantized to a piano roll.
+\todo{Motivate quantization with Western music}.
+
+We can represent a piano roll transcription as a high-dimensional vecctor
+$X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note
+velocities for note $n$ at time $t$.
+

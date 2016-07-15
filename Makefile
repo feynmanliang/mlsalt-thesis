@@ -23,6 +23,7 @@ mlsalt-dissertation.dvi: mlsalt-dissertation.tex titlepage.tex declaration.tex a
 	$(LATEX) mlsalt-dissertation
 
 clean:
-	$(RM) -f mlsalt-dissertation.pdf mlsalt-dissertation.ps mlsalt-dissertation.dvi 
-	$(RM) -f *.log *.aux *.toc *.bbl *.lot *.lof
+	$(RM) -f mlsalt-dissertation.pdf mlsalt-dissertation.ps mlsalt-dissertation.dvi
+	$(RM) -f *.log *.aux *.toc *.bbl *.lot *.lof *.acn *.acr *.alg *.glg *.glo *.gls *.ist *.sbl *.xdy
+	latexmk -c
 

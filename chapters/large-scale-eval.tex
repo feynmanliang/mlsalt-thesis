@@ -1,0 +1,14 @@
+\chapter{Large-scale subjective evaluation}
+
+The frontend utilizes React and Redux, allowing us to collect fine-grained user
+action data. Azure App Service is used to host an Express web-service which
+randomizes experimental questions and collects responses. The data is stored to
+Azure Data Storage and processed in batch MapReduce using Azure HDInsight.
+
+We ask users to rate themselves on their musical skills (0-10) and present the
+user with five questions. Each questions asks the user to listen to two
+samples, one generated and one original Bach, and tasks the user to select the
+original. In addition to the question response, we collect data on the time
+spent on a questions and number of times each sample is played.
+
+

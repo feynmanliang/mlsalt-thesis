@@ -1,0 +1,26 @@
+\chapter{Data}
+
+We use a corpus of Bach chorales provided by \texttt{music21}. The chorales are
+arranged by the Bach-Werke-Verzeichnis (BWV) numbering system, which is one of
+the best known and widely used catalogues of Bach's compositions.
+
+Each chorale has four parts and are structured such that the melody is in
+the Soprano part and the remaining parts harmonize the melody.
+
+\section{Preprocessing}
+
+We transpose all scores with major key signatures to C major and minor key
+signatures to A minor. Due to transposition invariance of 12-TET, this does
+not alter the tonal properties of the music.
+
+We represent musical scores using a piano roll representation. Firstly, time is
+discretized into constant timestep frames. For each frame, a set of (note, tie)
+pairs representing which a note's pitch and whether it is tied
+(continuing a note from the previous frame) or newly played notes.
+
+\begin{enumerate}
+    \item Transpose to Cmaj/Amin
+    \item Strip all dynamics info
+    \item Restrict to 4/4
+\end{enumerate}
+
