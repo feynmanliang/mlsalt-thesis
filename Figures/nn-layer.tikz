@@ -1,0 +1,31 @@
+\def\layersep{2.5cm}
+
+\begin{tikzpicture}[shorten >=1pt,->,draw=black!50, node distance=\layersep]
+    \tikzstyle{every pin edge}=[<-,shorten <=1pt]
+    \tikzstyle{neuron}=[circle,draw=black!100, minimum size=17pt,inner sep=0pt]
+    \tikzstyle{input neuron}=[neuron];
+    \tikzstyle{output neuron}=[neuron];
+    \tikzstyle{hidden neuron}=[neuron];
+    \tikzstyle{annot} = [text width=4em, text centered]
+
+    % Draw the input layer nodes
+    \foreach \name / \y in {1,...,3}
+        \ifthenelse{3 = \y}{
+            \node[input neuron, pin=left:$1$] (I-\name) at (0,-\y) {};
+        }{
+            \node[input neuron, pin=left:$x_\y$] (I-\name) at (0,-\y) {};
+        }; % (*)
+
+    % Draw the output layer node
+    \foreach \name / \y in {1,...,2}
+        \path[yshift=-0.5cm]
+            node[output neuron,pin={[pin edge={->}]right:$y_\y$}] (O-\name) at (\layersep,-\y cm) {};
+
+    % Connect every node in the input layer with every node in the
+    % output layer
+    \foreach \source in {1,...,3}
+        \foreach \dest in {1,...,2}
+            \path (I-\source) edge (O-\dest);
+
+    \node[annot,above of=I-1, xshift=0.5*\layersep, node distance=0.5cm] {W};
+\end{tikzpicture}

@@ -32,7 +32,8 @@
 % \usepackage[xindy]{imakeidx}
 % \makeindex
 % \loadglsentries[main]{glossary}
-
+\usepackage{tikz}
+\usetikzlibrary{positioning}
 %% START OF DOCUMENT
 \begin{document}
 
@@ -50,8 +51,8 @@
 \pagenumbering{roman}
 \setcounter{page}{0}
 \pagestyle{plain}
-% \tableofcontents
-% \printglossary[title=List of Abbreviations and Symbols]
+\tableofcontents
+%\printglossary[title=List of Abbreviations and Symbols]
 \listoffigures
 \listoftables
 
@@ -66,9 +67,9 @@
 \input{chapters/background}
 \input{chapters/related-work}
 \input{chapters/data}
-\input{chapters/sequence-modeling}
 \input{chapters/chorale-harmonization}
 \input{chapters/automatic-composition}
+\input{chapters/model-analysis}
 \input{chapters/large-scale-eval}
 
 \appendix
