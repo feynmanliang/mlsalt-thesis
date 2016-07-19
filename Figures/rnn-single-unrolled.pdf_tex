@@ -1,0 +1,98 @@
+%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'rnn-single-unrolled.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{351.9425664bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.56577688)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{rnn-single-unrolled.pdf}}%
+    \put(0.43104654,0.01764213){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{rnn-single-unrolled.pdf}}%
+    \put(0.4633249,0.10375733){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.46332492,0.50100858){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.46332492,0.31480304){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.95888396,0.10289244){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.95888396,0.50014376){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.95888396,0.31393822){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{....}}}%
+    \put(0.58861058,0.11214884){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xt-1}}}%
+    \put(0.71038368,0.11260664){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xt}}}%
+    \put(0.8298736,0.11214884){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xt+1}}}%
+    \put(0.59040033,0.32271765){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht-1}}}%
+    \put(0.71217342,0.32317544){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht}}}%
+    \put(0.83166337,0.32271765){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht+1}}}%
+    \put(0.58963922,0.52935136){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{yt-1}}}%
+    \put(0.71141231,0.52980903){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{yt}}}%
+    \put(0.83090226,0.52935136){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{yt+1}}}%
+    \put(0.58008268,0.18840148){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{U}}}%
+    \put(0.58090678,0.38932834){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{V}}}%
+    \put(0.64368284,0.27769379){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{W}}}%
+    \put(0.69939946,0.18872274){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{U}}}%
+    \put(0.70022356,0.38964972){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{V}}}%
+    \put(0.7629996,0.27801517){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{W}}}%
+    \put(0.8167197,0.18979909){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{U}}}%
+    \put(0.81754379,0.39072606){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{V}}}%
+    \put(0.88031986,0.27909152){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{W}}}%
+    \put(0.5180649,0.27818152){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{W}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{rnn-single-unrolled.pdf}}%
+    \put(0.29367125,0.34515067){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Unroll}}}%
+    \put(0.13951132,0.31097302){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{z^{-1}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{rnn-single-unrolled.pdf}}%
+    \put(0.01936341,0.32417531){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht}}}%
+    \put(0.16072928,0.23506069){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht-1}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{rnn-single-unrolled.pdf}}%
+    \put(0.02039204,0.10674886){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xt}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{rnn-single-unrolled.pdf}}%
+    \put(0.02267527,0.4994182){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{yt}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{rnn-single-unrolled.pdf}}%
+    \put(0.00360118,0.18896418){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{U}}}%
+    \put(-0.00026638,0.40147637){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{V}}}%
+    \put(0.09018879,0.18224549){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{W}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=8]{rnn-single-unrolled.pdf}}%
+    \put(1.27405183,0.16072287){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(1.31743351,0.6295494){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27627274\unitlength}\raggedright \end{minipage}}}%
+  \end{picture}%
+\endgroup%

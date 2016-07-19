@@ -1,0 +1,65 @@
+%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'nn-rnn-elman.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{246.87925083bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.71268955)%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{nn-rnn-elman.pdf}}%
+    \put(0.20758914,0.03426187){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Memory Cell}}}%
+    \put(-0.00477049,0.09186691){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{nn-rnn-elman.pdf}}%
+    \put(0.61178144,0.02134117){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.67145624,0.16420649){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{nn-rnn-elman.pdf}}%
+    \put(0.67650875,0.39441718){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Hidden Layer}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{nn-rnn-elman.pdf}}%
+    \put(0.67394671,0.65556584){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Output Layer}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{nn-rnn-elman.pdf}}%
+    \put(0.67362489,0.68968409){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.39384492\unitlength}\raggedright \end{minipage}}}%
+  \end{picture}%
+\endgroup%
