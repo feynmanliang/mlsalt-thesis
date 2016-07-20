@@ -1,3 +1,19 @@
+\usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
+\usepackage{hyperref}
+
+% \usepackage[acronym,xindy]{glossaries}
+% \makeglossaries
+% \usepackage[xindy]{imakeidx}
+% \makeindex
+% \loadglsentries[main]{glossary}
+\usepackage{tikz}
+\usepackage{ifthen}
+\usetikzlibrary{positioning}
+
+% Inkscape pdf_tex exports
+%\usepackage{import}
+\graphicspath{{Figures/}}
+
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
 \usepackage{xcolor}
 
@@ -21,6 +37,8 @@
 \newcommand{\tp}{\intercal} % transpose
 
 \DeclareMathOperator*{\softmax}{softmax}
+\DeclareMathOperator*{\sigmoid}{sigmoid}
+\DeclareMathOperator*{\diag}{diag}
 
 \newcommand{\todo}[1]{}
 \renewcommand{\todo}[1]{{\color{red} TODO\@: {#1}}}

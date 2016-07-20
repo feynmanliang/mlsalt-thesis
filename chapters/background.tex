@@ -386,7 +386,7 @@ next frames given the previous context. However, RNNs additionally pass along
 "hidden state" which summarizes contextual information from a potentially
 infinite context window.
 
-\subsubsection{Vanishing gradients and LSTMs}
+\subsubsection{Vanishing gradients}
 
 In practice, it is observed that the hidden state does not capture long range
 dependencies well and tend to suffer from vanishing/exploding gradient during
@@ -394,22 +394,133 @@ training. LSTMs are an improved RNN architecture which solve both of these
 problems by introducing gates on the inputs, hidden state, and outputs. GRUs are
 a variation of LSTMs which ties the weights to the input and forget gates.
 
-\todo{Nando's slides for exploding gradient and how LSTM gates fix it}
-
-\subsubsection{LSTM}
+To understanding the vanishing gradient problem, consider a simple recurrent network
 
 \begin{eqnarray}
-    i_t &=& \sigma(x_t W_{xi} + h_{t-1} W_{hi} + c_{t-1} W_{ci} + b_i) \\
-    f_t &=& \sigma(x_t W_{xf} + h_{t-1} W_{hf} + c_{t-1} W_{cf} + b_f) \\
-    c_t &=& f_t c_{t-1} + i_t \tanh(x_t W_{xc} + h_{t-1} W_{hc} + b_c) \\
-    o_t &=& \sigma(x_t W_{xo} + h_{t-1} W_{ho} + c_t W_{co} + b_o) \\
-    h_t &=& o_t \tanh(c_t)
+    h_t &=& \theta \phi(h_{t-1}) + \theta_x x_t \label{eq:ht-from-ht-1}\\
+    y_t &=& \theta_y \phi(h_t)
 \end{eqnarray}
 
+After unrolling, the gradient of the error is given as a sum of the gradients
+at each individual timestep
+
+\begin{equation}
+    \frac{\pd E}{\pd \theta} = \sum_{t=1}^S \frac{\pd E_t}{\pd \theta}
+\end{equation}
+
+Since the current hidden state $h_t$ depends on all prior hidden states $h_k$ ($k < t$),
+the chain rule yields
+
+\begin{equation}
+    \frac{\pd E_t}{\pd \theta} = \sum_{k=1}^t \frac{\pd E_t}{\pd y_t} \frac{\pd y_t}{\pd h_t} \frac{\pd h_t}{\pd h_k} \frac{\pd h_k}{\pd \theta}
+\end{equation}
+
+Noting that time dynamics occur only through $h_t$
+
+\begin{equation}
+    \label{eq:prod-hi}
+    \frac{\pd h_t}{\pd h_k} = \prod_{i=k+1}^t \frac{\pd h_i}{\pd h_{i-1}}
+\end{equation}
+
+The factors in the product can be obtained by differentiating \autoref{eq:ht-from-ht-1}
+
+\begin{equation}
+    \frac{\pd h_i}{\pd h_{i-1}} = \theta^\tp \diag\left[ \phi'(h_{i-1}) \right]
+\end{equation}
+
+Let $\|\cdot\|$ be any submultiplicative matrix norm. For illustration purposes, we will use the
+\textbf{operator norm} defined as
+\begin{equation}
+    \| A \| = \sup_{x \in \RR^n; x \neq 0} \frac{|A x|}{|x|}
+\end{equation}
+where $|\cdot|$ is the standard Euclidian norm. However, any other submultiplicative norm
+(e.g. Frobenius, spectral, nuclear, Shatten $p$-norms) is equally valid.
+
+From submultiplicativity, we have
+
+\begin{equation}
+    \left\| \frac{\pd h_i}{\pd h_{i-1}} \right\|
+    \leq \|\theta^\tp\| \| \diag\left[ \phi'(h_{i-1}) \right] \|
+    \leq \gamma_{\theta} \gamma_\phi
+\end{equation}
+
+where $\gamma_\theta \coloneqq \|\theta\|$ is the norm of the hidden dynamics matrix $\theta$
+and
+\begin{align}
+    \gamma_\phi
+    &\coloneqq \sup_{h \in \RR^n} \| \diag \left[ \phi'(h) \right] \|  &\\
+    &= \sup_{h \in \RR^n} \max_i \phi'(h)_i &\mbox{Operator norm of diag} \\
+    &= \sup_{t \in \RR} \phi'(t) &\mbox{$\phi$ operates elementwise}
+\end{align}
+
+For common activation functions $\gamma_{\phi} \leq \infty$ (e.g. $\gamma_\phi = 1$ for $\phi = \tanh$
+and $\gamma_\phi = 1/4$ for $\phi = \sigma$).
+
+This gives a bound on \autoref{eq:prod-hi}, namely
+
+\begin{equation}
+    \left\| \frac{\pd h_t}{\pd h_k} \right\|
+    = \left\| \prod_{i=k+1}^{t} \frac{\pd h_t}{\pd h_k} \right\|
+    \leq (\gamma_\theta \gamma_\phi)^{t-k}
+\end{equation}
+
+When $|\gamma_\theta \gamma_\phi| < 1$, these gradients exponentially vanish to zero as
+the time interval $t - k$ increases, hindering the network's ability to learn long-range
+dynamics.
+
+A similar argument \cite{Bengio1994} illustrates an analogous exponential explosion
+when $\|\theta\| > 1$ (the ``exploding gradient'' problem).
+
+The solution is to rewrite \autoref{eq:ht-from-ht-1} such that
+\autoref{eq:prod-hi} does not vanish/explode for large $t - k$.
+One possibility would be
+
+\begin{equation}
+    h_t = h_{t-1} + \theta_x x_t
+\end{equation}
+
+However, this solution is unsatisfactory as all hidden state dynamics have been
+removed.
+
+\subsubsection{Long Short Term Memory}
+
+LSTMs are a RNN architecture which mitigates vanishing/exploding gradients by constraining
+the hidden state dynamics. It does so by constraining the nonlinearity $\phi = \matr{I}$ to be the
+identity and introducing three gates:
+\begin{itemize}
+    \item \textbf{Input gate}: scales input $x_t$ elementwise by $i_t \in [0,1]$, affects how $h_t$ is written to
+    \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, affects how $h_t$ is read from
+    \item \textbf{Forget gate}: scales previous cell value $h_{t-1}$ by $f_t \in [0,1]$, acts as a reset mechanism
+\end{itemize}
+
 \begin{figure}[htpb]
-\centering
-\input{Figures/lstm-unit.pdf_tex}
-\caption{Single LSTM unit}
+    \centering
+    \input{Figures/lstm-unit.pdf_tex}
+    \caption{Single LSTM unit}
     \label{fig:lstm-unit}
 \end{figure}
 
+The equations for an LSTM are
+
+\begin{eqnarray}
+    i_t &=& \sigma(W_{xi} x_t + W_{yi} y_{t-1} + W_{ci} c_{t-1} + b_i) \\
+    o_t &=& \sigma(W_{xo} x_t + W_{yo} y_{t-1} + W_{co} c_{t-1} + b_o) \\
+    f_t &=& \sigma(W_{xf} x_t + W_{yf} y_{t-1} + W_{cf} c_{t-1} + b_f) \\
+    h_t &=& f_t \odot h_{t-1} + i_t \odot \tanh(x_t W_{xc} + h_{t-1} W_{hc} + b_c) \label{eq:lstm-dynamics} \\
+    y_t &=& o_t \odot \tanh(c_t)
+\end{eqnarray}
+where $\odot$ denotes elementwise multiplication of vectors.
+
+Note that \autoref{eq:lstm-dynamics} has $\phi$ set to the identity function
+hence $\gamma_\phi = 1$. This removal of the non-linearity in the hidden state
+recursion is known as the \textbf{constant error carousel} \todo{cite}, which
+allows the network to propogate errors without modification by $\varphi'(h_k)$.
+
+The addition of the gates enables the model to learn when to read/write from
+memory and when to reset, enabling longer-range dependencies to be learned when
+an input is written to memory (i.e. $i_t$ high) and protected for a long
+duration (i.e. $f_t \approx 1$ and $i_t \approx 0$).
+
+Some authors define LSTMs such that $h_t$ is not used to compute gate activations,
+referring to the case where $h_t$ is connected as ``peephole connections.'' In our
+work, we use ``LSTM'' to refer to LSTMs with peephole connections.
