@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'nn-single.pdf' (pdf, eps, ps)
 %%
@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{140.58867807bp}%
+    \setlength{\unitlength}{154.98867245bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,28 +48,21 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.77713778)%
+  \begin{picture}(1,1.42842779)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{nn-single.pdf}}%
-    \put(0.13132803,0.27218287){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.45258094,0.4820376){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$+$}}}%
+    \put(0.60509248,0.85875427){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\sigma(\cdot)$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{nn-single.pdf}}%
-    \put(0.54486886,0.04176393){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{...}}}%
+    \put(0.11727458,0.01538656){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$x_1$}}}%
+    \put(0.34251092,0.01538656){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$x_2$}}}%
+    \put(0.56774726,0.01168158){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$\cdots$}}}%
+    \put(0.79298346,0.01538656){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$x_D$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{nn-single.pdf}}%
-    \put(0.04928726,0.04176393){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{x1}}}%
+    \put(0.32985283,0.23543896){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$w_2$}}}%
+    \put(0.18551117,0.23543896){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$w_1$}}}%
+    \put(0.70104123,0.23543896){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{$w_D$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{nn-single.pdf}}%
-    \put(0.29707793,0.04176393){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{x2}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{nn-single.pdf}}%
-    \put(0.79265954,0.04176393){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xN}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=6]{nn-single.pdf}}%
-    \put(0.2991808,0.3290901){\color[rgb]{0,0,0}\makebox(0,0)[rb]{\smash{w1}}}%
-    \put(0.43242373,0.3290901){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{w2}}}%
-    \put(0.70081921,0.3290901){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{wN}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=7]{nn-single.pdf}}%
-    \put(0.47157593,0.65870803){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Σ}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=8]{nn-single.pdf}}%
-    \put(0.4989372,1.16245711){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{σ}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=9]{nn-single.pdf}}%
-    \put(0.52175183,0.90227642){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{a}}}%
-    \put(-0.5040919,2.10820266){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{1.54439888\unitlength}\raggedright \end{minipage}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=10]{nn-single.pdf}}%
+    \put(0.47652406,0.62154106){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z = \sum_{i=1}^D w_i x_i$}}}%
+    \put(0.47561177,1.24566554){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$y = \sigma(z)$}}}%
   \end{picture}%
 \endgroup%

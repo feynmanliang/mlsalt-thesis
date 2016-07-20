@@ -14,7 +14,7 @@
    viewBox="0 0 116.96144 55.906582"
    version="1.1"
    id="svg7413"
-   inkscape:version="0.91+devel r"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="nn-rnn.svg">
   <defs
      id="defs7407">
@@ -1905,17 +1905,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.8"
-     inkscape:cx="44.832825"
-     inkscape:cy="26.492277"
+     inkscape:zoom="1.4"
+     inkscape:cx="153.52425"
+     inkscape:cy="-13.12563"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1172"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
-     inkscape:window-maximized="1"
+     inkscape:window-width="1914"
+     inkscape:window-height="1161"
+     inkscape:window-x="1602"
+     inkscape:window-y="36"
+     inkscape:window-maximized="0"
      inkscape:connector-spacing="15"
      fit-margin-top="0"
      fit-margin-left="0"
@@ -2121,7 +2121,7 @@
        inkscape:connection-start="#path3426" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker13622)"
-       d="M 31.118839,96.349023 61.368596,84.982999 79.166523,77.375005"
+       d="M 31.131636,96.3836 61.397791,85.327981 79.188941,77.426467"
        id="path13231"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -2153,7 +2153,7 @@
        inkscape:connection-start="#path3426-7-2" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker16972)"
-       d="M 63.95896,96.305458 14.989921,77.252865"
+       d="M 63.957987,96.307934 35.681747,85.327981 14.988647,77.256109"
        id="path16533"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
@@ -2273,7 +2273,7 @@
        inkscape:connection-end="#g3505-6-3-9" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker8830);marker-end:url(#marker9374)"
-       d="m 15.262802,75.799221 c 0,0 12.767657,-7.862481 20.197839,-7.9375 7.430181,-0.07502 21.460989,7.9375 21.460989,7.9375"
+       d="m 14.973195,74.303261 11.174563,-4.494417 c 4.233333,-1.70265 12.7,-1.893875 16.933333,-0.38245 l 14.073977,5.024825"
        id="path6335"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"
@@ -2282,7 +2282,7 @@
        sodipodi:nodetypes="czc" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker7651);marker-end:url(#marker8309)"
-       d="m 38.986463,74.44079 13.444019,-4.84188 c 3.96875,-1.429351 11.90625,-1.259718 15.875,0.339265 l 10.828852,4.362873"
+       d="m 38.969488,74.394551 12.894314,-4.82368 c 4.233333,-1.583664 12.7,-1.401306 16.933334,0.364715 l 10.355785,4.320127"
        id="path6992"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"
@@ -2290,7 +2290,7 @@
        inkscape:connection-end="#g3505-6-6-7" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker9666);marker-end:url(#marker10348)"
-       d="M 15.262802,75.799221 H 31.205585"
+       d="m 15.262802,75.799221 15.942783,0"
        id="path8983"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"
@@ -2298,7 +2298,7 @@
        inkscape:connection-end="#g3505-6" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker11753);marker-end:url(#marker12459)"
-       d="M 39.22367,75.799221 H 56.92163"
+       d="m 39.22367,75.799221 17.69796,0"
        id="path11046"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"
@@ -2306,7 +2306,7 @@
        inkscape:connection-end="#g3505-6-6" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker13912);marker-end:url(#marker14642)"
-       d="M 64.939714,75.799221 H 78.843826"
+       d="m 64.939714,75.799221 13.904112,0"
        id="path13181"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"
@@ -2314,7 +2314,7 @@
        inkscape:connection-end="#g3505-6-6-7" />
     <path
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-start:url(#marker16143);marker-end:url(#marker16897)"
-       d="m 15.034757,74.248497 c 0,0 20.935998,-10.326375 31.576489,-10.265061 15.530745,0.08949 32.480683,10.145022 32.480683,10.145022"
+       d="M 15.034757,74.248497 26.147758,69.79587 c 4.233333,-1.696163 12.7,-3.392326 16.933333,-3.392326 l 8.782711,0 c 4.233333,0 12.7,1.743049 16.933334,3.486097 l 10.294793,4.238817"
        id="path15388"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="30"

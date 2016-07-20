@@ -1,0 +1,66 @@
+\chapter{Introduction}
+
+% This is the introduction where you should introduce your work.  In
+% general the thing to aim for here is to describe a little bit of the
+% context for your work --- why did you do it (motivation), what was the
+% hoped-for outcome (aims) --- as well as trying to give a brief
+% overview of what you actually did.
+
+% It's often useful to bring forward some ``highlights'' into
+% this chapter (e.g.\ some particularly compelling results, or
+% a particularly interesting finding).
+
+% It's also traditional to give an outline of the rest of the
+% document, although without care this can appear formulaic
+% and tedious. Your call.
+
+<<<<<<< 53ce460ddee3016899250f0475ac1cd8d4b9ef20
+
+||||||| merged common ancestors
+\gls{fn}
+
+\gls{fncon}
+
+=======
+>>>>>>> Significant additions to NN background
+While deep learning has revolutionized computer vision and natural language
+processing, its applications to other domains are still emerging. This
+dissertation is concerned with the applications of deep learning to a new
+problem domain: music scores.
+
+In this work, we investigate how sequence probability models parameterized by
+deep recurrent neural networks can be used as generative models over scores of
+music. Such a model has a variety of applications within computational music
+theory. The aim of this work is to investigate applications on two particular
+tasks: melody harmonization and automatic composition.
+
+Every aspiring music theorist is at some point tasked with composing simple
+pieces of music in order demonstrate understanding of the harmonic rules of
+Western classical music. These pedagogical exercises often include
+harmonization of chorale melodies, a task which is viewed as sufficiently
+constrained to allow a composer's skill to be judged. A generative model
+for music scores can be applied to this task by conditioning on the melody
+line and sampling the conditional distribution for possible harmonizations.
+
+A more difficult task is automatic composition, where the composer is tasked
+with producing an original composition of a particular musical style. The open
+nature of this task enables a composer to simultaneously demonstrate their
+creativity along with understanding of music theory. However, this lack of
+constraints and loose definition of musical style makes it more difficult to
+evaluate the quality of the output. To apply a generative model towards this
+task, we can train the model to assign larger probability mass to stylistically
+similar scores and then sample the model to generate a novel composition.
+
+While our modeling framework is capable of modeling any MIDI-encodeable music
+score, we focus our study on chorales by Johann Sebasian Bach. These provide
+a relatively large corpus by a single composer, are well understood by music
+theorists, and are routinely used when teaching music theory.
+The aim is to build an automatic music composition system capable of imitating
+Bach's compositional style on both harmonization and automatic composition tasks.
+
+We will examine how design decisions made when constructing probability models
+over music affect the musical characteristics of generated samples, investigate
+practical matters encountered with parallel training and sampling across
+multiple GPUs, and benchmark how well our final system performs on human test
+subjects.
+

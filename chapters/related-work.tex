@@ -26,20 +26,7 @@
 \section{RNNs}
 
 \begin{enumerate}
-    \item Bidirectional RNNs
-        \begin{figure}[htpb]
-            \centering
-            \includegraphics[width=0.8\linewidth]{Figures/bi-rnn.png}
-            \caption{\todo{Redraw}}
-        \end{figure}
-        Cannot be sampled, but if the source sequence is given can run FW and BW LSTMs
-        to obtain $\s^{FW}$ and $\s^{BW}$ then $\o_t = \softmax(V [\s^{FW}_; \s^{BW}_t])$
     \item Deep RNNs
-        \begin{figure}[htpb]
-            \centering
-            \includegraphics[width=0.8\linewidth]{Figures/deep-rnn.png}
-            \caption{\todo{Redraw}}
-        \end{figure}
         Outputs of one LSTM are used as inputs to the next; more layers $\implies$
         greater representational power, hierarchical representation learning?
     \item LSTMs

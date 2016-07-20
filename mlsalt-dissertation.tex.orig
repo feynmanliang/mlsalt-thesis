@@ -27,19 +27,29 @@
 \usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
 \usepackage{hyperref}
 
-
+<<<<<<< 53ce460ddee3016899250f0475ac1cd8d4b9ef20
 % \usepackage[acronym,xindy]{glossaries}
 % \makeglossaries
 % \usepackage[xindy]{imakeidx}
 % \makeindex
 % \loadglsentries[main]{glossary}
+||||||| merged common ancestors
+\usepackage[acronym,xindy]{glossaries}
+\makeglossaries
+\usepackage[xindy]{imakeidx}
+\makeindex
+\loadglsentries[main]{glossary}
+=======
 \usepackage{tikz}
-\usepackage{ifthen}
 \usetikzlibrary{positioning}
 
-% Inkscape pdf_tex exports
-%\usepackage{import}
-\graphicspath{{Figures/}}
+% TODO: use glossaries
+\usepackage[acronym,xindy]{glossaries}
+\makeglossaries
+\usepackage[xindy]{imakeidx}
+\makeindex
+\loadglsentries[main]{glossary}
+>>>>>>> Significant additions to NN background
 
 %% START OF DOCUMENT
 \begin{document}
@@ -58,8 +68,16 @@
 \pagenumbering{roman}
 \setcounter{page}{0}
 \pagestyle{plain}
+<<<<<<< 53ce460ddee3016899250f0475ac1cd8d4b9ef20
+% \tableofcontents
+% \printglossary[title=List of Abbreviations and Symbols]
+||||||| merged common ancestors
+\tableofcontents
+\printglossary[title=List of Abbreviations and Symbols]
+=======
 \tableofcontents
 %\printglossary[title=List of Abbreviations and Symbols]
+>>>>>>> Significant additions to NN background
 \listoffigures
 \listoftables
 

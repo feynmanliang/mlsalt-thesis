@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'lstm-unit.pdf' (pdf, eps, ps)
 %%
@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{354.76410633bp}%
+    \setlength{\unitlength}{339.5363635bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,35 +48,56 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,1.09053172)%
+  \begin{picture}(1,0.92224349)%
+    \put(0.6034755,0.0533726){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{lstm-unit.pdf}}%
-    \put(0.2032764,0.89086055){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{LSTM Unit}}}%
+    \put(0.82475523,0.22545641){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}_t$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{lstm-unit.pdf}}%
-    \put(0.57869971,0.38933462){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.82292358,0.86385545){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_t$}}}%
+    \put(0.61598976,0.1977396){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.61598976,0.07874181){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.0489395,0.32152917){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.27802251\unitlength}\raggedright \end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{lstm-unit.pdf}}%
-    \put(0.72848952,0.47063059){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht}}}%
+    \put(0.01198697,0.22631554){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}_{t-1}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{lstm-unit.pdf}}%
-    \put(0.72848952,1.0346499){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{yt}}}%
+    \put(0.33063418,0.0539253){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_t$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{lstm-unit.pdf}}%
-    \put(0.4924365,0.71714612){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Forget Gate}}}%
-    \put(0.4924365,0.24154286){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Input Gate}}}%
-    \put(0.49333799,0.86054952){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Output Gate}}}%
+    \put(0.01219498,0.86331464){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t-1}$}}}%
+    \put(-0.25704925,0.8339378){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.23205733\unitlength}\raggedright \end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=6]{lstm-unit.pdf}}%
-    \put(0.48664835,0.5321296){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{X}}}%
+    \put(0.16392768,0.63966315){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{yo}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=7]{lstm-unit.pdf}}%
-    \put(0.48664835,0.41191883){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{X}}}%
+    \put(0.26063448,0.65396965){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{ho}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=8]{lstm-unit.pdf}}%
-    \put(0.59067682,0.52750491){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.35117301,0.6689408){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{xo}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=9]{lstm-unit.pdf}}%
-    \put(0.59067682,0.41361492){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.16392768,0.54041318){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{yf}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=10]{lstm-unit.pdf}}%
-    \put(0.73368716,0.81342429){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{X}}}%
+    \put(0.26063448,0.55471967){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{hf}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=11]{lstm-unit.pdf}}%
-    \put(0.04796638,0.64598094){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26608879\unitlength}\raggedright \end{minipage}}}%
+    \put(0.35117301,0.56969082){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{xf}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=12]{lstm-unit.pdf}}%
-    \put(0.01147245,0.53322414){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{ht-1}}}%
+    \put(0.26063448,0.45546963){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{hi}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=13]{lstm-unit.pdf}}%
-    \put(0.19910064,0.05161067){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{xt}}}%
+    \put(0.35117301,0.47044079){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{xi}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=14]{lstm-unit.pdf}}%
+    \put(0.52855105,0.67895721){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Output Gate}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=15]{lstm-unit.pdf}}%
+    \put(0.54482488,0.64856058){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{o}_t$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=16]{lstm-unit.pdf}}%
+    \put(0.52855105,0.57970723){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Forget Gate}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=17]{lstm-unit.pdf}}%
+    \put(0.54482488,0.5493106){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{f}_t$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=18]{lstm-unit.pdf}}%
+    \put(0.52855105,0.4804572){\color[rgb]{0,0,0}\makebox(0,0)[b]{\smash{Input Gate}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=19]{lstm-unit.pdf}}%
+    \put(0.54482488,0.45006056){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{i}_t$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=20]{lstm-unit.pdf}}%
+    \put(0.34902322,0.28638012){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{xh}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=21]{lstm-unit.pdf}}%
+    \put(0.16094032,0.2571598){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{yh}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=22]{lstm-unit.pdf}}%
+    \put(0.16530156,0.43843979){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\matr{W}_{yi}$}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=23]{lstm-unit.pdf}}%
   \end{picture}%
 \endgroup%

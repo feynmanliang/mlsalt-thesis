@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'nn-ffw.pdf' (pdf, eps, ps)
 %%
@@ -49,13 +49,13 @@
   \global\let\svgscale\undefined%
   \makeatother%
   \begin{picture}(1,0.7321546)%
+    \put(0.62994427,0.04566512){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{nn-ffw.pdf}}%
-    \put(0.62994427,0.04566511){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.64269127,0.04116436){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{nn-ffw.pdf}}%
-    \put(0.64269128,0.04116436){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=3]{nn-ffw.pdf}}%
     \put(0.62310739,0.35336203){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Hidden Layers}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{nn-ffw.pdf}}%
+    \put(0.65467961,0.66682774){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Output Layer}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{nn-ffw.pdf}}%
-    \put(0.65467962,0.66682774){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Output Layer}}}%
   \end{picture}%
 \endgroup%

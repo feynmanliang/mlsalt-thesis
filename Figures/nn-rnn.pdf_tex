@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'nn-rnn.pdf' (pdf, eps, ps)
 %%
@@ -49,7 +49,7 @@
   \global\let\svgscale\undefined%
   \makeatother%
   \begin{picture}(1,0.47799156)%
-    \put(0.63639665,0.03690387){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.63639664,0.03690387){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{nn-rnn.pdf}}%
     \put(0.74199214,0.02597908){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{nn-rnn.pdf}}%

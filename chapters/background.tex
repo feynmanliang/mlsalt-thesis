@@ -155,6 +155,13 @@ subset $[L,U] \subset \RR$. A common choice is the logistic function $\sigma(z)
 = \frac{1}{1+\exp{-z}}$, which squashes $\vec{y} \in [0, 1]$. Other choices
 include $\sigma = \tanh$, in which case $[L, U] = [-1, 1]$.
 
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/nn-single.pdf_tex}
+    \caption{Single neuron}
+    \label{fig:nn-single}
+\end{figure}
+
 It is common to represent feedforward neural networks as directed acyclic
 graphs (\autoref{fig:nn-layer}). Here, each node denotes a data value and
 an edge from $s$ to $t$ notates that the value at $s$ is used to compute the
@@ -162,22 +169,30 @@ value at $t$.
 
 \begin{figure}[htpb]
     \centering
-    \input{Figures/nn-layer.tikz}
-    \caption{Single feedfoward neural network layer}
-    \label{fig:nn-layer}
+    \input{Figures/nn-ffw.pdf_tex}
+    \caption{Feedforward Neural Network}
+    \label{fig:nn-ffw}
 \end{figure}
+
+% \begin{figure}[htpb]
+%     \centering
+%     \input{Figures/nn-layer.tikz}
+%     \caption{Single feedfoward neural network layer}
+%     \label{fig:nn-layer}
+% \end{figure}
 
 Multiple layers can be composed together by treating the outputs from the previous layer
 as the inputs to the next layer. \autoref{fig:ffw-nn} illustrates this on a 2-layer
 feedforward neural network where the outputs of the first layer are used as the
 inputs to the second layer (i.e. $x^{(1)} = y^{(0)}$).
 
-\begin{figure}[htbp]
-    \centering
-    \input{Figures/ffw-nn.tikz}
-    \caption{2-layer feedforward neural network}
-    \label{fig:ffw-nn}
-\end{figure}
+
+% \begin{figure}[htbp]
+%     \centering
+%     \input{Figures/ffw-nn.tikz}
+%     \caption{2-layer feedforward neural network}
+%     \label{fig:ffw-nn}
+% \end{figure}
 
 \todo{Plug to deep learning}
 
@@ -292,21 +307,38 @@ Some appealing properties of backpropogation:
 
 \todo{Talk about how localization gives rise to computation graph and autodiff}
 
-\subsection{Recursive neural networks}
+\subsection{Recurrent neural networks}
 
-Recursive neural networks (RNNs) are a generalization of feedforward neural
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/nn-rnn.pdf_tex}
+    \caption{Recurrent neural network}
+    \label{fig:nn-rnn}
+\end{figure}
+
+
+Recurrent neural networks (RNNs) are a generalization of feedforward neural
 networks which introduce recurrent connections. This implies that its graphical
 representation is no longer acyclic.
 
-\todo{Figure for RNN with loops}
-
-Given an input $\vec{x}_{1:T}$, a RNN can be unrolled into an equivalent feed-forward
-network with tied weights:
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/rnn.jpg}
-    \caption{\todo{Redraw in xy}}
+    \input{Figures/nn-rnn-elman.pdf_tex}
+    \caption{Elman-type RNN}
+    \label{fig:rnn-elman}
 \end{figure}
+
+
+Given an input $\vec{x}_{1:T}$, a RNN can be unrolled into an equivalent feed-forward
+network with tied weights.
+
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/rnn-single-unrolled.pdf_tex}
+    \caption{Unrolled single-layer RNN}
+    \label{fig:rnn-single-unrolled}
+\end{figure}
+
 We can view the recurrent data $s_t$ as \textbf{state} which evolves
 over consecutive \textbf{frames} $x_t$ according to dynamcis defined
 by the RNN.
@@ -319,6 +351,16 @@ Mathematically, a RNN is defined by the equations
 
 $f$ is usually $\tanh$ or ReLU.
 
+RNNs can be stacked:
+
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/rnn-multi-unrolled.pdf_tex}
+    \caption{Unrolled multi-layer RNN}
+    \label{fig:rnn-multi-unrolled}
+\end{figure}
+
+
 The advantages of RNNs over feedforward networks include:
 \begin{itemize}
     \item Ability to handle variable-length inputs: the RNN can be unrolled an arbitrary
@@ -326,11 +368,6 @@ The advantages of RNNs over feedforward networks include:
     \item Fixed dimension embeddings: after processing the entirety of an input
         sequence, the state of the RNN can be used as a fixed dimension embedding
         representing the input
-                \begin{figure}[htpb]
-                    \centering
-                    \includegraphics[width=0.8\linewidth]{Figures/rnn-mt.png}
-                    \caption{\todo{Redraw in xy}}
-                \end{figure}
     \item Sequential processing: the order of $\vec{x}_{1:T}$ will affect the state
         trajectory $s_{1:T}$, enabling the model to capture time-dependent dynamics
         within the input sequences
@@ -358,4 +395,21 @@ problems by introducing gates on the inputs, hidden state, and outputs. GRUs are
 a variation of LSTMs which ties the weights to the input and forget gates.
 
 \todo{Nando's slides for exploding gradient and how LSTM gates fix it}
+
+\subsubsection{LSTM}
+
+\begin{eqnarray}
+    i_t &=& \sigma(x_t W_{xi} + h_{t-1} W_{hi} + c_{t-1} W_{ci} + b_i) \\
+    f_t &=& \sigma(x_t W_{xf} + h_{t-1} W_{hf} + c_{t-1} W_{cf} + b_f) \\
+    c_t &=& f_t c_{t-1} + i_t \tanh(x_t W_{xc} + h_{t-1} W_{hc} + b_c) \\
+    o_t &=& \sigma(x_t W_{xo} + h_{t-1} W_{ho} + c_t W_{co} + b_o) \\
+    h_t &=& o_t \tanh(c_t)
+\end{eqnarray}
+
+\begin{figure}[htpb]
+\centering
+\input{Figures/lstm-unit.pdf_tex}
+\caption{Single LSTM unit}
+    \label{fig:lstm-unit}
+\end{figure}
 
