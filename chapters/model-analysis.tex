@@ -4,10 +4,56 @@
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/training-curves.png}
-    \caption{Training curves for \texttt{torch-rnn} LSTM}
-    \label{fig:torch-rnn-training-curve}
+    \includegraphics[width=\linewidth]{Figures/torch-rnn-network-params.png}
+    \caption{torch-rnn-network-params}
+    \label{fig:torch-rnn-network-params}
 \end{figure}
+
+Sensitivity to network structure: \texttt{num\_layers} and \texttt{rnn\_size}.
+\begin{itemize}
+    \item Larger \texttt{rnn\_size} leads to higher capacity and lower training loss
+        \begin{itemize}
+            \item Presents as overfitting on validation, where the lowest capacity
+                model \texttt{rnn\_size} appears to be improving in generalization while
+                others are flat/increasing
+        \end{itemize}
+    \item Training curves about the same wrt \texttt{num\_layers}, validation curves have interesting story
+        \begin{itemize}
+            \item Depth matters: small 64 and 128 hidden unit RNNs saw improvements up to 0.09
+            \item Expressivity gained from depth furthers overfitting: 256
+                hidden unit RNN has some of the best validation performance at
+                depth 1 but is the worst generalizing model for depths 2
+                and 3 even though training loss is low
+        \end{itemize}
+    \item \texttt{rnn\_size=128} undisputably best generalizing, optimized at
+        \texttt{num\_layers=2}: will continue with these settings
+\end{itemize}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/torch-rnn-input-params.png}
+    \caption{torch-rnn-input-params}
+    \label{fig:torch-rnn-input-params}
+\end{figure}
+
+Sensitivity to network inputs: \texttt{seq\_length} and \texttt{wordvec}
+\begin{itemize}
+    \item Training losses are about the same across all \texttt{wordvec}s
+    \item Validation losses suggest that increasing \texttt{seq\_length} important for
+        good performance \todo{investigate further}
+    \item \texttt{wordvec=128} overfits for all cases, the other two depend on
+        \texttt{seq\_length} and vary an order of magnitude smaller than the
+        performance gains from increasing \texttt{seq\_length}
+\end{itemize}
+
+Data for all network configurations examined is available in \autoref{tab:torch-rnn-config-perfs}.
+
+\begin{table}[htpb]
+    \centering
+    \caption{Performance of various LSTM configurations}
+    \label{tab:torch-rnn-config-perfs}
+    \input{tables/torch-rnn-config-perfs.tex}
+\end{table}
 
 \section{Embeddings}
 
