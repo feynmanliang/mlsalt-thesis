@@ -2,6 +2,21 @@
 
 \section{Architecture tradeoffs}
 
+\autoref{fig:theanets-architecture} compares various RNN architecture performance
+through training a RNN with \texttt{num\_layers=1}, \texttt{rnn\_size=130},
+\texttt{wordvec=64}.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/theanets-architecture.png}
+    \caption{theanets-architecture}
+    \label{fig:theanets-architecture}
+\end{figure}
+
+The LSTM and GRU architectures achieve the lowest training errors, consistent with expectations
+since these architectures have the most parameters.
+The validation losses confirm that overfitting is occuring and that regularization is required.
+
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=\linewidth]{Figures/torch-rnn-network-params.png}

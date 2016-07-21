@@ -24,3 +24,13 @@ pairs representing which a note's pitch and whether it is tied
     \item Restrict to 4/4
 \end{enumerate}
 
+Both frame-based processing and quantization to eighth notes justified by Eck
+and Smidhuber LSTM Blues \todo{cite}. Eight network time steps are required to
+process a whole note. This is preferrable for the LSTM because it forces the network to learn
+relative duration of notes, making it easier for counting and timing mechanisms
+to be encoded by the LSTM dynamics \todo{Cite Gers and Schmidhuber, 2000}.
+
+\textbf{Contribution}: solved problem of determining when notes end (\todo{cite
+Eck Schmidhuber LSTM blues}) in input data format by using the ties.
+
+
