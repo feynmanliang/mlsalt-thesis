@@ -25,32 +25,42 @@
 Eck Schmidhuber \todo{Cite} LSTM blues wrap data around to only a single octave, don't
 model when a note is released.
 
-Boulanger sampled at every quarter note for JCB: we do every 4th note.
+Boulanger sampled at every quarter note for JCB: we do every 8th \todo{or 16th?}
 
+Machine learning on music has a rich history in classification and analysis tasks.
+\cite{Herlands2014} describe a system to classify music style.
 
-\section{RNNs}
+\cite{Eck2002} first looked at LSTMs for music composition, noting a lack of global
+structure and long-range dependencies. The same authors \cite{Eck2002-blues} go on
+to build a system for improvizing blues music, demonstrating the success of
+LSTMs on musical data. They decompose the task into modelling chords
+then notes, feeding the outputs of a chord LSTM into a melody LSTM.
 
-\begin{enumerate}
-    \item Deep RNNs
-        Outputs of one LSTM are used as inputs to the next; more layers $\implies$
-        greater representational power, hierarchical representation learning?
-    \item LSTMs
-        \begin{enumerate}
-            \item Memory is called \emph{cells}
-        \end{enumerate}
+\cite{Allen2005} uses HMMs to harmonize Bach chorales. \todo{How is this different}
 
-    \item LSTM Variants: GRUs have fewer parameters (U and W are smaller) and
-        thus may train a bit faster or need less data to generalize
-\end{enumerate}
+\cite{Brien2016} compared RNN models for Bach chorales. However, their data format does not permit independent
+articulation of parts. More importantly, their training implementation resets the LSTM state for each input
+sequence, limiting the time-range of learned dynamics to be at most the sequence length.
 
-\subsection{RNN-RBM}
-An alternative design is to have the RNN output the entire chord at teach time.
-This is appealing because the steps between successive RNN applications
-correspond to units of time. Additionaly, the emission distribution's parameterization
-can be used to restrict the number of simultaneous parts.
+\cite{Boulanger-Lewandowski2012} propose a RNN-RBM model to model arbitrary
+piano roll representations. \todo{Expand upon this} In a RNN-RBM, the hidden
+state is used to compute the parameters for a restricted Boltzmann machine at
+each timestep. The RBM parameterizess a multivariate categorical distribution,
+which can be either over the four parts or the entire piano roll. This work was
+extended in \cite{Lyu2015} to yield state of the art results.
 
-In a RNN-RBM, the hidden state is used to compute the parameters for a restricted Boltzmann
-machine at each timestep. The RBM parameterizess a multivariate categorical distribution,
-which can be either over the four parts or the entire piano roll.
+\cite{Liu2014} uses LSTMs on Bach chorales.
 
+Computational musicology has been greatly aided by modern tools, including
+\texttt{music21} \cite{Scott2015}. \cite{Cuthbert2011} demonstrates machine
+learning on rich music representations using \texttt{music21}.
 
+On the music theory side, \cite{Tymoczko2009} proposed three different metrics
+for musical data and demonstrated their relationships using tools from geometry
+and topology.
+
+LSTM architectures have been adapted for music. \cite{Koutnik2014} proposes a
+clockwork RNN, which updates different subvectors of the hidden state at
+different periods in order to capture both short-term and long-term dynamics.
+\cite{Mikolov2015} proposes the structurally cosntrained RNN (SCRN), a simple
+architecture achieving comparable performance to LSTMs.

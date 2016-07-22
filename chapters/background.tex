@@ -67,7 +67,7 @@ called a \textbf{half step} or \textbf{half tone} and two half steps are called
 a \textbf{whole step/tone}.
 
 In our work, we restrict attention to 12-TET tuning because it is the most
-common tuning system employed by Western composers over the last 
+common tuning system employed by Western composers over the last
 
 Note that while 12-TET restricts the available pitches to a discrete set, it
 lacks specification of a reference pitch frequency and hence does not yield a
@@ -81,7 +81,7 @@ middle C.
 \subsection{Tonal music}
 
 Tonal music is characterized by the prevalence of one pitch class (the
-\textbf{tonic}) around which the melody and harmony are built. 
+\textbf{tonic}) around which the melody and harmony are built.
 
 A basic concept
 within tonal music is the \textbf{scale} which defines a subset of pitch
@@ -121,270 +121,194 @@ An interesting question regarding creativity: if an algorithm faithfully reprodu
 an artist's creative process, what is the difference between music produced by the artist
 and music produced by the algorithm?
 
-\section{Sequence probability modelling}
+\section{Neural sequence probability modeling}
 
-Generating a "Bach-like" piece of music can be understood as drawing a random
-sample from a distribution over musical scores which is statistically similar
-to Bach's own compositions. Thus, we interpret the problem as one of
-\emph{categorical sequence modeling}.
+This section builds the notation and terminology we use to discuss the neural network
+models used for generatively modelling music scores.
 
-This type of problem has been well studied. In speech recognition, language
-models parameterizing distributions over sentences are used as priors to refine
-transcriptions.
+\subsection{Neurons: the basic computation unit}
 
-However, since our model has to be able to generate Bach, we must be able to
-sample from it. This rules out a broad class of sequence models, including
-back-off N-grams and other interpolated language models.
-
-Fortunately, low order N-grams and standard HMM-based models are sampleable and
-thus can be used as baselines.
-
-\subsection{Feedforward neural networks}
-
-Feedforward neural networks are a parametric model capable of approximating a
-broad range of functions \todo{Include universal approximation}. Their capacity
-to model a diverse range of functions make them an appealing model for complex
-unknown probability distributions.
-
-A feedforward neural network is the composition of a sequence of layers, each
-taking some \textbf{inputs} $\vec{x}$ and performs an affine transformation $\vec{z} =
-\matr{W} [\vec{x}, 1]^\tp$ to yield \textbf{activations}. The activations are then
-passed through an \textbf{activation function}, which applies an elementwise
-nonlinearity $\sigma : \RR \to [L,U]$ squashing the outputs to into some connected bounded
-subset $[L,U] \subset \RR$. A common choice is the logistic function $\sigma(z)
-= \frac{1}{1+\exp{-z}}$, which squashes $\vec{y} \in [0, 1]$. Other choices
-include $\sigma = \tanh$, in which case $[L, U] = [-1, 1]$.
+Neurons are the basic abstraction upon which we build more complex
+models. A \textbf{neuron} is a parametric model of a function $f : \RR^D \to
+\RR$ defined by $f(\vec{x}) \coloneqq \sigma( \langle \vec{w}, \vec{x} \rangle
+)$. \autoref{fig:nn-single} illustrates the decomposition of a neuron as first
+an inner product with \textbf{weights} $\vec{w}$ followed by a non-linear
+\textbf{activation function} $\sigma : \RR \to [L, U]$.
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-single.pdf_tex}
-    \caption{Single neuron}
+    \caption{A single neuron first computes an activation $z$ and then passes it through
+    an activation function $\sigma(\cdot)$}
     \label{fig:nn-single}
 \end{figure}
 
-It is common to represent feedforward neural networks as directed acyclic
-graphs (\autoref{fig:nn-layer}). Here, each node denotes a data value and
-an edge from $s$ to $t$ notates that the value at $s$ is used to compute the
-value at $t$.
+The purpose of $\sigma$ is to squash the \textbf{activation} $z \coloneqq
+\langle \vec{w}, \vec{x} \rangle$ such that the \textbf{output} $y = \sigma(z)$
+lies in some bounded domain $[L, U] \subset \RR$. In addition, the
+non-linearity introduced by $\sigma$ gives neural networks their
+representational power. If activation functions are removed, then a neural
+network can only model affine transformations.
+
+\subsection{Composing neurons together in neural networks}
+
+Concatenating multiple neurons into a \textbf{layer} enables multivariate functions $f :
+\RR^{D_\text{in}} \to \RR^{D_\text{out}}$ to be represented, leading to feedforward
+neural networks. Although a single hidden layer is theoretically sufficient for
+a universal function approximator\cite{Cybenko1993}, \textbf{deep learning}
+models which stack multiple layers have shown strong experimental results
+for parameterizing complex unknown probability distributions \cite{Bengio2011}.
 
 \begin{figure}[htpb]
     \centering
-    %\input{Figures/nn-ffw.pdf_tex}
-    \caption{Feedforward Neural Network}
+    \input{Figures/nn-ffw.pdf_tex}
+    \caption{Graph depiction of a feedforward neural network with $2$ hidden layers}
     \label{fig:nn-ffw}
 \end{figure}
 
-% \begin{figure}[htpb]
-%     \centering
-%     \input{Figures/nn-layer.tikz}
-%     \caption{Single feedfoward neural network layer}
-%     \label{fig:nn-layer}
-% \end{figure}
+When discussing neural networks with $L \geq 1$ layers, we will use
+$\vec{x}^{(i)}$, $\matr{W}^{(i)}$, $\vec{z}^{(i)}$, and $\vec{y}^{(i)}$ to
+refer to the inputs, weights, activations, and outputs of the $i$th layer. The
+activation function $\sigma$ is understood to act elementwise when applied to a
+vector. For adjacent layers $i$, $i+1$, we have $\vec{x}^{(i+1)} =
+\vec{y}^{(i)}$. $\vec{x}^{(0)}$ and $\vec{y}^{(L)}$ are the inputs and outputs
+respectively of the entire network.
 
-Multiple layers can be composed together by treating the outputs from the previous layer
-as the inputs to the next layer. \autoref{fig:ffw-nn} illustrates this on a 2-layer
-feedforward neural network where the outputs of the first layer are used as the
-inputs to the second layer (i.e. $x^{(1)} = y^{(0)}$).
-
-
-% \begin{figure}[htbp]
-%     \centering
-%     \input{Figures/ffw-nn.tikz}
-%     \caption{2-layer feedforward neural network}
-%     \label{fig:ffw-nn}
-% \end{figure}
-
-\todo{Plug to deep learning}
-
-\subsubsection{Modeling probability distributions}
-
-A neural network can be used to model the distribution of a categorical random
-variable $o$ by treating the final layer activations $\vec{z}^{(L)}$ as the
-energies of a Boltzmann distribution (i.e.\ $\softmax$). This implies a
-probability mass function on $o$ given by \autoref{eq:softmax}.
-
-\begin{equation}
-    \label{eq:softmax}
-    P(o = k | \vec{z}^{(L)}) = \frac{\exp{-z^{(L)}_k}}{ \sum_{j} \exp{-z^{(L)}_j} }
-\end{equation}
-
-\subsubsection{Training with back-propogation}
-
-Training neural networks is achieved using gradient descent methods, which
-optimize parameters $\theta = \{W^{(i)} : 1 \leq i \leq L \}$ to minimize some
-loss function $L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ between the network
-outputs $\vec{z}^{(L)}_{1:N}$ and the true labels $\hat{o}_{1:N}$. For
-probabilistic classification, a common choice is to assume independence
-across training examples and use \textbf{cross-entropy loss}
-(\autoref{eq:cross-entropy-loss}):
-
-\begin{align}
-    L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})
-    &= \sum_{i=1}^{N} L(\vec{z}^{(L)}_i, \hat{o}_i) &\mbox{Independence across samples} \nonumber\\
-    &= \sum_i \sum_k \delta_{\hat{o}_i,k} \log \frac{1}{P(o=k | \vec{y}_i^{(L)})} & \label{eq:cross-entropy-loss}
-\end{align}
-
-Gradient descent proceeds by using the Jacobian (i.e.\ gradient) $\nabla_\theta
-L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ to iteratively update the network
-parameters using successive first-order approximations (\autoref{eq:nn-training-iteration-scheme}).
-
-\begin{align}
-    \label{eq:nn-training-iteration-scheme}
-    \theta^{(t+1)} = \theta^{(t)}
-    - \eta_t \left[ \nabla_\theta L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N}) \right]_{\theta = \theta^{(t)}}
-\end{align}
-
-Variants of \autoref{eq:nn-training-iteration-scheme} which adaptively set the
-step size $\eta_t$ or incorporate/estimate the Hessian $\nabla^2_{\theta}
-L(\cdot, \cdot)$ can yield performance when applied to neural network training.
-However, their discussion is out of scope. \todo{Discuss RMSprop?}
-
-To apply \autoref{eq:nn-training-iteration-scheme}, the gradient $\nabla_\theta
-L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ must be computed. This can be
-accomplished using \textbf{backpropogation} \todo{cite}, an algorithm which
-exploits the independence structure to avoid unnecessary computations and make
-gradient computations tractable.
-
-Let $\delta^{(l)}_{j} = \frac{\pd L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})}{\pd
-z^{(l)}_j}$ be the partial derivative of the loss with respect to the $j$th
-activation of layer $l$. For the final $L$th layer, cross-entropy loss
-with a Boltzmann distribution yields
-
-\begin{align*}
-    \delta^{(L)}_{j}
-    &= - \sum_{i=1}^{N} \sum_{k} \frac{\pd}{\pd z^{(L)}_j} \delta_{\hat{o}_i,k} \log P(o=k | \vec{z}^{(L)}_i ) &\mbox{\autoref{eq:cross-entropy-loss}} \\
-    &= \sum_{i=1}^{N} \left( P(o=k | \vec{z}^{(L)}_i ) - y_i \right) & \mbox{Softmax derivative}
-\end{align*}
-
-For earlier layers $l < L$, we have
-\begin{align}
-    \delta^{(l)}_{j}
-    &= \sum_k \frac{\pd L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})}{\pd z^{(l+1)}_k}
-    \frac{\pd z^{(l+1)}_k}{\pd z^{(l)}_j}\\
-    &= \sum_k \delta^{(l+1)}_k
-    \frac{\pd}{\pd z^{(l)}_j} \left( \matr{W}^{(l+1)} [\sigma(z^{(l)}), 1]^\tp \right)_k \\
-    &= \sum_k \delta^{(l+1)}_k
-    \matr{W}^{(l+1)}_{k,j} \sigma'(z^{(l)}_j) \label{eq:backprop}
-\end{align}
-This expression can be vectorized using the Hadamard product (elementwise multiplication), which
-improves performance due to CPU cache locality and coalesced memory loads: \todo{DO THIS}
-\begin{align}
-    \circ
-\end{align}
-This recursion can be iterated until $l \to 0$.
-
-The back-propogation algorithm consists of two steps:
-\begin{enumerate}
-    \item \emph{Forward pass}: Using current model parameters $\theta^{(t)}$,
-        feed the data into the network to compute the activations $\vec{z}^{(l)}$,
-        $1 \leq l \leq L$
-    \item \emph{Backward pass}: Recursively iterate \autoref{eq:backprop}
-        to compute $\vec{\delta}^{(l)}$, $1 \leq l \leq L$ using the activations
-        $\vec{z}^{(l)}$ obtained from the forward pass
-\end{enumerate}
-
-After the backwards pass, gradients with respect to model parameters are easily obtained
-\begin{align}
-    \frac{\pd L}{\pd W^{(l)}_{i,j} }
-    &= \sum_k \frac{\pd L}{\pd z^{(l+1)}_k} \frac{\pd z^{(l+1)}_k}{\pd W^{(l)}_{i,j}} \\
-    &= \sum_k \delta^{(l+1)}_k z^{(l)}_j
-\end{align}
-
-Some appealing properties of backpropogation:
-\begin{itemize}
-    \item Efficient exploitation of the computation graph: chain rule expansions
-        are constrained by the computation graph, improving efficiency
-        because factors which don't contribute to a given $\delta^{(l)}$
-        are neglected in the recursion
-    \item Implementation using local rules: the forward/backward pass
-        at any layer $l$ only requires knowledge of $z^{(l)}$, $\delta^{(l+1)}$,
-        and the derivative of the activation $\sigma'$. As all these quantities are localized
-        to one layer, this permits modular implementations where a node which can be back-propped
-        through needs only implement a \texttt{forward()} method which computes activations
-        given inputs and a \texttt{backward()} method which computes $\delta^{(l)}$ given
-        activations.
-\end{itemize}
-
-\todo{Talk about how localization gives rise to computation graph and autodiff}
-
-\subsection{Recurrent neural networks}
+\subsubsection{Processing variable length sequences with recursive neural networks}
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn.pdf_tex}
-    \caption{Recurrent neural network}
+    \caption{Graph depiction of a recurrent neural network; note the recurrent connections
+    within the hidden layer}
     \label{fig:nn-rnn}
 \end{figure}
 
+Recurrent neural networks (RNNs) generalize feedforward networks by introducing
+time-delayed connections between hidden layers (\autoref{fig:nn-rnn}) in order
+to model temporal memory. The recurrent edges enable the previous hidden state
+$\vec{h}_{t-1}$ to be passed forwards to compute the current hidden state
+$\vec{h}_t$. This ability to incorporate prior inputs into the network state
+enables RNNs to excel at sequence processing tasks, where the input sequence
+$X_n = (\vec{x}_t)_{1 \leq t \leq T_n}$, $1 \leq n \leq N$, may have variable
+length $T_n$.
 
-Recurrent neural networks (RNNs) are a generalization of feedforward neural
-networks which introduce recurrent connections. This implies that its graphical
-representation is no longer acyclic.
+The time-delayed recurrent edges can be equivalently viewed as inputs to the
+hidden nodes which are carried forward from the previous time step
+(\autoref{fig:rnn-elman}).
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn-elman.pdf_tex}
-    \caption{Elman-type RNN}
+    \caption{Equivalent formulation of a RNN treating the time-delayed hidden state
+    as additional inputs to a feedforward network}
     \label{fig:rnn-elman}
 \end{figure}
 
-
-Given an input $\vec{x}_{1:T}$, a RNN can be unrolled into an equivalent feed-forward
-network with tied weights.
+This recursive structure can be unrolled
+(\autoref{fig:rnn-multi-unrolled}) to yield a directed acyclic
+\textbf{computation graph} containing nodes for the
+\textbf{hidden state trajectory} $H_n = (\vec{h}_t)_{1 \leq t \leq T_n}$ and
+\textbf{outputs} $Y_n = (\vec{y}_t)_{1 \leq t \leq T_n}$.
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/rnn-single-unrolled.pdf_tex}
-    \caption{Unrolled single-layer RNN}
+    \caption{Signal flow diagram representation of a single-layer RNN and its corresponding
+    expansion into a computation graph}
     \label{fig:rnn-single-unrolled}
 \end{figure}
 
-We can view the recurrent data $s_t$ as \textbf{state} which evolves
-over consecutive \textbf{frames} $x_t$ according to dynamcis defined
-by the RNN.
+Just like feedforward networks, RNNs can be stacked by using the outputs of one
+RNN as the inputs to another, forming \textbf{deep neural sequence models}. We
+will describe multilayer RNNs as a dynamical system and use
+$\matr{W}^{(l)}_{ij}$ to indicate the weight matrix relating variable $i$ to
+variable $j$ at layer $l$. For example, \autoref{fig:rnn-multi-unrolled} is described
+by the system of equations
 
-Mathematically, a RNN is defined by the equations
-\begin{align}
-    \s_t &= f(\U \x_t + \W \s_{t-1}) \\
-    \o_t &= \softmax( \V \s_t)
-\end{align}
-
-$f$ is usually $\tanh$ or ReLU.
-
-RNNs can be stacked:
+\begin{eqnarray}
+    \vec{h}^{(1)}_t &=& \matr{W}^{(1)}_{hx} \vec{x}^{(1)}_t + \matr{W}^{(1)}_{hh} \vec{h}^{(1)}_{t-1} \\
+    \vec{y}^{(1)}_t &=& \matr{W}^{(1)}_{yh} \vec{h}^{(1)}_t \\
+    \vec{x}^{(2)}_t &=& \vec{y}^{(1)}_t \\
+    \vec{h}^{(2)}_t &=& \matr{W}^{(2)}_{hx} \vec{x}^{(2)}_t + \matr{W}^{(2)}_{hh} \vec{h}^{(1)}_{t-1} \\
+    \vec{y}^{(2)}_t &=& \matr{W}^{(2)}_{yh} \vec{h}^{(2)}_t \\
+\end{eqnarray}
 
 \begin{figure}[htpb]
     \centering
-    %\input{Figures/rnn-multi-unrolled.pdf_tex}
-    \caption{Unrolled multi-layer RNN}
+    \input{Figures/rnn-multi-unrolled.pdf_tex}
+    \caption{Unrolled computation graph for a 2-layer RNN}
     \label{fig:rnn-multi-unrolled}
 \end{figure}
 
+\subsubsection{Sequential processing and sampling}
 
-The advantages of RNNs over feedforward networks include:
-\begin{itemize}
-    \item Ability to handle variable-length inputs: the RNN can be unrolled an arbitrary
-        number of times to accomodate inputs $\vec{x}$ of different length
-    \item Fixed dimension embeddings: after processing the entirety of an input
-        sequence, the state of the RNN can be used as a fixed dimension embedding
-        representing the input
-    \item Sequential processing: the order of $\vec{x}_{1:T}$ will affect the state
-        trajectory $s_{1:T}$, enabling the model to capture time-dependent dynamics
-        within the input sequences
-    \item Memory over time: the state $s \in \RR^D$ can take on an uncountably infinite
-        number of values, allowing it to potentially act as memory which summarizes
-        \emph{all} of the input up to the current time
-\end{itemize}
+We will train our RNNs to predict a distribution for the next character
+$\vec{x}_{t+1}$ after the RNN has processed the sequence $\vec{x}_{1:t}$,
+yielding a model which factorizes the sequence probability
+\begin{equation}
+    P(\vec{x}_{1:T}) = \prod_{t=1}^T P(\vec{x}_t | \vec{x}_{1:t-1} )
+\end{equation}
+Modeling this probability distribution over sequences is analogous to the
+\textbf{language modeling} from speech recognition.
 
-\subsubsection{Comparison against HMMs}
+Note that the factorization of conditional distributions \emph{assumes a
+sequential ordering in $t$}. This property is desirable as it enables sampling
+from the model to generate new transcriptions by sampling from $P(\vec{x}_t |
+\vec{x}_{1:t-1})$ at each timestep $t$ and using the sampled value as the next
+input.
 
-Hidden Markov Models (HMMs) are another popular probabilistic model for
-sequental data. \todo{Define HMMs}
+\todo{compare to bidirectional}.
 
-While RNNs are similar HMMs in that both model the conditional distribution of
-next frames given the previous context. However, RNNs additionally pass along
-"hidden state" which summarizes contextual information from a potentially
-infinite context window.
+\todo{for more details, see XYZ}.
+
+\subsection{Parameter estimation of recursive neural networks}
+
+\subsubsection{Modeling probabilities using the Boltzmann distribution and cross-entropy error criterion}
+
+The parameters to the model are estimated in order to minimize the error
+between the network outputs and provided labels. For language modeling, the
+outputs $\vec{y}_t$ should parameterize a distribution for the next character
+$P(\vec{x}_{t+1} | \vec{x}_{1:t})$. Suppose each input has finite support (i.e.
+$\vec{x}_t \in [1,2,\cdots,K]$). If we choose the outputs to be $K$ dimensional
+(i.e. $\vec{y}_t \in \RR^K$) then the \textbf{Boltzmann distribution}
+(\autoref{eq:boltzmann-dist}) can be used:
+
+\begin{equation}
+    \label{eq:boltzmann-dist}
+    P(\vec{x}_{t+1} = s | \vec{x}_{1:t})
+    = \frac{\exp \left(-\vec{y}_{t,s}/T\right) }{ \sum_{k=1}^{K} \left(\exp -\vec{y}_{t,k}/T\right)}
+\end{equation}
+
+$T \in \RR^+$ is a \textbf{temperature} parameter \todo{relate to sampling}.
+
+The labels provided are the actual next characters $\vec{x}_{t+1}$. Viewing
+such labels as discrete probability distributions will all mass on a single atom,
+one measure of difference between predictions and \todo{justify cross-entropy}
+
+\subsubsection{Efficient graident computations through back-propogation}
+
+Feed-forward neural networks are trained using back-propogation, an efficient
+algorithm which consists of a forward pass to compute activations followed by
+back-propogation of partial derivatives expanded according to the chain
+rule\todo{cite backprop}. At the heart of back-propogation is the
+\textbf{computation graph} of a a model: a directed acyclic graph where each
+node represents a differentiable function that can compute its outputs and
+Jacobian given inputs and activations\todo{cite theano}. By representing only
+the dependencies between intermediate values, the sparsity imposed by the
+computation graph enable back-propogation to ignore irrelevant
+cross-derivatives and efficiently compute global gradients from local
+computations.
+
+
+Training of recursive neural networks is typically performed using
+backpropogation through time (BPTT)\cite{at}, a technique computationally
+equivalent to feedforward training of the unrolled computation graph. This is
+easily seen: unrolling of a RNN yields a feed-forward structure where the
+standard back-propogation algorithm applies.
+
+
+
 
 \subsubsection{Vanishing gradients}
 
@@ -394,7 +318,10 @@ training. LSTMs are an improved RNN architecture which solve both of these
 problems by introducing gates on the inputs, hidden state, and outputs. GRUs are
 a variation of LSTMs which ties the weights to the input and forget gates.
 
-To understanding the vanishing gradient problem, consider a simple recurrent network
+Vanishing/exploding gradients \cite{Bengio1994} are problems experienced by
+RNNs arising from recursive applications of non-linear activations and linear dynamics
+to the hidden state. To illustrate the vanishing gradient problem, consider
+a simple recurrent network
 
 \begin{eqnarray}
     h_t &=& \theta \phi(h_{t-1}) + \theta_x x_t \label{eq:ht-from-ht-1}\\
@@ -495,7 +422,7 @@ identity and introducing three gates:
 
 \begin{figure}[htpb]
     \centering
-    %\input{Figures/lstm-unit.pdf_tex}
+    \input{Figures/lstm-unit.pdf_tex}
     \caption{Single LSTM unit}
     \label{fig:lstm-unit}
 \end{figure}
@@ -524,3 +451,6 @@ duration (i.e. $f_t \approx 1$ and $i_t \approx 0$).
 Some authors define LSTMs such that $h_t$ is not used to compute gate activations,
 referring to the case where $h_t$ is connected as ``peephole connections.'' In our
 work, we use ``LSTM'' to refer to LSTMs with peephole connections.
+
+LSTMs protect from vanishing gradient, but not exploding gradient. Research has shown
+that gradient clipping is essential to permit successful applications \cite{Pascanu2012}.
