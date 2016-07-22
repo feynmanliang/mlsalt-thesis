@@ -45,6 +45,15 @@ interval}. A fundamental pitch interval in Western music is the
 \textbf{octave}, which is defined to be the interval between a frequency and
 its double.
 
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/pitch.pdf}
+    \caption{Just like this text, it is the differences between pitches
+        rather than the absolute pitch itself that is perceptually
+    meaningful.}
+    \label{fig:pitch}
+\end{figure}
+
 While in theory an uncoutable number of pitches are available because
 frequencies are real-valued and hence there are uncountably many, tuning
 systems are oftentimes employed to restrict the set of available pitches in
@@ -67,7 +76,7 @@ called a \textbf{half step} or \textbf{half tone} and two half steps are called
 a \textbf{whole step/tone}.
 
 In our work, we restrict attention to 12-TET tuning because it is the most
-common tuning system employed by Western composers over the last
+common tuning system employed by Western composers over the last \todo{cite}
 
 Note that while 12-TET restricts the available pitches to a discrete set, it
 lacks specification of a reference pitch frequency and hence does not yield a
@@ -80,17 +89,24 @@ middle C.
 
 \subsection{Tonal music}
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/bwv133-6-original-score-1.png}
+    \caption{First 4 bars of JCB Chorale BWV 133.6}
+    \label{fig:score-original}
+\end{figure}
+
 Tonal music is characterized by the prevalence of one pitch class (the
 \textbf{tonic}) around which the melody and harmony are built.
 
-A basic concept
-within tonal music is the \textbf{scale} which defines a subset of pitch
-classes that are ``in key'' with respect to the tonic. Two fundamental scales
-are the major (with step pattern whole-whole-half-whole-whole-whole-half) and
-minor scales (whole-half-whole-whole-half-whole-whole). The choice of tonic and
-scale is referred to as the \textbf{key}and a change in key during a piece is
-called a \textbf{modulation}Many musical phenomena such as stability,
-expectation, and resolution can be attributed to tonal characteristics.
+A basic concept within tonal music is the \textbf{scale} which defines a subset
+of pitch classes that are ``in key'' with respect to the tonic. Two fundamental
+scales are the major (with step pattern
+whole-whole-half-whole-whole-whole-half) and minor scales
+(whole-half-whole-whole-half-whole-whole). The choice of tonic and scale is
+referred to as the \textbf{key}and a change in key during a piece is called a
+\textbf{modulation}Many musical phenomena such as stability, expectation, and
+resolution can be attributed to tonal characteristics.
 
 The \textbf{tempo} of a piece refers to its speed or pace and is measured by
 beats per minute. In 4/4 time signature, a \textbf{quarter note} or
@@ -104,9 +120,16 @@ We consider note duration, time, and velocity. We neglect changes in timing
 (e.g. ritardandos), dynamics (e.g. crescendos), and stylistic notations (e.g.
 accents, staccatos, legatos).
 
-\emph{Piano roll} music transcriptions are quantized both in time ($t \in T$)
-and note frequencies ($n \in N$). frequencies quantized to a piano roll.
-\todo{Motivate quantization with Western music}.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-original-piano-roll.png}
+    \caption{Piano roll representation of the same 4 bars from \autoref{fig:score-original}}
+    \label{fig:piano-roll-original}
+\end{figure}
+
+\emph{Piano roll} music transcriptions (\autoref{fig:piano-roll}) are quantized
+both in time ($t \in T$) and note frequencies ($n \in N$). frequencies
+quantized to a piano roll. \todo{Motivate quantization with Western music}.
 
 We can represent a piano roll transcription as a high-dimensional vecctor
 $X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note

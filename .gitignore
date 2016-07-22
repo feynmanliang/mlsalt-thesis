@@ -50,3 +50,5 @@ C:\\nppdf32Log\\debuglog.txt
 *.xdy
 
 .ipynb_checkpoints/
+notebooks/*.xml
+notebooks/*.png
