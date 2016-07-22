@@ -9,30 +9,84 @@ the Soprano part and the remaining parts harmonize the melody.
 
 \section{Preprocessing}
 
-\begin{figure}[htpb]
+\begin{figure}[htbp]
     \centering
+    \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-original-score-1.png}
     \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-preproc-score-1.png}
-    \caption{Score of BWV 133.6 after standardizing key and quantizing
-    notes (see \autoref{fig:score-original} for original)}
-    \label{fig:score-preproc}
+    \caption{First 4 bars of JCB Chorale BWV 133.6 before (top) and after (bottom) preprocessing}
+    \label{fig:score-effects-preproc}
 \end{figure}
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-preproc-piano-roll.png}
-    \caption{Piano roll of BWV 133.6 after standardizing key and quantizing
-    notes (see \autoref{fig:piano-roll-original} for original)}
-    \label{fig:piano-roll-preproc}
+        \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-original-piano-roll.png}
+        \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-preproc-piano-roll.png}
+    \caption{Piano roll representation of the same 4 bars from \autoref{fig:score-effects-preproc}
+    before and after preprocessing}
+    \label{fig:piano-roll-effects-reproc}
 \end{figure}
 
-We transpose all scores with major key signatures to C major and minor key
-signatures to A minor. Due to transposition invariance of 12-TET, this does
-not alter the tonal properties of the music.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/pitch-usage-original.png}
+    \includegraphics[width=1.0\linewidth]{Figures/pitch-usage-preproc.png}
+    \caption{Pitches before and after key standardization}
+    \label{fig:pitch-key-standardization}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/pitch-class-usage-original.png}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/pitch-class-usage-preproc.png}
+    \end{subfigure}
+    \caption{Pitch classes before and after key standardization}
+    \label{fig:pc-key-standardization}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/note-lengths-original.png}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/note-lengths-quantized.png}
+    \end{subfigure}
+    \caption{Effects of time quantization on note durations}
+    \label{fig:note-lengths-time-quantization}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/meter-usage-original.png}
+    \end{subfigure}
+    ~
+    \begin{subfigure}[t]{0.48\textwidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{Figures/meter-usage-quantized.png}
+    \end{subfigure}
+    \caption{Effects of time quantization on meter}
+    \label{fig:meter-time-quantization}
+\end{figure}
 
 We represent musical scores using a piano roll representation. Firstly, time is
 discretized into constant timestep frames. For each frame, a set of (note, tie)
 pairs representing which a note's pitch and whether it is tied
 (continuing a note from the previous frame) or newly played notes.
+
+
+We transpose all scores with major key signatures to C major and minor key
+signatures to A minor. Due to transposition invariance of 12-TET, this does
+not alter the tonal properties of the music.
 
 \begin{enumerate}
     \item Transpose to Cmaj/Amin
