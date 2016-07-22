@@ -4,8 +4,8 @@
 *.toc
 *.fls
 
-# PDF output - usually a bad idea to keep this in Git
-*.pdf
+# PDF output
+/*.pdf
 
 # Latexmk
 *.fdb_latexmk
