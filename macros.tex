@@ -17,6 +17,7 @@
 \graphicspath{{Figures/}}
 
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{dsfont}
 \usepackage{xcolor}
 
 \usepackage{booktabs}
@@ -41,9 +42,11 @@
 \newcommand{\pd}{\partial} % partial derivative
 \newcommand{\tp}{\intercal} % transpose
 
+\DeclareMathOperator*{\argmax}{argmax}
 \DeclareMathOperator*{\softmax}{softmax}
 \DeclareMathOperator*{\sigmoid}{sigmoid}
 \DeclareMathOperator*{\diag}{diag}
+\newcommand{\ind}{\mathds{1}} % indicator
 
 \newcommand{\todo}[1]{}
 \renewcommand{\todo}[1]{{\color{red} TODO\@: {#1}}}

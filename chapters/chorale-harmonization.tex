@@ -1,1 +1,64 @@
 \chapter{Chorale harmonization}
+
+Recall that sampling from the generative model involves drawing from a multinomial
+\[
+  \hat{P}(w_{t+1} = w | w_{t:1}) = \frac{\exp \{ y_{t,w} / T \}}{\sum_{w' \in V} \exp \{ y_{t,w'} / T \}}
+\]
+where $T \in \RR^+$ is the \emph{temperature} and $y_{t,w'}$ is the \emph{score for word $w' \in V$}
+at time $t$. We parameterize the score $y_{t,w'} = f(w'; y_{t-1}, h_{t-1}, x_t)$ using a recurrent
+neural network.
+
+\todo{Talk about how LSTMs are also making  a Markov assumption}
+
+For chorale harmonization, we are interested in predicting the notes for a part
+given the other parts. Concretely, suppose we wish to predict a $L \in \NN$
+length sequence $w_{1:L}$. Let $\alpha \subset [1,T]$ be a multi-index,
+$\alpha^c \coloneqq [1,T] \setminus \alpha$, and $w_\alpha$ the tokens
+corresponding to the given parts. We are interested in finding
+\begin{equation}
+  w_{1:L}^* = \argmax_{w_{1:L}} P(w_{1:L} | w_{\alpha})
+\end{equation}
+
+We can constrain the set of candidate sequences by first noting any solution
+$\hat{w_{1:L}}$ must satisfy $\hat{w}_\alpha = w_\alpha$. We can apply this
+constraint and greedily sample from our generative model to approximately solve
+the problem:
+\begin{equation}
+  \hat{w_{t}} = \begin{cases}
+    w_{\alpha_t} &\mbox{if}~t \in \alpha \\
+    \argmax_{w_t} \hat{P}(w_t | \hat{w}_{1:t-1}) &\mbox{otherwise}
+  \end{cases}
+\end{equation}
+where the hat on the previous words $\hat{w}_{1:t-1}$ indicates that they are
+set equal to the actual previous $\argmax$ choices.
+
+This solution is approximate because while the factorization
+\begin{equation}
+  P(w_{1:L}) = \prod_{t=1}^L P(w_t | w_{1:t-1})
+\end{equation}
+is true and justifies our model, the factorization
+\begin{equation}
+  P(w_{1:L} | w_{\alpha}) = \prod_{t=1}^L \hat{P}(w_t | \hat{w_{1:t-1}} )
+\end{equation}
+does not hold. Some primary criticisms include
+\begin{itemize}
+  \item Modeling capacity limits for RNNs: the model $\hat{P}$ may not be able to fully express
+    the true distribution $P$ (e.g. if $P$ is non-Markovian)
+  \item Greedy sequential selection: it is possible that the greedy $\argmax$ at each
+    time without accounting for future constraints on sequences $(w_{\alpha_{t'}})_{t' > t}$
+    leads to a solution with sub-optimal joint probability
+  \item Assumption that prior selections $\hat{w_{1:t-1}}$ optimize $P(w_t | w_{1:t-1})$:
+    the model $\hat{P}$ is trained on data which assumes all prior inputs have beeen
+    ground truth. It has been shown \todo{mikolov} that such an assumption can lead to
+    very sensitive hidden state dynamics which are not robust to errors (i.e. when
+    $\hat{w_{1:t-1}}$ contain errors).
+\end{itemize}
+Beam search is one way to mitigate the effects of greedy selection: our current method
+is equivalent to a beam search with width one \todo{cite beam search}.
+Dynamic evaluation \todo{cite mikolov} has been proposed as a curriculum learning strategy for
+mitigating models from assuming prior outputs are ground truth and developing more resilient
+state dynamics.
+
+Despite these limitations, implementation of greedy action selection is still valuable
+because it forms the basis for more sophisticated lattice-based search methods as well as
+provides a baseline for comparing performance against.
