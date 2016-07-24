@@ -62,3 +62,16 @@ state dynamics.
 Despite these limitations, implementation of greedy action selection is still valuable
 because it forms the basis for more sophisticated lattice-based search methods as well as
 provides a baseline for comparing performance against.
+
+\section{Datasets}
+
+We create datasets where one or more parts are masked. Of particular interest is the
+Alto+Tenor dataset. Bach oftentimes only wrote the Soprano and Bass parts of a piece,
+leaving the middle parts to be filled in by students. Our networks performance on this task
+can be used as a benchmark for an easier task. Another intersting configuration is Alto+Tenor+Bass,
+which corresponds to harmonizing a given melody (i.e. Soprano line) and can be compared
+against prior work \todo{cite williams}.
+
+\section{Results}
+
+

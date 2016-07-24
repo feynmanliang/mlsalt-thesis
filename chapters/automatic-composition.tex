@@ -2,3 +2,43 @@
 
 \section{Polyphonic modeling}
 
+\section{Technical details}
+
+We construct multi-layer LSTM models with \texttt{num\_layers} number of
+layers, each containing \texttt{rnn\_size} hidden units. The inputs $x_t$ are
+one-hot-encoded before being passed through a \texttt{wordvec}-dimensional
+vector-space embedding layer, which compresses the dimensionality down from
+$|V| \approx 140$ to $\texttt{wordvec}$ dimensions. Dropout layers were added
+between LSTM connections in both depth and time dimensions all with dropout
+probability $\texttt{dropout} \in [0,1]$.
+
+We build our models using the \texttt{torch7} framework and
+an optimized implementation of LSTMs provided by \texttt{torch-rnn} \todo{cite}.
+
+Models were trained using RMSProp \todo{cite} with batch normalization \todo{cite}
+and an initial learning rate of $2 \times 10^{-3}$ decayed by $0.5$ every $5$
+epochs. The back-propogation through time gradients were clipped
+at $t$ \todo{cite Mikolov} and truncated after \texttt{seq\_length} time steps.
+We use a mini-batch size of $50$.
+
+\subsection{Multi-GPU implementation}
+
+To accelerate model training, we parallelize models across multiple GPUs. This is possible
+thanks to the summation operation in noisy gradient estimators:
+
+\begin{equation}
+  \frac{1}{N} \sum_{i=1}^N \nabla_L_i(\theta) \approx \frac{1}{N} \sum_{i=1}^N \nabla_L_i(\theta)
+\end{equation}
+\todo{Real citations on noisy gradient}
+
+In particular, training RNNs with hidden state requires sequential traversal
+of the dataset. Parallelizing sequential iteration is accomplished by first segmenting
+into equal length segments and then initializing parallel iterators each
+pointing at a different segment. Each iterator sequentially reads data
+into GPU memory.
+
+Model parameters are broadcast out to all GPUs on each \texttt{forward} pass
+and gradients are accumulated during each \texttt{backward} pass.
+
+Research in grid LSTMs suggests that we can go deeper by introducing
+gates along the depth dimension to help permit information flow \todo{cite gird LSTMs}.
