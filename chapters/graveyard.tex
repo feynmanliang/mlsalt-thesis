@@ -11,12 +11,12 @@ graphs (\autoref{fig:nn-layer}). Here, each node denotes a data value and
 an edge from $s$ to $t$ notates that the value at $s$ is used to compute the
 value at $t$.
 
-% \begin{figure}[htpb]
-%     \centering
-%     \input{Figures/nn-layer.tikz}
-%     \caption{Single feedfoward neural network layer}
-%     \label{fig:nn-layer}
-% \end{figure}
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/nn-layer.tikz}
+    \caption{Single feedfoward neural network layer}
+    \label{fig:nn-layer}
+\end{figure}
 
 Multiple layers can be composed together by treating the outputs from the previous layer
 as the inputs to the next layer. \autoref{fig:ffw-nn} illustrates this on a 2-layer
@@ -24,12 +24,25 @@ feedforward neural network where the outputs of the first layer are used as the
 inputs to the second layer (i.e. $x^{(1)} = y^{(0)}$).
 
 
-% \begin{figure}[htbp]
-%     \centering
-%     \input{Figures/ffw-nn.tikz}
-%     \caption{2-layer feedforward neural network}
-%     \label{fig:ffw-nn}
-% \end{figure}
+\begin{figure}[htbp]
+    \centering
+    \input{Figures/ffw-nn.tikz}
+    \caption{2-layer feedforward neural network}
+    \label{fig:ffw-nn}
+\end{figure}
+
+When discussing neural networks with $L \geq 1$ layers, we will use
+$\vec{x}^{(i)}$, $\matr{W}^{(i)}$, $\vec{z}^{(i)}$, and $\vec{y}^{(i)}$ to
+refer to the inputs, weights, activations, and outputs of the $i$th layer. The
+activation function $\sigma$ is understood to act elementwise when applied to a
+vector. For adjacent layers $i$, $i+1$, we have $\vec{x}^{(i+1)} =
+\vec{y}^{(i)}$. $\vec{x}^{(0)}$ and $\vec{y}^{(L)}$ are the inputs and outputs
+respectively of the entire network.
+
+The non-linearity introduced by the activation function $\sigma$ is paramount
+for enabling neural networks to model a broad variety of functions. \todo{
+    If activation functions are removed, then a neural
+network can only model affine transformations.}
 
 \subsubsection{Modeling probability distributions}
 

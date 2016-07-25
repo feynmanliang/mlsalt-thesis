@@ -36,7 +36,7 @@
   }%
   \providecommand\rotatebox[2]{#2}%
   \ifx\svgwidth\undefined%
-    \setlength{\unitlength}{246.87925083bp}%
+    \setlength{\unitlength}{360.45807365bp}%
     \ifx\svgscale\undefined%
       \relax%
     \else%
@@ -48,18 +48,18 @@
   \global\let\svgwidth\undefined%
   \global\let\svgscale\undefined%
   \makeatother%
-  \begin{picture}(1,0.71268955)%
+  \begin{picture}(1,0.48616257)%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{nn-rnn-elman.pdf}}%
-    \put(0.20758914,0.0342619){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Memory Cell}}}%
-    \put(-0.00477049,0.09186693){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input}}}%
+    \put(0.36983919,0.0215046){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Memory Cell}}}%
+    \put(0.06969997,0.05647467){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Inputs}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{nn-rnn-elman.pdf}}%
-    \put(0.61178143,0.0213412){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
-    \put(0.67145624,0.1642065){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
+    \put(0.64667219,0.01265516){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(0.77497898,0.11106471){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Input Layer}}}%
+    \put(0.77843947,0.26873704){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Hidden Layer}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{nn-rnn-elman.pdf}}%
-    \put(0.67650874,0.39441718){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Hidden Layer}}}%
+    \put(0.68924945,0.4470383){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Output Layer}}}%
+    \put(0.68902903,0.47040603){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26974604\unitlength}\raggedright \end{minipage}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{nn-rnn-elman.pdf}}%
-    \put(0.67394671,0.65556582){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Output Layer}}}%
-    \put(0,0){\includegraphics[width=\unitlength,page=5]{nn-rnn-elman.pdf}}%
-    \put(0.67362489,0.68968407){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.39384492\unitlength}\raggedright \end{minipage}}}%
+    \put(0.61822251,0.19653158){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z^{-1}$}}}%
   \end{picture}%
 \endgroup%

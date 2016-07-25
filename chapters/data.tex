@@ -25,7 +25,7 @@ the Soprano part and the remaining parts harmonize the melody.
         \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-preproc-piano-roll.png}
     \caption{Piano roll representation of the same 4 bars from \autoref{fig:score-effects-preproc}
     before and after preprocessing.}
-    \label{fig:piano-roll-effects-reproc}
+    \label{fig:piano-roll-effects-preproc}
 \end{figure}
 
 \begin{figure}[htpb]
@@ -105,4 +105,20 @@ to be encoded by the LSTM dynamics \todo{Cite Gers and Schmidhuber, 2000}.
 \textbf{Contribution}: solved problem of determining when notes end (\todo{cite
 Eck Schmidhuber LSTM blues}) in input data format by using the ties.
 
+
+\subsection{Notation}
+
+We consider note duration, time, and velocity. We neglect changes in timing
+(e.g. ritardandos), dynamics (e.g. crescendos), and stylistic notations (e.g.
+accents, staccatos, legatos).
+
+
+\emph{Piano roll} music transcriptions
+(\autoref{fig:piano-roll-effects-preproc}) are quantized both in time ($t \in
+T$) and note frequencies ($n \in N$). frequencies quantized to a piano roll.
+\todo{Motivate quantization with Western music}.
+
+We can represent a piano roll transcription as a high-dimensional vecctor
+$X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note
+velocities for note $n$ at time $t$.
 

@@ -16,134 +16,158 @@ This chapter reviews background relevant to the remainder of this dissertaion.
 The scope includes an overview of music theory and automatic composition
 and also includes coverage of sequence probability models.
 
-\section{Music theory}
+\section{A primer on Western music theory}
 
-Music theory a branch of musicology concerned with the study of the rules and
-practices of music. While the general field includes study of acoustic
+Music theory is a branch of musicology concerned with the study of the rules
+and practices of music. While the general field includes study of acoustic
 qualities such as timbre and waveform synthesis, our work is concerned with
 modelling the musical composition itself rather than acoustic features. This is
 justified because acoustic features are more closely related to a particular
-reproduction (e.g. the skill of the performers, quality of the instruments)
-and are likely to vary significantly across different performances. Indeed,
+reproduction (e.g. the skill of the performers, quality of the instruments) and
+are likely to vary significantly across different performances. Indeed,
 references to a piece of music generally refer to the underlying composition
-itself rather than any particular performance of the piece. This suggests
-that the composition itself is more significant and hence a more desirable
-modeling target.
+itself rather than any particular performance of the piece. This suggests that
+the composition itself is more significant and hence a more desirable modeling
+target.
 
-We refer refer to a musical composition as a \textbf{score}, which we formally
-define to be an ordered sequence of \textbf{note}s. Each note possesses a pitch
-(i.e.\ frequency) and a time interval (i.e.\ start and stop times) and
-represents an instruction for the performer to articulate the given pitch at
-the start time and hold the note until the stop time. Multiple notes may
-overlap in time, in which case all notes are to be played simultaneously.
+\subsection{Pitches, durations, and notes: the basic building blocks}
 
-\subsection{Pitches and tuning systems}
-
-The \textbf{pitch} of a note refers to the frequency of sound used in its
-reproduction and the difference between two pitches is called a \textbf{pitch
-interval}. A fundamental pitch interval in Western music is the
-\textbf{octave}, which is defined to be the interval between a frequency and
-its double.
+A \emph{note} is the most fundamental element of music and possesses two
+primary attributes, a \emph{pitch} and a \emph{duration}. Though pitch is
+closely related to physical frequency of vibration of a waveform (as measured
+in Hertz), pitch its a perceptual property whose semantic meaning is derived
+from a listener's perception. This distinction has been scrutinized by Terhardt
+\cite{:/content/asa/journal/jasa/55/5/10.1121/1.1914648}, whose visual analogy
+in \autoref{fig:pitch} illustrates how a pitch can be heard even if its
+percieved frequency is absent just as one may see the word ``PITCH'' despite
+being presented with only a suggestive shadow.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/pitch.pdf}
-    \caption{Just like this text, it is the differences between pitches
-        rather than the absolute pitch itself that is perceptually
-    meaningful.}
+    \includegraphics[width=0.6\linewidth]{Figures/pitch.pdf}
+    \caption{Terhardt's visual analogy for pitch. Similar to how
+        the viewer of this figure may percieve contours not present, pitch
+        describes subjective information received by the listener even when
+    physical frequencies are absent.}
     \label{fig:pitch}
 \end{figure}
 
-While in theory an uncoutable number of pitches are available because
-frequencies are real-valued and hence there are uncountably many, tuning
-systems are oftentimes employed to restrict the set of available pitches in
-order to simplify composition, analysis, and reproduction. A \textbf{tuning
-system} restricts the available pitch intervals, limiting the possible pitches
-to a discrete set.
+Despite its psychoacoustic nature, it is nevertheless useful to objectively
+quantify pitch as a frequency. To do so, we first need some definitions. The
+difference between two frequencies is called an \emph{interval} and an
+\emph{octave} is an interval corresponding to the distance between a frequency
+$f \in \RR^+$ and its doubling $2f$ or halving $f/2$. Two frequencies spaced
+exactly an octave apart are perceived to be similar, suggesting that music is
+percieved on a logarithmic scale.
 
-Western music commonly uses a tuning system called \textbf{12-TET} (12 tone
-equal temperament) tuning, which divides an octave into 12 \textbf{pitch
-classes} ($C$, $C\#/D\flat$, $D$, $D\#/E\flat$, $E$, $F$, $F\#/G\flat$, $G$,
-$G\#/A\flat$, $A$, $A\#/B\flat$, $B$) all equally spaced on a logarithmic
-scale. Each pitch class represents an equivalence class of frequencies which
-all differ by an integral number of octaves (i.e. are doublings/halvings of
-each other). This means that unambiguously specifying a pitch requires
-specifying both a pitch class and an octave. Common practice numbers octaves
-with respect to a standard sized keyboard, where the key corresponding to the
-\textbf{middle $C$} note is referred to as $C_5$ because it is $5$ octaves
-above the lowest $C$ key. The interval between two adjacent pitch classesis
-called a \textbf{half step} or \textbf{half tone} and two half steps are called
-a \textbf{whole step/tone}.
+Most Western music is based on the \emph{twelve-note chromatic scale}, which
+divides an \emph{octave} into twelve distinct frequencies. The \emph{tuning
+system} employed dictates the precise intervals between subdivisions, with
+\emph{equal temperament tuning} (all subdivisions are equally spaced on a
+logarithmic scale) presently the most widely used
+method\cite{denton1997history}. \todo{Talk about well-tempered tuning and bach}
+Under twelve-note equal temperament tuning, the distance between two
+consecutive subdivisions ($1/12$ of an octave) is called a \emph{semitone}
+(British) or \emph{half-step} (North American) and two semitones constitutes
+a \emph{tone} or \emph{whole-step}.
 
-In our work, we restrict attention to 12-TET tuning because it is the most
-common tuning system employed by Western composers over the last \todo{cite}
+When discussing music, \emph{note names} which enable succinct specification of
+a musical pitch are often employed. In \emph{scientific pitch notation},
+\emph{pitch classes} which represent a pitch modulo the octave are specified by
+a letter ($C, D, E, F, G, A, B$) and optionally a single \emph{accidental}. Pitch
+classes without accidentals are called \emph{natural} and correspond to the white
+keys on a piano. Two accidentals are possible: sharps ($\#$) raise the natural
+pitch class up one semitone and flats ($\flat$) lower by one semitone.
+\autoref{fig:piano-keys} illustrates how these pitch classes map to keys on a
+piano.
 
-Note that while 12-TET restricts the available pitches to a discrete set, it
-lacks specification of a reference pitch frequency and hence does not yield a
-correspondance between pitches and frequencies. This degree of freedom gives
-rise to \textbf{transposition invariance}: a score of music can be offset by a
-constant frequency without altering characteristics arising from the pitches
-present in the music. In modern practice, the general tuning standard of $A440$
-defines a reference frequency of 440 Hz for the $A$ pitch class directly above
-middle C.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Figures/piano-keys.pdf}
+    \caption{Illustration of an octave in the 12-note chromatic scale
+        on a piano keyboard.}
+    \label{fig:piano-keys}
+\end{figure}
 
-\subsection{Tonal music}
+Since pitch classes represent equivalence class of frequencies spaced an
+integral number of octaves apart, unambiguously specifying a pitch requires not
+only a pitch class but also an octave. In scientific pitch notation, this is
+accomplished by appending an octave number to a pitch class letter (see
+\autoref{fig:pitch-class}). Together, a pitch class and octave number uniquely
+specify the notation for a pitch. On sheet music, the pitch of a note is
+indicated by its vertical position with respect to the \emph{stave} (the five
+horizontal lines and four spaces).
 
-Tonal music is characterized by the prevalence of one pitch class (the
-\textbf{tonic}) around which the melody and harmony are built.
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Figures/Pitch_notation.png}
+    \caption{Scientific pitch notation and sheet music notation of $C$ notes at
+    ten different octaves.  \todo{Cite wiki scientific pitch notation}}
+    \label{fig:pitch-class}
+\end{figure}
 
-A basic concept within tonal music is the \textbf{scale} which defines a subset
+Note that the discussion of pitch thus far has not made any direct connection
+between pitch and frequency. Indeed, this lack of dependence on absolute
+physical frequency highlights music's \emph{transposition invariance property}:
+many semantically relevant features in music are present the relative relations
+between pitches rather than absolute frequencies and hence remain invariant
+when the entire piece of music is offset by a constant frequency. However, a
+fixed reference frequency is oftentimes required for performance and
+reproduction purposes. To convert from pitch notation to physical frequencies,
+common modern practice is to tune $A4$ to 440 Hz (a practice known as A440).
+
+In addition to pitch, a note also possesses a \emph{duration}. The duration of
+a note indicates how long it is to be played and is measured in fractions of a
+\emph{whole note} (American) or \emph{semibreve} (British). Perhaps the most
+common duration is a \emph{quarter-note} (American) or \emph{crotchet}
+(British). Other note durations are also possible and the most common along
+with their notation in sheet music are enumerated in
+\autoref{fig:note-durations}. The relationship between durations and
+physical time intervals is given by the \emph{tempo}, which is usually
+denoted near the start of the piece in beats per minute.
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=0.6\linewidth]{Figures/note-durations.png}
+    \caption{Comparison of various note durations. \todo{Cite wiki Whole note}}
+    \label{fig:note-durations}
+\end{figure}
+
+Our work focuses in particular on \emph{tonal music}, a genre of music
+characterized by the prevalence of one pitch class (the \emph{tonic}) around
+which the melody and harmony are built.
+
+A basic concept within tonal music is the \emph{scale}, which defines a subset
 of pitch classes that are ``in key'' with respect to the tonic. Two fundamental
 scales are the major (with step pattern
 whole-whole-half-whole-whole-whole-half) and minor scales
 (whole-half-whole-whole-half-whole-whole). The choice of tonic and scale is
-referred to as the \textbf{key}and a change in key during a piece is called a
-\textbf{modulation}Many musical phenomena such as stability, expectation, and
-resolution can be attributed to tonal characteristics.
-
-The \textbf{tempo} of a piece refers to its speed or pace and is measured by
-beats per minute. In 4/4 time signature, a \textbf{quarter note} or
-\textbf{crotchet} denotes the time interval between two beats. In addition to
-pitch quantization, durations are also commonly quantized to subdivisions and
-multiples of a crotchet.
-
-\subsection{Notation}
-
-We consider note duration, time, and velocity. We neglect changes in timing
-(e.g. ritardandos), dynamics (e.g. crescendos), and stylistic notations (e.g.
-accents, staccatos, legatos).
-
-
-\emph{Piano roll} music transcriptions (\autoref{fig:piano-roll}) are quantized
-both in time ($t \in T$) and note frequencies ($n \in N$). frequencies
-quantized to a piano roll. \todo{Motivate quantization with Western music}.
-
-We can represent a piano roll transcription as a high-dimensional vecctor
-$X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note
-velocities for note $n$ at time $t$.
-
-\section{Automatic composition}
-
-Algorithmic composition is the application of a well-defined algorithmic
-procedure to compose music.
-
-An interesting question regarding creativity: if an algorithm faithfully reproduces
-an artist's creative process, what is the difference between music produced by the artist
-and music produced by the algorithm?
+collectively referred to as the \emph{key}. Many musical phenomena such as
+stability, mood, expectation, and resolution can be attributed to choice of key
+and \emph{modulations} (i.e. changes in key during the middle of a piece of
+music).
 
 \section{Neural sequence probability modeling}
 
-This section builds the notation and terminology we use to discuss the neural network
-models used for generatively modelling music scores.
+Our work in later sections make heavy use of neural networks. In this section,
+we briefly review the relevant concepts and set up notation.
 
 \subsection{Neurons: the basic computation unit}
 
-Neurons are the basic abstraction upon which we build more complex
-models. A \textbf{neuron} is a parametric model of a function $f : \RR^D \to
-\RR$ defined by $f(\vec{x}) \coloneqq \sigma( \langle \vec{w}, \vec{x} \rangle
-)$. \autoref{fig:nn-single} illustrates the decomposition of a neuron as first
-an inner product with \textbf{weights} $\vec{w}$ followed by a non-linear
-\textbf{activation function} $\sigma : \RR \to [L, U]$.
+Neurons are the basic abstraction which are combined together to form
+neural networks. A \emph{neuron} is a parametric model of a function $f : \RR^D \to
+\RR$ from its $D$-dimensional input $\vec{x}$ to its output $y$. Our neurons will be
+defined as
+\begin{equation}
+    f(\vec{x}) \coloneqq \sigma( \langle \vec{w}, \vec{x} \rangle)
+\end{equation}
+which can be viewed as an inner product with \emph{weights} $\vec{w}$ to
+produce an \emph{activation} $z \coloneqq \langle \vec{w}, \vec{x} \rangle
+\in \RR$ which is then squashed to a bounded domain by a non-linear
+\textbf{activation function} $\sigma : \RR \to [L, U]$. This is visually
+depicted in \autoref{fig:nn-single}, which also makes apparent the
+interpretation of weight $w_i$ as the sensitivity of the output $y$ to the
+input $x_i$.
 
 \begin{figure}[htpb]
     \centering
@@ -153,21 +177,12 @@ an inner product with \textbf{weights} $\vec{w}$ followed by a non-linear
     \label{fig:nn-single}
 \end{figure}
 
-The purpose of $\sigma$ is to squash the \textbf{activation} $z \coloneqq
-\langle \vec{w}, \vec{x} \rangle$ such that the \textbf{output} $y = \sigma(z)$
-lies in some bounded domain $[L, U] \subset \RR$. In addition, the
-non-linearity introduced by $\sigma$ gives neural networks their
-representational power. If activation functions are removed, then a neural
-network can only model affine transformations.
+\subsection{Feedforward neural networks}
 
-\subsection{Composing neurons together in neural networks}
-
-Concatenating multiple neurons into a \textbf{layer} enables multivariate functions $f :
-\RR^{D_\text{in}} \to \RR^{D_\text{out}}$ to be represented, leading to feedforward
-neural networks. Although a single hidden layer is theoretically sufficient for
-a universal function approximator\cite{Cybenko1993}, \textbf{deep learning}
-models which stack multiple layers have shown strong experimental results
-for parameterizing complex unknown probability distributions \cite{Bengio2011}.
+Multiple neurons may share inputs and have their outputs concatenated together
+to form a \emph{layer} modelling a multivariate functions $f :
+\RR^{D_\text{in}} \to \RR^{D_\text{out}}$. Multiple layers can then
+be composed together to form a \emph{feedforwd neural network}.
 
 \begin{figure}[htpb]
     \centering
@@ -176,44 +191,82 @@ for parameterizing complex unknown probability distributions \cite{Bengio2011}.
     \label{fig:nn-ffw}
 \end{figure}
 
-When discussing neural networks with $L \geq 1$ layers, we will use
-$\vec{x}^{(i)}$, $\matr{W}^{(i)}$, $\vec{z}^{(i)}$, and $\vec{y}^{(i)}$ to
-refer to the inputs, weights, activations, and outputs of the $i$th layer. The
-activation function $\sigma$ is understood to act elementwise when applied to a
-vector. For adjacent layers $i$, $i+1$, we have $\vec{x}^{(i+1)} =
-\vec{y}^{(i)}$. $\vec{x}^{(0)}$ and $\vec{y}^{(L)}$ are the inputs and outputs
-respectively of the entire network.
+Although a single hidden layer is theoretically sufficient for a universal
+function approximator\cite{Cybenko1993}, the number of hidden units to
+guarantee reported theoretical bounds are usually unfeasibly large. Instead,
+recent work in \emph{deep learning} has shown that deep models which contain
+many hidden layers can achieve strong performance across a variety of
+tasks\cite{Bengio2011}.
 
-\subsubsection{Processing variable length sequences with recursive neural networks}
+The improved modeling capacity gained by composing multiple layers is due to
+the composition of multiple non-linear activation functions.
+In fact, it is easy to show that removing activation functions would make
+a deep network equivalent to a single matrix transform: let $\matr{W}_{l,l+1}$
+denote the weights between layers $l$ and $l+1$. The original neural network
+computes the function
+\begin{equation}
+    \sigma\left(
+        \matr{W}_{L,L-1} \sigma \left(
+            \matr{W}_{L-1,L-2}\cdots \sigma \left(
+                \matr{W}_{2,1} \vec{x}
+            \right) \cdots
+        \right)
+    \right)
+\end{equation}
+After removing the activation functions $\sigma$, we are left with
+\begin{equation}
+    \matr{W}_{L,L-1} \matr{W}_{L-1,L-2}\cdots \matr{W}_{2,1} \vec{x}
+    = \vec{x}
+    = \tilde{\matr{W}} \vec{x}
+\end{equation}
+where $\tilde{\matr{W}} = \left(\prod_{i=1}^{L-1} \matr{W}_{i,i+1} \right)$
+is a matrix transform computing the same function as the neural network with
+activation functions removed.
+
+\subsection{Recurrent neural networks}
+
+While feedforward neural networks provide a flexible model for approximating
+arbitrary functions, they require a fixed-dimension input $\vec{x}$ and hence
+cannot be applied to sequential data such as a sequence of notes. This shortcoming
+motivates \emph{recurrent neural networks} (RNNs), which generalize feedforward
+networks by introducing time-delayed connections between hidden layers (Elman
+networks \cite{elman1990finding}) or from the output layers to the hidden layers (Jordan
+networks \cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates a Elman-type network, which
+\autoref{fig:rnn-elman} depicts as an equivalent network where the time-delayed
+recurrent edges are redrawn as additional input nodes.
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn.pdf_tex}
-    \caption{Graph depiction of a recurrent neural network; note the recurrent connections
-    within the hidden layer}
+    \caption{Graph depiction of an Elman-type RNN. Note the recurrent connections
+    within the hidden layer.}
     \label{fig:nn-rnn}
 \end{figure}
 
-Recurrent neural networks (RNNs) generalize feedforward networks by introducing
-time-delayed connections between hidden layers (\autoref{fig:nn-rnn}) in order
-to model temporal memory. The recurrent edges enable the previous hidden state
-$\vec{h}_{t-1}$ to be passed forwards to compute the current hidden state
-$\vec{h}_t$. This ability to incorporate prior inputs into the network state
-enables RNNs to excel at sequence processing tasks, where the input sequence
-$X_n = (\vec{x}_t)_{1 \leq t \leq T_n}$, $1 \leq n \leq N$, may have variable
-length $T_n$.
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/nn-rnn-elman.pdf_tex}
+    \caption{Equivalent formulation of an Elman-type RNN treating the time-delayed hidden state
+    as additional inputs to a feedforward network}
+    \label{fig:rnn-elman}
+\end{figure}
+
+
+We can interpret the hidden layer as a temporal memory mechanism: the \emph{hidden
+state} $\vec{h}_t$ is carried along throughout the computation and can be used
+to store information from prior inputs for later use. One interpretation is to view
+the hidden state $\vec{h}_t$ as an infinite-length prior context window, summarizing
+all of the prior inputs into into a compact fixed-size vector.
+
+This ability to
+incorporate prior inputs into t wenables RNNs to excel at
+sequence processing tasks, where the input sequence $X_n = (\vec{x}_t)_{1 \leq
+t \leq T_n}$, $1 \leq n \leq N$, may have variable length $T_n$.
 
 The time-delayed recurrent edges can be equivalently viewed as inputs to the
 hidden nodes which are carried forward from the previous time step
 (\autoref{fig:rnn-elman}).
 
-\begin{figure}[htpb]
-    \centering
-    \input{Figures/nn-rnn-elman.pdf_tex}
-    \caption{Equivalent formulation of a RNN treating the time-delayed hidden state
-    as additional inputs to a feedforward network}
-    \label{fig:rnn-elman}
-\end{figure}
 
 This recursive structure can be unrolled
 (\autoref{fig:rnn-multi-unrolled}) to yield a directed acyclic
