@@ -494,29 +494,23 @@ access to the CEC:
     \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, affects how $h_t$ is read from
     \item \textbf{Forget gate}: scales previous cell value $h_{t-1}$ by $f_t \in [0,1]$, acts as a reset mechanism
 \end{itemize}
+\todo{Discuss how the three gates are used}
 
-\begin{figure}[htpb]
-    \centering
-    \input{Figures/lstm-unit.pdf_tex}
-    \caption{Single LSTM unit}
-    \label{fig:lstm-unit}
-\end{figure}
+\autoref{fig:lstm-cell} depicts a single LSTM cell. Notice that it adheres
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/lstm-unit-2.pdf_tex}
-    \caption{Name}
-    \label{fig:name}
+    \caption{Schematic for a single LSTM cell.}
+    \label{fig:lstm-cell}
 \end{figure}
 
-The equations for an LSTM are
-
 \begin{eqnarray}
-    i_t &=& \sigma(W_{xi} x_t + W_{yi} y_{t-1} + W_{ci} c_{t-1} + b_i) \\
-    o_t &=& \sigma(W_{xo} x_t + W_{yo} y_{t-1} + W_{co} c_{t-1} + b_o) \\
-    f_t &=& \sigma(W_{xf} x_t + W_{yf} y_{t-1} + W_{cf} c_{t-1} + b_f) \\
-    h_t &=& f_t \odot h_{t-1} + i_t \odot \tanh(x_t W_{xc} + h_{t-1} W_{hc} + b_c) \label{eq:lstm-dynamics} \\
-    y_t &=& o_t \odot \tanh(c_t)
+    \i_t &=& \sigmoid(\W_{xi} \x_t + \W_{yi} \y_{t-1} + \b_i) \\
+    \o_t &=& \sigmoid(\W_{xo} \x_t + \W_{yo} \y_{t-1} + \b_o) \\
+    \f_t &=& \sigmoid(\W_{xf} \x_t + \W_{yf} \y_{t-1} + \b_f) \\
+    \h_t &=& \f_t \odot \h_{t-1} + \i_t \odot \tanh(\W_{xh}\x_t + y_{t-1} \W_{yh} + \b_h) \label{eq:lstm-dynamics} \\
+    \y_t &=& \o_t \odot \tanh(\h_t)
 \end{eqnarray}
 where $\odot$ denotes elementwise multiplication of vectors.
 

@@ -74,6 +74,6 @@
     \put(0.00057752,0.29176317){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\h_{t-1}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=9]{lstm-unit-2.pdf}}%
     \put(0.0576185,0.41101344){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{LSTM Memory Cell}}}%
-    \put(0.32287618,0.3820432){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{CEC}}}%
+    \put(0.32287618,0.37842198){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{CEC}}}%
   \end{picture}%
 \endgroup%
