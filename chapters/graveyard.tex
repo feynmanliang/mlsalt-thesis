@@ -56,6 +56,44 @@ probability mass function on $o$ given by \autoref{eq:softmax}.
     P(o = k | \vec{z}^{(L)}) = \frac{\exp{-z^{(L)}_k}}{ \sum_{j} \exp{-z^{(L)}_j} }
 \end{equation}
 
+\subsubsection{Efficient graident computations through back-propogation}
+
+Feed-forward neural networks are trained using back-propogation, an efficient
+algorithm which consists of a forward pass to compute activations followed by
+back-propogation of partial derivatives expanded according to the chain
+rule\todo{cite backprop}. At the heart of back-propogation is the
+\textbf{computation graph} of a a model: a directed acyclic graph where each
+node represents a differentiable function that can compute its outputs and
+Jacobian given inputs and activations\todo{cite theano}. By representing only
+the dependencies between intermediate values, the sparsity imposed by the
+computation graph enable back-propogation to ignore irrelevant
+cross-derivatives and efficiently compute global gradients from local
+computations.
+
+
+Training of recursive neural networks is typically performed using
+backpropogation through time (BPTT)\cite{At}, a technique computationally
+equivalent to feedforward training of the unrolled computation graph. This is
+easily seen: unrolling of a RNN yields a feed-forward structure where the
+standard back-propogation algorithm applies.
+
+
+
+
+\subsubsection{Vanishing gradients}
+
+The solution is to rewrite \autoref{eq:ht-from-ht-1} such that
+\autoref{eq:prod-hi} does not vanish/explode for large $t - k$.
+One possibility would be
+
+\begin{equation}
+    h_t = h_{t-1} + \theta_x x_t
+\end{equation}
+
+However, this solution is unsatisfactory as all hidden state dynamics have been
+removed.
+
+
 \subsubsection{Training with back-propogation}
 
 Training neural networks is achieved using gradient descent methods, which

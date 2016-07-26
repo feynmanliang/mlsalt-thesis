@@ -1,3 +1,7 @@
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
 \usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
 \usepackage{hyperref}
 
@@ -23,20 +27,23 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 
-\usepackage{hhtensor}
+\usepackage[bold]{hhtensor}
 \usepackage{mathtools}
 
 \newcommand{\RR}{\mathbb{R}}
 \newcommand{\NN}{\mathbb{N}}
 
+
+\newcommand{\x}{\vec{x}}
+\newcommand{\h}{\vec{h}}
+\newcommand{\y}{\vec{y}}
+\newcommand{\W}{\matr{W}}
+
 \newcommand{\m}{\vec{m}}
 \newcommand{\s}{\vec{s}}
 \renewcommand{\o}{\vec{o}}
-\newcommand{\x}{\vec{x}}
-\newcommand{\y}{\vec{y}}
 \newcommand{\U}{\matr{U}}
 \newcommand{\V}{\matr{V}}
-\newcommand{\W}{\matr{W}}
 
 \newcommand{\eps}{\varepsilon}
 \newcommand{\pd}{\partial} % partial derivative
@@ -47,6 +54,9 @@
 \DeclareMathOperator*{\sigmoid}{sigmoid}
 \DeclareMathOperator*{\diag}{diag}
 \newcommand{\ind}{\mathds{1}} % indicator
+
+\newcommand\independent{\protect\mathpalette{\protect\independenT}{\perp}}
+\def\independenT#1#2{\mathrel{\rlap{$#1#2$}\mkern2mu{#1#2}}}
 
 \newcommand{\todo}[1]{}
 \renewcommand{\todo}[1]{{\color{red} TODO\@: {#1}}}

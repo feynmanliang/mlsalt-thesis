@@ -156,13 +156,13 @@ we briefly review the relevant concepts and set up notation.
 
 Neurons are the basic abstraction which are combined together to form
 neural networks. A \emph{neuron} is a parametric model of a function $f : \RR^D \to
-\RR$ from its $D$-dimensional input $\vec{x}$ to its output $y$. Our neurons will be
+\RR$ from its $D$-dimensional input $\x$ to its output $y$. Our neurons will be
 defined as
 \begin{equation}
-    f(\vec{x}) \coloneqq \sigma( \langle \vec{w}, \vec{x} \rangle)
+    f(\x) \coloneqq \sigma( \langle \vec{w}, \x \rangle)
 \end{equation}
 which can be viewed as an inner product with \emph{weights} $\vec{w}$ to
-produce an \emph{activation} $z \coloneqq \langle \vec{w}, \vec{x} \rangle
+produce an \emph{activation} $z \coloneqq \langle \vec{w}, \x \rangle
 \in \RR$ which is then squashed to a bounded domain by a non-linear
 \textbf{activation function} $\sigma : \RR \to [L, U]$. This is visually
 depicted in \autoref{fig:nn-single}, which also makes apparent the
@@ -201,39 +201,53 @@ tasks\cite{Bengio2011}.
 The improved modeling capacity gained by composing multiple layers is due to
 the composition of multiple non-linear activation functions.
 In fact, it is easy to show that removing activation functions would make
-a deep network equivalent to a single matrix transform: let $\matr{W}_{l,l+1}$
+a deep network equivalent to a single matrix transform: let $\W_{l,l+1}$
 denote the weights between layers $l$ and $l+1$. The original neural network
 computes the function
 \begin{equation}
     \sigma\left(
-        \matr{W}_{L,L-1} \sigma \left(
-            \matr{W}_{L-1,L-2}\cdots \sigma \left(
-                \matr{W}_{2,1} \vec{x}
+        \W_{L,L-1} \sigma \left(
+            \W_{L-1,L-2}\cdots \sigma \left(
+                \W_{2,1} \x
             \right) \cdots
         \right)
     \right)
 \end{equation}
 After removing the activation functions $\sigma$, we are left with
 \begin{equation}
-    \matr{W}_{L,L-1} \matr{W}_{L-1,L-2}\cdots \matr{W}_{2,1} \vec{x}
-    = \vec{x}
-    = \tilde{\matr{W}} \vec{x}
+    \W_{L,L-1} \W_{L-1,L-2}\cdots \W_{2,1} \x
+    = \x
+    = \tilde{\W} \x
 \end{equation}
-where $\tilde{\matr{W}} = \left(\prod_{i=1}^{L-1} \matr{W}_{i,i+1} \right)$
+where $\tilde{\W} = \left(\prod_{i=1}^{L-1} \W_{i,i+1} \right)$
 is a matrix transform computing the same function as the neural network with
 activation functions removed.
 
 \subsection{Recurrent neural networks}
 
 While feedforward neural networks provide a flexible model for approximating
-arbitrary functions, they require a fixed-dimension input $\vec{x}$ and hence
-cannot be applied to sequential data such as a sequence of notes. This shortcoming
-motivates \emph{recurrent neural networks} (RNNs), which generalize feedforward
-networks by introducing time-delayed connections between hidden layers (Elman
-networks \cite{elman1990finding}) or from the output layers to the hidden layers (Jordan
-networks \cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates a Elman-type network, which
-\autoref{fig:rnn-elman} depicts as an equivalent network where the time-delayed
-recurrent edges are redrawn as additional input nodes.
+arbitrary functions, they require a fixed-dimension input $\x$ and hence
+cannot be directly applied to sequential data $\x = (x_t)_{t=1}^T$ where $T$ may
+vary.
+
+\todo{Introduce $\theta$ for parameters}
+
+A naive method for extending feedforward networks would be to independently
+apply a feedforward network to compute $y_t = f(x_t; \theta)$ at each timestep
+$1 \leq t \leq T$. However, this approach is only correct when each output $y_t$
+only depends on the input at the current time $x_t$. This assumption
+is false in many scenarios: the current musical note depends on the sequence of
+notes leading up to it.
+
+This shortcoming motivates \emph{recurrent neural networks} (RNNs), which
+generalize feedforward networks by introducing time-delayed recurrent
+connections between hidden layers (Elman networks \cite{elman1990finding}) or
+from the output layers to the hidden layers (Jordan networks
+\cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates an Elman-type network:
+note that apart from the edges between hidden nodes, the network is identical to
+a standard network (\autoref{fig:nn-ffw}).
+
+\todo{Why do we use Elman}
 
 \begin{figure}[htpb]
     \centering
@@ -243,6 +257,24 @@ recurrent edges are redrawn as additional input nodes.
     \label{fig:nn-rnn}
 \end{figure}
 
+\autoref{fig:rnn-elman} reinterprets the recurrent hidden layer connections in
+\autoref{fig:nn-rnn} as inputs whose values are taken from the previous hidden
+state making the time-delay explicit. Additionally, \autoref{fig:rnn-elman}
+introduces the notion of \emph{memory cells}, which abstract the internals
+of RNNs into a computational unit which for each timestep $t$:
+\begin{itemize}
+    \item Takes as inputs
+        \begin{itemize}
+            \item The current element in the input sequence $\x_t$
+            \item The previous hidden state $\h_{t-1}$
+        \end{itemize}
+    \item Produces the outputs
+        \begin{itemize}
+            \item The updated hidden state $\h_t = f_h (\x_t, \h_{t-1})$
+            \item The outputs $\y_t = f_y (\h_t)$.
+        \end{itemize}
+\end{itemize}
+
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn-elman.pdf_tex}
@@ -251,28 +283,25 @@ recurrent edges are redrawn as additional input nodes.
     \label{fig:rnn-elman}
 \end{figure}
 
+The memory cell abstraction is convenient because it enables discussion of RNN
+architecture without settling on a particular memory cell implementation. In
+particular, it enables us to \emph{unroll the RNN} by removing the time-delayed
+recurrent cycle and replicating the memory cell over multiple timesteps as seen
+in \autoref{fig:rnn-single-unrolled}. This gives rise to a finite directed
+acyclic graph where nodes represent pieces of data and edges $s \to t$ indicate
+that $t$ is a function of $s$.
 
-We can interpret the hidden layer as a temporal memory mechanism: the \emph{hidden
-state} $\vec{h}_t$ is carried along throughout the computation and can be used
-to store information from prior inputs for later use. One interpretation is to view
-the hidden state $\vec{h}_t$ as an infinite-length prior context window, summarizing
-all of the prior inputs into into a compact fixed-size vector.
-
-This ability to
-incorporate prior inputs into t wenables RNNs to excel at
-sequence processing tasks, where the input sequence $X_n = (\vec{x}_t)_{1 \leq
-t \leq T_n}$, $1 \leq n \leq N$, may have variable length $T_n$.
-
-The time-delayed recurrent edges can be equivalently viewed as inputs to the
-hidden nodes which are carried forward from the previous time step
-(\autoref{fig:rnn-elman}).
-
-
-This recursive structure can be unrolled
-(\autoref{fig:rnn-multi-unrolled}) to yield a directed acyclic
-\textbf{computation graph} containing nodes for the
-\textbf{hidden state trajectory} $H_n = (\vec{h}_t)_{1 \leq t \leq T_n}$ and
-\textbf{outputs} $Y_n = (\vec{y}_t)_{1 \leq t \leq T_n}$.
+It is interesting to note the similarity between unrolled RNN and feedforward
+networks: both are acyclic and the semantic meaning of the nodes and edges are
+identical. In fact, one can view an unrolled RNN as a feedforward network with
+as many layers as the elements in the input sequence $(\x_t)_t$ and
+parameters tied across all layers. This similarity has inspired fruitful
+cross-polination in both fields: methods for training feedforward networks have
+been adapted to RNNs and methods for learning long timespan dependencies in
+RNNs have been used to train even deeper neural networks. \todo{Foreshadow, or
+use as a transition}. \todo{Depth in time makes training difficult, similar to
+    DNNs. LSTM inspires highway networks for DNNs DNNs and grid-LSTMs for deep
+LSTMs}
 
 \begin{figure}[htpb]
     \centering
@@ -282,20 +311,25 @@ This recursive structure can be unrolled
     \label{fig:rnn-single-unrolled}
 \end{figure}
 
-Just like feedforward networks, RNNs can be stacked by using the outputs of one
-RNN as the inputs to another, forming \textbf{deep neural sequence models}. We
-will describe multilayer RNNs as a dynamical system and use
-$\matr{W}^{(l)}_{ij}$ to indicate the weight matrix relating variable $i$ to
-variable $j$ at layer $l$. For example, \autoref{fig:rnn-multi-unrolled} is described
-by the system of equations
+\autoref{fig:rnn-single-unrolled} makes it obvious how the hidden state is
+carried along throughout the sequence of computations, giving rise to a useful
+alternative interpretation of the hidden state as a temporal memory mechanism.
+Under this interpretation, we can view the hidden state update $\h_t = f_h
+(\x_t, \h_{t-1})$ as \emph{writing} information extracted from the
+current inputs $\x_t$ to the memory $\h_{t-1}$. Similarly, producing
+the outputs $\y_t = f_y (\h_t)$ can be seen as \emph{reading}
+information from the hidden state.
 
-\begin{eqnarray}
-    \vec{h}^{(1)}_t &=& \matr{W}^{(1)}_{hx} \vec{x}^{(1)}_t + \matr{W}^{(1)}_{hh} \vec{h}^{(1)}_{t-1} \\
-    \vec{y}^{(1)}_t &=& \matr{W}^{(1)}_{yh} \vec{h}^{(1)}_t \\
-    \vec{x}^{(2)}_t &=& \vec{y}^{(1)}_t \\
-    \vec{h}^{(2)}_t &=& \matr{W}^{(2)}_{hx} \vec{x}^{(2)}_t + \matr{W}^{(2)}_{hh} \vec{h}^{(1)}_{t-1} \\
-    \vec{y}^{(2)}_t &=& \matr{W}^{(2)}_{yh} \vec{h}^{(2)}_t \\
-\end{eqnarray}
+\todo{Compare to N-grams; show how it's like an infinite context. One
+    interpretation is to view the hidden state $\h_t$ as an
+    infinite-length prior context window, summarizing all of the prior inputs
+    into into a compact fixed-size vector.}
+
+Since the RNN outputs $\y$ also form a sequence with the same length as
+the inputs $\x$, they can be used as inputs into another RNN. This
+stacking of multiple memory cells is similar to the layering seen in deep
+neural networks, giving rise to the term \emph{deep neural sequence models}
+\todo{Cite?}. This is illustrated in \autoref{fig:rnn-multi-unrolled}.
 
 \begin{figure}[htpb]
     \centering
@@ -304,179 +338,157 @@ by the system of equations
     \label{fig:rnn-multi-unrolled}
 \end{figure}
 
-\subsubsection{Sequential processing and sampling}
+The greater modeling capabilities of multilayer RNNs can be attributed to two
+primary factors: composition of multiple non-linearities and an increase in the
+number of paths through which information can flow. The former is analogous to
+the feedforward case: stacking memory cells increases the number of
+non-linearities in the composite cell just like stacking multiple layers in
+feedforward networks. To understand the latter point, notice that in
+\autoref{fig:rnn-single-unrolled} there is only a single path from
+$\x_{t-1}$ to $\y_{t}$ hence the conditional independence
+$\y_{t} \independent \x_{t-1} | \h^{(1)}_t$ is satisfied.
+However, in \autoref{fig:rnn-multi-unrolled} there are multiple paths from
+$\x_{t-1}$ to $\y_{t}$ (e.g. passing through either
+$\h^{(2)}_{t-1} \to \h^{(2)}_t$ or $\h^{(1)}_{t-1} \to
+\h^{(1)}_t$) through which information may flow. Additionaly, the
+hidden state transitions occur on two seperate memory cells so parameters
+need not be tied and the stacked RNN can learn different time dynamics
+at each depth.
 
-We will train our RNNs to predict a distribution for the next character
-$\vec{x}_{t+1}$ after the RNN has processed the sequence $\vec{x}_{1:t}$,
-yielding a model which factorizes the sequence probability
-\begin{equation}
-    P(\vec{x}_{1:T}) = \prod_{t=1}^T P(\vec{x}_t | \vec{x}_{1:t-1} )
-\end{equation}
-Modeling this probability distribution over sequences is analogous to the
-\textbf{language modeling} from speech recognition.
+\subsection{Training RNNs and backpropogation through time}
 
-Note that the factorization of conditional distributions \emph{assumes a
-sequential ordering in $t$}. This property is desirable as it enables sampling
-from the model to generate new transcriptions by sampling from $P(\vec{x}_t |
-\vec{x}_{1:t-1})$ at each timestep $t$ and using the sampled value as the next
-input.
-
-\todo{compare to bidirectional}.
-
-\todo{for more details, see XYZ}.
-
-\subsection{Parameter estimation of recursive neural networks}
-
-\subsubsection{Modeling probabilities using the Boltzmann distribution and cross-entropy error criterion}
-
-The parameters to the model are estimated in order to minimize the error
-between the network outputs and provided labels. For language modeling, the
-outputs $\vec{y}_t$ should parameterize a distribution for the next character
-$P(\vec{x}_{t+1} | \vec{x}_{1:t})$. Suppose each input has finite support (i.e.
-$\vec{x}_t \in [1,2,\cdots,K]$). If we choose the outputs to be $K$ dimensional
-(i.e. $\vec{y}_t \in \RR^K$) then the \textbf{Boltzmann distribution}
-(\autoref{eq:boltzmann-dist}) can be used:
-
-\begin{equation}
-    \label{eq:boltzmann-dist}
-    P(\vec{x}_{t+1} = s | \vec{x}_{1:t})
-    = \frac{\exp \left(-\vec{y}_{t,s}/T\right) }{ \sum_{k=1}^{K} \left(\exp -\vec{y}_{t,k}/T\right)}
-\end{equation}
-
-$T \in \RR^+$ is a \textbf{temperature} parameter \todo{relate to sampling}.
-
-The labels provided are the actual next characters $\vec{x}_{t+1}$. Viewing
-such labels as discrete probability distributions will all mass on a single atom,
-one measure of difference between predictions and \todo{justify cross-entropy}
-
-\subsubsection{Efficient graident computations through back-propogation}
-
-Feed-forward neural networks are trained using back-propogation, an efficient
-algorithm which consists of a forward pass to compute activations followed by
-back-propogation of partial derivatives expanded according to the chain
-rule\todo{cite backprop}. At the heart of back-propogation is the
-\textbf{computation graph} of a a model: a directed acyclic graph where each
-node represents a differentiable function that can compute its outputs and
-Jacobian given inputs and activations\todo{cite theano}. By representing only
-the dependencies between intermediate values, the sparsity imposed by the
-computation graph enable back-propogation to ignore irrelevant
-cross-derivatives and efficiently compute global gradients from local
-computations.
-
-
-Training of recursive neural networks is typically performed using
-backpropogation through time (BPTT)\cite{at}, a technique computationally
-equivalent to feedforward training of the unrolled computation graph. This is
-easily seen: unrolling of a RNN yields a feed-forward structure where the
-standard back-propogation algorithm applies.
-
-
-
-
-\subsubsection{Vanishing gradients}
-
-In practice, it is observed that the hidden state does not capture long range
-dependencies well and tend to suffer from vanishing/exploding gradient during
-training. LSTMs are an improved RNN architecture which solve both of these
-problems by introducing gates on the inputs, hidden state, and outputs. GRUs are
-a variation of LSTMs which ties the weights to the input and forget gates.
-
-Vanishing/exploding gradients \cite{Bengio1994} are problems experienced by
-RNNs arising from recursive applications of non-linear activations and linear dynamics
-to the hidden state. To illustrate the vanishing gradient problem, consider
-a simple recurrent network
-
+Mathematically, we may define a RNN as a discrete time dynamical system:
+One standard parameterization is
 \begin{eqnarray}
-    h_t &=& \theta \phi(h_{t-1}) + \theta_x x_t \label{eq:ht-from-ht-1}\\
-    y_t &=& \theta_y \phi(h_t)
+    \h_t &=& \W_{xh} \sigma_{xh} \left( \x_t \right) + \W_{hh} \sigma_{hh} \left( \h_{t-1} \right) \\
+    \y_t &=& \W_{hy} \sigma_{hy} \left( \h_t \right) \\
+\end{eqnarray}
+where $\sigma_{\cdot}(\cdot)$ are activation functions acting element-wise
+and the parameters $\theta = \{ \W_{xh}, \W_{hh}, \W_{hy}\}$
+are learned from data to minimize a cost $\mathcal{E} = \sum_{1 \leq t \leq T}
+\mathcal{E}_t(\x_t)$ measuring the performance of the network on some task.
+
+One approach for computing the necessary gradients is \emph{backpropogation through
+time} (BPTT)\cite{At}, an adaptation of the backpropogation algorithm \todo{cite}
+to the unrolled RNN computation graph. Letting $\theta$ denote the model parameters,
+we can apply the chain rule to the unrolled RNN's computation graph
+in \autoref{fig:rnn-bptt} to obtain
+\begin{eqnarray}
+    \frac{\pd \mathcal{E}}{\pd \theta} &=& \sum_{1 \leq t \leq T} \frac{\pd \mathcal{E}_t}{\pd \theta} \\
+    \frac{\pd \mathcal{E}_t}{\pd \theta} &=& \sum_{1 \leq k \leq t} \left(
+        \frac{\pd \mathcal{E}_t}{\pd \y_t}
+        \frac{\pd \y_t}{\pd \h_t}
+        \frac{\pd \h_t}{\pd \h_k}
+        \frac{\pd \h_k}{\pd \theta}
+    \right) \label{eq:error-t}\\
+    \frac{\pd \h_t}{\pd \h_k} &=&
+    \prod_{t \geq i > k} \frac{\pd \h_i}{\pd \h_{i-1}}
+    = \prod_{t \geq i > k} \W_{hh}^\tp \diag \left( \sigma_{hh}'( \h_{i-1} ) \right)
+    \label{eq:error-transfer}
 \end{eqnarray}
 
-After unrolling, the gradient of the error is given as a sum of the gradients
-at each individual timestep
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/rnn-bptt.pdf_tex}
+    \caption{The gradients passed along network edges during BPTT.}
+    \label{fig:rnn-bptt}
+\end{figure}
 
-\begin{equation}
-    \frac{\pd E}{\pd \theta} = \sum_{t=1}^S \frac{\pd E_t}{\pd \theta}
-\end{equation}
+\autoref{eq:error-t} expresses how the error $\mathcal{E}_t$ at time $t$ is a sum
+of \emph{temporal contributions} $
+\frac{\pd \mathcal{E}_t}{\pd \y_t}
+\frac{\pd \y_t}{\pd \h_t}
+\frac{\pd \h_t}{\pd \h_k}
+\frac{\pd \h_k}{\pd \theta}$
+measuring how $\theta$'s impact on $\h_k$ affects the cost at some future
+time $t > k$. The factors in \autoref{eq:error-transfer} measures the affect
+of the hidden state $\h_k$ on some future state $\h_t$ where $t > k$
+and can be interpreted as transferring the error ``in time'' from step $t$ back
+to step $k$ \cite{Pascanu2012}.
 
-Since the current hidden state $h_t$ depends on all prior hidden states $h_k$ ($k < t$),
-the chain rule yields
+\subsubsection{Vanishing/exploding gradients}
 
-\begin{equation}
-    \frac{\pd E_t}{\pd \theta} = \sum_{k=1}^t \frac{\pd E_t}{\pd y_t} \frac{\pd y_t}{\pd h_t} \frac{\pd h_t}{\pd h_k} \frac{\pd h_k}{\pd \theta}
-\end{equation}
+Unfortunately, the formulation of RNNs as presented in \todo{reference section}
+suffers from two well known problems: the \emph{vanishing gradient} and
+\emph{exploding gradient}\cite{Bengio1994}. Broadly speaking,
+these problems are both related to the product in \autoref{eq:error-transfer}
+exponentially growing or shrinking for long timespans (i.e. $t \gg k$).
 
-Noting that time dynamics occur only through $h_t$
-
-\begin{equation}
-    \label{eq:prod-hi}
-    \frac{\pd h_t}{\pd h_k} = \prod_{i=k+1}^t \frac{\pd h_i}{\pd h_{i-1}}
-\end{equation}
-
-The factors in the product can be obtained by differentiating \autoref{eq:ht-from-ht-1}
-
-\begin{equation}
-    \frac{\pd h_i}{\pd h_{i-1}} = \theta^\tp \diag\left[ \phi'(h_{i-1}) \right]
-\end{equation}
-
-Let $\|\cdot\|$ be any submultiplicative matrix norm. For illustration purposes, we will use the
-\textbf{operator norm} defined as
+Following Pascanu \textit{et al.} \cite{Pascanu2012}, let $\| \cdot \|$ be any
+submultiplicative matrix norm (e.g. Frobenius, spectral, nuclear, Shatten
+$p$-norms). Without loss of generality, we will use the \emph{operator norm}
+defined as
 \begin{equation}
     \| A \| = \sup_{x \in \RR^n; x \neq 0} \frac{|A x|}{|x|}
 \end{equation}
-where $|\cdot|$ is the standard Euclidian norm. However, any other submultiplicative norm
-(e.g. Frobenius, spectral, nuclear, Shatten $p$-norms) is equally valid.
+where $|\cdot|$ is the standard Euclidian norm.
 
-From submultiplicativity, we have
-
+From submultiplicativity, we have that for any $k$
 \begin{equation}
-    \left\| \frac{\pd h_i}{\pd h_{i-1}} \right\|
-    \leq \|\theta^\tp\| \| \diag\left[ \phi'(h_{i-1}) \right] \|
-    \leq \gamma_{\theta} \gamma_\phi
+    \left\| \frac{\pd \h_k}{\pd \h_{k-1}} \right\|
+    \leq \| \W_{hh}^\tp \| \| \diag\left( \sigma_{hh}'(\h_{k-1}) \right) \|
+    \leq \gamma_{\W} \gamma_\sigma
 \end{equation}
-
-where $\gamma_\theta \coloneqq \|\theta\|$ is the norm of the hidden dynamics matrix $\theta$
-and
+where we have defined $\gamma_{\W} = \| \W_{hh}^\tp \|$ and
 \begin{align}
-    \gamma_\phi
-    &\coloneqq \sup_{h \in \RR^n} \| \diag \left[ \phi'(h) \right] \|  &\\
-    &= \sup_{h \in \RR^n} \max_i \phi'(h)_i &\mbox{Operator norm of diag} \\
-    &= \sup_{t \in \RR} \phi'(t) &\mbox{$\phi$ operates elementwise}
+    \gamma_\sigma
+    &\coloneqq \sup_{h \in \RR^n} \| \diag \left( \sigma_{hh}'(\h) \right) \|  &\\
+    &= \sup_{h \in \RR^n} \max_i \sigma_{hh}'(\h)_i &\mbox{Operator norm of diag} \\
+    &= \sup_{x \in \RR} \sigma_{hh}'(x) &\mbox{$\sigma_{hh}$ acts elementwise}
 \end{align}
 
-For common activation functions $\gamma_{\phi} \leq \infty$ (e.g. $\gamma_\phi = 1$ for $\phi = \tanh$
-and $\gamma_\phi = 1/4$ for $\phi = \sigma$).
-
-This gives a bound on \autoref{eq:prod-hi}, namely
-
+Substituting back into \autoref{eq:error-transfer}, we find that
 \begin{equation}
-    \left\| \frac{\pd h_t}{\pd h_k} \right\|
-    = \left\| \prod_{i=k+1}^{t} \frac{\pd h_t}{\pd h_k} \right\|
-    \leq (\gamma_\theta \gamma_\phi)^{t-k}
+    \left\| \frac{\pd \h_t}{\pd \h_k} \right\|
+    = \left\| \prod_{t \geq i > k} \frac{\pd \h_i}{\pd \h_{i-1}} \right\|
+    \leq  \prod_{t \geq i > k} \left\| \frac{\pd \h_i}{\pd \h_{i-1}} \right\|
+    \leq (\gamma_{\W} \gamma_\sigma)^{t-k}
 \end{equation}
 
-When $|\gamma_\theta \gamma_\phi| < 1$, these gradients exponentially vanish to zero as
-the time interval $t - k$ increases, hindering the network's ability to learn long-range
-dynamics.
+Hence, we see that a sufficient condition for vanishing gradients is
+for $\gamma_{\W} \gamma_\sigma < 1$, in which case $\left\| \frac{\pd \h_t}{\pd \h_k} \right\| \to 0$
+exponentially for long timespans $t \gg k$. $\qed$
 
-A similar argument \cite{Bengio1994} illustrates an analogous exponential explosion
-when $\|\theta\| > 1$ (the ``exploding gradient'' problem).
-
-The solution is to rewrite \autoref{eq:ht-from-ht-1} such that
-\autoref{eq:prod-hi} does not vanish/explode for large $t - k$.
-One possibility would be
-
+For common activation functions, $\gamma_\sigma$ is bounded and reasonably
+small (e.g. $\gamma_\sigma = 1$ for $\sigma_{hh} = \tanh$, $\gamma_\sigma =
+0.25$ for $\sigma_{hh} = \sigmoid$). This enables us to write the sufficient
+condition for vanishing gradients as
 \begin{equation}
-    h_t = h_{t-1} + \theta_x x_t
+    \gamma_{\W} = \| \W_{hh}^\tp \| \leq \frac{1}{\gamma_\sigma}
+    \label{eq:vanishing-gradients-suff}
 \end{equation}
+The converse of the proof implies that $\| \W_{hh}^\tp \| \geq
+\frac{1}{\gamma_\sigma}$ are necessary conditions for $\gamma_{\W}
+\gamma_\sigma > 1$ and exploding gradients to occur.
 
-However, this solution is unsatisfactory as all hidden state dynamics have been
-removed.
+\subsection{Long short term memory}
 
-\subsubsection{Long Short Term Memory}
+As \autoref{eq:vanishing-gradients-suff} provide sufficient conditions for
+vanishing gradients, any model which we may hope to successfuly learn long range
+dependencies must have $\gamma_{\W} \gamma_\sigma \geq 1$.
 
-LSTMs are a RNN architecture which mitigates vanishing/exploding gradients by constraining
-the hidden state dynamics. It does so by constraining the nonlinearity $\phi = \matr{I}$ to be the
-identity and introducing three gates:
+The \emph{long short term memory} (LSTM) model was proposed by Hochreiter and
+Schmidhuber \cite{hochreiter1997long} as a method for dealing with
+the vanishing gradient problem. It does so by enforcing \emph{constant error flow}
+on \autoref{eq:error-transfer}, that is
+\begin{equation}
+    \W_{hh}^\tp \sigma_{hh}' (\h_{t}) = \matr{I}
+\end{equation}
+where $\matr{I}$ is the identity matrix.
+
+Integrating the above differential equation yields $\W_{hh} \sigma_{hh}(\h_{t}) = \h_{t}$.
+Since this should hold for any hidden state $\h_{t}$, this means that:
+\begin{enumerate}
+    \item $\W_{hh}$ must be full rank
+    \item $\sigma_{hh}$ must be linear
+    \item $\W_{hh} \circ \sigma_{hh} = \matr{I}$
+\end{enumerate}
+In LSTMs, this is ensured by setting $\sigma_{hh} = \W_{hh} = \matr{I}$, effectively removing
+time dynamics from the hidden state. In the literature, this is referred to as
+the \emph{constant error carousel} (CEC).
+
+In addition to the CEC \todo{which is also seen in xyz}, LSTMs possess three sets of gates controlling
+access to the CEC:
 \begin{itemize}
     \item \textbf{Input gate}: scales input $x_t$ elementwise by $i_t \in [0,1]$, affects how $h_t$ is written to
     \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, affects how $h_t$ is read from
@@ -517,3 +529,54 @@ work, we use ``LSTM'' to refer to LSTMs with peephole connections.
 
 LSTMs protect from vanishing gradient, but not exploding gradient. Research has shown
 that gradient clipping is essential to permit successful applications \cite{Pascanu2012}.
+\begin{enumerate}
+    \item 
+\end{enumerate}
+
+\todo{Truncated BPTT}
+\todo{Gradient clipping for avoiding exploding gradient}
+
+\subsubsection{Sequential processing and sampling}
+
+We will train our RNNs to predict a distribution for the next character
+$\x_{t+1}$ after the RNN has processed the sequence $\x_{1:t}$,
+yielding a model which factorizes the sequence probability
+\begin{equation}
+    P(\x_{1:T}) = \prod_{t=1}^T P(\x_t | \x_{1:t-1} )
+\end{equation}
+Modeling this probability distribution over sequences is analogous to the
+\textbf{language modeling} from speech recognition.
+
+Note that the factorization of conditional distributions \emph{assumes a
+sequential ordering in $t$}. This property is desirable as it enables sampling
+from the model to generate new transcriptions by sampling from $P(\x_t |
+\x_{1:t-1})$ at each timestep $t$ and using the sampled value as the next
+input.
+
+\todo{compare to bidirectional}.
+
+\todo{for more details, see XYZ}.
+
+\subsection{Parameter estimation of recursive neural networks}
+
+\subsubsection{Modeling probabilities using the Boltzmann distribution and cross-entropy error criterion}
+
+The parameters to the model are estimated in order to minimize the error
+between the network outputs and provided labels. For language modeling, the
+outputs $\y_t$ should parameterize a distribution for the next character
+$P(\x_{t+1} | \x_{1:t})$. Suppose each input has finite support (i.e.
+$\x_t \in [1,2,\cdots,K]$). If we choose the outputs to be $K$ dimensional
+(i.e. $\y_t \in \RR^K$) then the \textbf{Boltzmann distribution}
+(\autoref{eq:boltzmann-dist}) can be used:
+
+\begin{equation}
+    \label{eq:boltzmann-dist}
+    P(\x_{t+1} = s | \x_{1:t})
+    = \frac{\exp \left(-\y_{t,s}/T\right) }{ \sum_{k=1}^{K} \left(\exp -\y_{t,k}/T\right)}
+\end{equation}
+
+$T \in \RR^+$ is a \textbf{temperature} parameter \todo{relate to sampling}.
+
+The labels provided are the actual next characters $\x_{t+1}$. Viewing
+such labels as discrete probability distributions will all mass on a single atom,
+one measure of difference between predictions and \todo{justify cross-entropy}
