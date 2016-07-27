@@ -8,9 +8,36 @@
 %%
 %%   FTL, July 2016
 %%   SMH, May 2010.
-
-
 \documentclass[a4paper,12pt,twoside,openright]{report}
+
+\usepackage{subfiles}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
+\usepackage{hyperref}
+
+\usepackage{tikz}
+\usepackage{ifthen}
+\usetikzlibrary{positioning}
+
+% Inkscape pdf_tex exports
+%\usepackage{import}
+\usepackage{float}
+\usepackage{subcaption}
+\graphicspath{{Figures/}}
+
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{dsfont}
+\usepackage{xcolor}
+
+\usepackage{booktabs}
+\usepackage{longtable}
+
+\usepackage[bold]{hhtensor}
+\usepackage{mathtools}
 
 \input{macros.tex}
 
@@ -32,11 +59,11 @@
 \pagenumbering{gobble}
 \pagestyle{empty}
 \singlespacing
-\input{titlepage}
+\subfile{titlepage}
 \onehalfspacing
-\input{declaration}
+\subfile{declaration}
 \singlespacing
-\input{abstract}
+\subfile{abstract}
 
 \pagenumbering{roman}
 \setcounter{page}{0}
@@ -53,19 +80,19 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 
-\input{chapters/introduction}
-\input{chapters/background}
-\input{chapters/related-work}
-\input{chapters/data}
-\input{chapters/chorale-harmonization}
-\input{chapters/automatic-composition}
-\input{chapters/model-analysis}
-\input{chapters/large-scale-eval}
+\subfile{chapters/introduction}
+\subfile{chapters/background}
+\subfile{chapters/related-work}
+\subfile{chapters/data}
+\subfile{chapters/automatic-composition}
+\subfile{chapters/chorale-harmonization}
+\subfile{chapters/model-analysis}
+\subfile{chapters/large-scale-eval}
 
 \appendix
 \singlespacing
 
-\input{chapters/graveyard}
+\subfile{chapters/graveyard}
 
 \bibliographystyle{unsrt}
 \bibliography{refs}
