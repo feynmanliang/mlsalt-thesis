@@ -11,30 +11,30 @@
 \documentclass[a4paper,12pt,twoside,openright]{report}
 
 \usepackage{subfiles}
-
-\usepackage[T1]{fontenc}
+\usepackage[
+    backend=bibtex,
+    style=alphabetic,
+]{biblatex} % TODO: use biber backend
+\addbibresource{refs.bib}
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
 \usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
 \usepackage{hyperref}
 
-\usepackage{tikz}
-\usepackage{ifthen}
+% TODO: eliminate
+\usepackage{tikz,ifthen}
 \usetikzlibrary{positioning}
 
 % Inkscape pdf_tex exports
 %\usepackage{import}
-\usepackage{float}
-\usepackage{subcaption}
+\usepackage{float,subcaption}
 \graphicspath{{Figures/}}
 
-\usepackage{amsmath,amsfonts,amssymb,amsthm}
-\usepackage{dsfont}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,dsfont}
 \usepackage{xcolor}
 
-\usepackage{booktabs}
-\usepackage{longtable}
+\usepackage{booktabs,longtable}
 
 \usepackage[bold]{hhtensor}
 \usepackage{mathtools}
@@ -92,10 +92,11 @@
 \appendix
 \singlespacing
 
-\subfile{chapters/graveyard}
+% \bibliographystyle{unsrt}
+% \bibliography{refs}
+\printbibliography
 
-\bibliographystyle{unsrt}
-\bibliography{refs}
+\subfile{chapters/graveyard}
 
 % \printindex
 

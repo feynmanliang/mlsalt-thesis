@@ -48,7 +48,10 @@ C:\\nppdf32Log\\debuglog.txt
 *.lot
 *.sbl
 *.xdy
+*.bib
+*.run.xml
 
 .ipynb_checkpoints/
 notebooks/*.xml
+notebooks/*.tex
 notebooks/*.png
