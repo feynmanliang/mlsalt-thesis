@@ -3,43 +3,40 @@
 
 \chapter{Background}
 
-% A more extensive coverage of what's required to understand your
-% work. In general you should assume the reader has a good undergraduate
-% degree in computer science, but is not necessarily an expert in
-% the particular area you've been working on. Hence this chapter
-% may need to summarize some ``text book'' material.
-
-% This is not something you'd normally require in an academic paper,
-% and it may not be appropriate for your particular circumstances.
-% Indeed, in some cases it's possible to cover all of the ``background''
-% material either in the introduction or at appropriate places in
-% the rest of the dissertation.
-
-This chapter reviews background relevant to the remainder of this dissertaion.
-The scope includes an overview of music theory and automatic composition
-and also includes coverage of sequence probability models.
+This chapter provides background information on two topics heavily utilized
+throughout this dissertation: Western music theory and recurrent neural
+networks. It introduce the definitions and notation used in later sections.
 
 \section{A primer on Western music theory}
 
 Music theory is a branch of musicology concerned with the study of the rules
 and practices of music. While the general field includes study of acoustic
-qualities such as timbre and waveform synthesis, our work is concerned with
-modelling the musical composition itself rather than acoustic features. This is
-justified because acoustic features are more closely related to a particular
-reproduction (e.g. the skill of the performers, quality of the instruments) and
-are likely to vary significantly across different performances. Indeed,
-references to a piece of music generally refer to the underlying composition
-itself rather than any particular performance of the piece. This suggests that
-the composition itself is more significant and hence a more desirable modeling
-target.
+qualities such as dynamics and timbre, we restrict the scope of our research
+and discussion to modeling notes within the musical composition and neglect
+issues related to articulation instructions (e.g. staccato, trill, accents) as
+well as synthesis/generation of the physical acoustic waveforms.
 
-\subsection{Pitches, durations, and notes: the basic building blocks}
+This is justified because the phsyical waveforms are more closely related
+to the skill of the performers and instruments used and are likely to vary
+significantly across different performances. Furthermore, articulations in
+the same musical piece may differ across transcriptions and performers.
+Despite these variations, a piece of music is still recognizable from just the
+notes, suggesting that notes are the defining element for a piece of music.
 
-A \emph{note} is the most fundamental element of music and possesses two
-primary attributes, a \emph{pitch} and a \emph{duration}. Though pitch is
-closely related to physical frequency of vibration of a waveform (as measured
-in Hertz), pitch its a perceptual property whose semantic meaning is derived
-from a listener's perception. This distinction has been scrutinized by Terhardt
+\subsection{Notes: the basic building blocks}
+
+A \emph{note} is the most fundamental element of music composition and
+represents a sound played at a certain \emph{pitch} for a certain
+\emph{duration}. As a music \emph{score} can be viewed as a collection of notes
+along with when they are played (i.e. their \emph{offsets}), notes are the
+fundamental building blocks for musical compositions.
+
+\subsubsection{Pitch}
+
+Though pitch is closely related to physical frequency of vibration of a
+waveform (as measured in Hertz), pitch its a perceptual property whose semantic
+meaning is derived from a listener's perception. This distinction has been
+scrutinized by Terhardt
 \cite{:/content/asa/journal/jasa/55/5/10.1121/1.1914648}, whose visual analogy
 in \autoref{fig:pitch} illustrates how a pitch can be heard even if its
 percieved frequency is absent just as one may see the word ``PITCH'' despite
@@ -108,6 +105,8 @@ horizontal lines and four spaces).
     ten different octaves.  \todo{Cite wiki scientific pitch notation}}
     \label{fig:pitch-class}
 \end{figure}
+
+\subsubsection{Transposition invariance}
 
 Note that the discussion of pitch thus far has not made any direct connection
 between pitch and frequency. Indeed, this lack of dependence on absolute
@@ -230,87 +229,95 @@ activation functions removed.
 
 While feedforward neural networks provide a flexible model for approximating
 arbitrary functions, they require a fixed-dimension input $\x$ and hence
-cannot be directly applied to sequential data $\x = (x_t)_{t=1}^T$ where $T$ may
+cannot be directly applied to sequential data $\x = (\x_t)_{t=1}^T$ where $T$ may
 vary.
 
-\todo{Introduce $\theta$ for parameters}
-
 A naive method for extending feedforward networks would be to independently
-apply a feedforward network to compute $y_t = f(x_t; \theta)$ at each timestep
-$1 \leq t \leq T$. However, this approach is only correct when each output $y_t$
-only depends on the input at the current time $x_t$. This assumption
-is false in many scenarios: the current musical note depends on the sequence of
-notes leading up to it.
+apply a feedforward network to compute $\y_t = f(\x_t \theta)$ at each timestep
+$1 \leq t \leq T$. However, this approach is only correct when each output
+$\y_t$ depends only on the input at the current time $\x_t$ and is independent of
+all prior inputs $\{\x_k\}_{k < t}$. This assumption is false in musical data:
+the current musical note usually is highly dependent on the sequence of notes
+leading up to it.
 
 This shortcoming motivates \emph{recurrent neural networks} (RNNs), which
 generalize feedforward networks by introducing time-delayed recurrent
 connections between hidden layers (Elman networks \cite{elman1990finding}) or
 from the output layers to the hidden layers (Jordan networks
-\cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates an Elman-type network:
-note that apart from the edges between hidden nodes, the network is identical to
-a standard network (\autoref{fig:nn-ffw}).
+\cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates an Elman-type
+network. Notice that apart from the edges between hidden nodes, the network is
+identical to a regular feedforward network (\autoref{fig:nn-ffw}).
 
 \todo{Why do we use Elman}
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn.pdf_tex}
-    \caption{Graph depiction of an Elman-type RNN. Note the recurrent connections
-    within the hidden layer.}
+    \caption{Graph representation of an Elman-type RNN.}
     \label{fig:nn-rnn}
 \end{figure}
 
-\autoref{fig:rnn-elman} reinterprets the recurrent hidden layer connections in
-\autoref{fig:nn-rnn} as inputs whose values are taken from the previous hidden
-state making the time-delay explicit. Additionally, \autoref{fig:rnn-elman}
-introduces the notion of \emph{memory cells}, which abstract the internals
-of RNNs into a computational unit which for each timestep $t$:
-\begin{itemize}
-    \item Takes as inputs
-        \begin{itemize}
-            \item The current element in the input sequence $\x_t$
-            \item The previous hidden state $\h_{t-1}$
-        \end{itemize}
-    \item Produces the outputs
-        \begin{itemize}
-            \item The updated hidden state $\h_t = f_h (\x_t, \h_{t-1})$
-            \item The outputs $\y_t = f_y (\h_t)$.
-        \end{itemize}
-\end{itemize}
+To apply the RNN over an input sequence $\x$, the activations of the hidden
+states are first initialized to an initial value $\h \in \RR^{D_{h}}$. Next,
+for each timestep $t$ the hidden layer activations are computed using the
+current input $\x_t$ and the previous hidden state activations $\h_{t-1}$.
+This motivates an alternative perspective on RNNs as a template consisting
+of a feedforward network with inputs $\{\x_t, \h_{t-1}\}$ (see
+\autoref{fig:rnn-elman}) replicated across time $t$.
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/nn-rnn-elman.pdf_tex}
-    \caption{Equivalent formulation of an Elman-type RNN treating the time-delayed hidden state
-    as additional inputs to a feedforward network}
+    \caption{Equivalent formulation of an Elman-type RNN treating the
+    time-delayed hidden state $\h_{t-1}$ as additional inputs to a feedforward
+    network}
     \label{fig:rnn-elman}
 \end{figure}
 
-The memory cell abstraction is convenient because it enables discussion of RNN
-architecture without settling on a particular memory cell implementation. In
-particular, it enables us to \emph{unroll the RNN} by removing the time-delayed
-recurrent cycle and replicating the memory cell over multiple timesteps as seen
-in \autoref{fig:rnn-single-unrolled}. This gives rise to a finite directed
-acyclic graph where nodes represent pieces of data and edges $s \to t$ indicate
-that $t$ is a function of $s$.
 
-It is interesting to note the similarity between unrolled RNN and feedforward
-networks: both are acyclic and the semantic meaning of the nodes and edges are
-identical. In fact, one can view an unrolled RNN as a feedforward network with
-as many layers as the elements in the input sequence $(\x_t)_t$ and
-parameters tied across all layers. This similarity has inspired fruitful
-cross-polination in both fields: methods for training feedforward networks have
-been adapted to RNNs and methods for learning long timespan dependencies in
-RNNs have been used to train even deeper neural networks. \todo{Foreshadow, or
-use as a transition}. \todo{Depth in time makes training difficult, similar to
-    DNNs. LSTM inspires highway networks for DNNs DNNs and grid-LSTMs for deep
-LSTMs}
+\subsubsection{Memory cell abstraction}
+
+Notice that \autoref{fig:rnn-elman} delineates the recurrent hidden state from
+the rest of the diagram, introducing an abstraction called a \emph{memory
+cell}. This allows us to abstract away how $\y_t$ and $\h_t$ are computed from
+$\x_t$ and $\h_{t-1}$, enabling discussion of RNNs applicable to many different
+implementations. Concretely, A memory cell is an interface which for each
+timestep $t$:
+\begin{itemize}
+    \item Takes inputs
+        \begin{itemize}
+            \item The current element in the input sequence $\x_t$
+            \item The previous hidden state $\h_{t-1}$
+        \end{itemize}
+    \item Produces outputs
+        \begin{itemize}
+            \item The next  hidden state $\h_t = f_h (\x_t, \h_{t-1})$
+            \item The outputs $\y_t = f_y (\h_t)$.
+        \end{itemize}
+\end{itemize}
+In future diagrams, we will abstractly represent the memory cell
+as a node labelled with $\h$.
+
+\subsubsection{Unrolling into a DAG}
+
+One important operation on RNNs is \emph{unrolling} the template in
+\autoref{fig:rnn-elman} into a chain of $T$ replications with connected hidden
+states (\autoref{fig:rnn-single-unrolled}). This removes the time-delayed
+recurrent, converting the RNN into a finite directed acyclic graph where nodes
+represent pieces of data and edges $s \to t$ indicate that $t$ is a function of
+$s$. This is identical to a feedforward network, justifying the view of RNNs as
+a dynamically-sized feedforward network with $T$ layers and parameters tied
+across all layers.
+
+\todo{Talk about how view of unrolled RNN as DNN inspires cross-polination e.g.
+gating to let information flow deeper: LSTM gates and highway networks, grid
+LSTMS}
 
 \begin{figure}[htpb]
     \centering
-    \input{Figures/rnn-single-unrolled.pdf_tex}
+    \resizebox{4.5in}{!}{\input{Figures/rnn-single-unrolled.pdf_tex}}
     \caption{Signal flow diagram representation of a single-layer RNN and its corresponding
-    expansion into a computation graph}
+    directed acyclic graph after unrolling}
     \label{fig:rnn-single-unrolled}
 \end{figure}
 
@@ -328,6 +335,8 @@ information from the hidden state.
     infinite-length prior context window, summarizing all of the prior inputs
     into into a compact fixed-size vector.}
 
+\subsubsection{Stacking memory cells to form multi-layer RNNs}
+
 Since the RNN outputs $\y$ also form a sequence with the same length as
 the inputs $\x$, they can be used as inputs into another RNN. This
 stacking of multiple memory cells is similar to the layering seen in deep
@@ -336,8 +345,8 @@ neural networks, giving rise to the term \emph{deep neural sequence models}
 
 \begin{figure}[htpb]
     \centering
-    \input{Figures/rnn-multi-unrolled.pdf_tex}
-    \caption{Unrolled computation graph for a 2-layer RNN}
+    \resizebox{4.5in}{!}{\input{Figures/rnn-multi-unrolled.pdf_tex}}
+    \caption{Template and unrolling of a stacked 2-layer RNN}
     \label{fig:rnn-multi-unrolled}
 \end{figure}
 
@@ -358,15 +367,15 @@ hidden state transitions occur on two seperate memory cells so parameters
 need not be tied and the stacked RNN can learn different time dynamics
 at each depth.
 
-\subsection{Training RNNs and backpropogation through time}
+\subsection{Training RNNs: backpropogation through time}
 
-Mathematically, we may define a RNN as a discrete time dynamical system:
-One standard parameterization is
+Mathematically, a RNN is a discrete time dynamical system commonly
+parameterized as:
 \begin{eqnarray}
-    \h_t &=& \W_{xh} \sigma_{xh} \left( \x_t \right) + \W_{hh} \sigma_{hh} \left( \h_{t-1} \right) \\
-    \y_t &=& \W_{hy} \sigma_{hy} \left( \h_t \right) \\
+    \h_t &=& \W_{xh} \sigma_{xh} \left( \x_t \right) + \W_{hh} \sigma_{hh} \left( \h_{t-1} \right) \label{eq:rnn-ht}\\
+    \y_t &=& \W_{hy} \sigma_{hy} \left( \h_t \right) \label{eq:rnn-yt}
 \end{eqnarray}
-where $\sigma_{\cdot}(\cdot)$ are activation functions acting element-wise
+where $\sigma_{\cdot \cdot}(\cdot)$ are activation functions acting element-wise
 and the parameters $\theta = \{ \W_{xh}, \W_{hh}, \W_{hy}\}$
 are learned from data to minimize a cost $\mathcal{E} = \sum_{1 \leq t \leq T}
 \mathcal{E}_t(\x_t)$ measuring the performance of the network on some task.
@@ -411,11 +420,12 @@ to step $k$ \cite{Pascanu2012}.
 
 \subsubsection{Vanishing/exploding gradients}
 
-Unfortunately, the formulation of RNNs as presented in \todo{reference section}
-suffers from two well known problems: the \emph{vanishing gradient} and
-\emph{exploding gradient}\cite{Bengio1994}. Broadly speaking,
-these problems are both related to the product in \autoref{eq:error-transfer}
-exponentially growing or shrinking for long timespans (i.e. $t \gg k$).
+Unfortunately, naive implementations of \autoref{eq:rnn-ht} and
+\autoref{eq:rnn-yt} oftentimes suffers from two well known problems: the
+\emph{vanishing gradient} and \emph{exploding gradient}\cite{Bengio1994}.
+Broadly speaking, these problems are both related to the product in
+\autoref{eq:error-transfer} exponentially growing or shrinking for long
+timespans (i.e. $t \gg k$).
 
 Following Pascanu \textit{et al.} \cite{Pascanu2012}, let $\| \cdot \|$ be any
 submultiplicative matrix norm (e.g. Frobenius, spectral, nuclear, Shatten
@@ -464,7 +474,7 @@ The converse of the proof implies that $\| \W_{hh}^\tp \| \geq
 \frac{1}{\gamma_\sigma}$ are necessary conditions for $\gamma_{\W}
 \gamma_\sigma > 1$ and exploding gradients to occur.
 
-\subsection{Long short term memory}
+\subsection{Long short term memory: solving the vanishing gradient}
 
 As \autoref{eq:vanishing-gradients-suff} provide sufficient conditions for
 vanishing gradients, any model which we may hope to successfuly learn long range
@@ -490,24 +500,19 @@ In LSTMs, this is ensured by setting $\sigma_{hh} = \W_{hh} = \matr{I}$, effecti
 time dynamics from the hidden state. In the literature, this is referred to as
 the \emph{constant error carousel} (CEC).
 
-In addition to the CEC \todo{which is also seen in xyz}, LSTMs possess three sets of gates controlling
-access to the CEC:
+In addition to the CEC, LSTMs possess three sets of gates controlling access to
+the CEC:
 \begin{itemize}
-    \item \textbf{Input gate}: scales input $x_t$ elementwise by $i_t \in [0,1]$, affects how $h_t$ is written to
-    \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, affects how $h_t$ is read from
-    \item \textbf{Forget gate}: scales previous cell value $h_{t-1}$ by $f_t \in [0,1]$, acts as a reset mechanism
+    \item \textbf{Input gate}: scales input $x_t$ elementwise by $i_t \in [0,1]$, \emph{writes} to $h_t$
+    \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, \emph{reads} from $h_t$
+    \item \textbf{Forget gate}: scales previous cell value $h_{t-1}$ by $f_t \in [0,1]$, \emph{resets} $h_t$
 \end{itemize}
-\todo{Discuss how the three gates are used}
+These gates imbue the model with the ability to read, write, and reset the hidden state.
+This mirrors the instructions available on memory abstractions in models of computation,
+motivating the view that a LSTM is learning a ``program'' which computes $\y$
+from $\x$ \cite{hochreiter1997long}.
 
-\autoref{fig:lstm-cell} depicts a single LSTM cell. Notice that it adheres
-
-\begin{figure}[htpb]
-    \centering
-    \input{Figures/lstm-unit-2.pdf_tex}
-    \caption{Schematic for a single LSTM cell.}
-    \label{fig:lstm-cell}
-\end{figure}
-
+Mathematically, LSTM is defined by the following set of equations:
 \begin{eqnarray}
     \i_t &=& \sigmoid(\W_{xi} \x_t + \W_{yi} \y_{t-1} + \b_i) \\
     \o_t &=& \sigmoid(\W_{xo} \x_t + \W_{yo} \y_{t-1} + \b_o) \\
@@ -516,21 +521,22 @@ access to the CEC:
     \y_t &=& \o_t \odot \tanh(\h_t)
 \end{eqnarray}
 where $\odot$ denotes elementwise multiplication of vectors.
+\autoref{fig:lstm-cell} depicts a single LSTM cell. Notice that it implements
+the memory cell interface, so the prior discussion on RNNs is applicable here.
 
-Note that \autoref{eq:lstm-dynamics} has $\phi$ set to the identity function
-hence $\gamma_\phi = 1$. This removal of the non-linearity in the hidden state
-recursion is known as the \textbf{constant error carousel} \todo{cite}, which
-allows the network to propogate errors without modification by $\varphi'(h_k)$.
+\begin{figure}[htpb]
+    \centering
+    \input{Figures/lstm-unit-2.pdf_tex}
+    \caption{Schematic for a single LSTM cell.}
+    \label{fig:lstm-cell}
+\end{figure}
 
-The addition of the gates enables the model to learn when to read/write from
-memory and when to reset, enabling longer-range dependencies to be learned when
-an input is written to memory (i.e. $i_t$ high) and protected for a long
-duration (i.e. $f_t \approx 1$ and $i_t \approx 0$).
+Some authors define LSTMs such that $\h_t$ is not used to compute gate
+activations, referring to the case where $\h_t$ is connected as ``peephole
+connections''\cite{gers2002learning}. We will use \emph{LSTM} to refer to the
+system of equations given above.
 
-Some authors define LSTMs such that $h_t$ is not used to compute gate activations,
-referring to the case where $h_t$ is connected as ``peephole connections.'' In our
-work, we use ``LSTM'' to refer to LSTMs with peephole connections.
-
+As a consequence of \autoref{eq:lstm-dynamics}, 
 LSTMs protect from vanishing gradient, but not exploding gradient. Research has shown
 that gradient clipping is essential to permit successful applications \cite{Pascanu2012}.
 \begin{enumerate}
@@ -539,5 +545,7 @@ that gradient clipping is essential to permit successful applications \cite{Pasc
 
 \todo{Truncated BPTT}
 \todo{Gradient clipping for avoiding exploding gradient}
+
+\printbibliography
 
 \end{document}

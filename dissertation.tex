@@ -16,6 +16,21 @@
     style=alphabetic,
 ]{biblatex} % TODO: use biber backend
 \addbibresource{refs.bib}
+
+% Don't expand \printbibliography in subfiles
+\makeatletter
+
+\newrobustcmd*{\nobibliography}{%
+  \@ifnextchar[%]
+    {\blx@nobibliography}
+    {\blx@nobibliography[]}}
+
+\def\blx@nobibliography[#1]{}
+
+\appto{\skip@preamble}{\let\printbibliography\nobibliography}
+
+\makeatother
+
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 
@@ -88,6 +103,7 @@
 \subfile{chapters/chorale-harmonization}
 \subfile{chapters/model-analysis}
 \subfile{chapters/large-scale-eval}
+\subfile{chapters/summary-conclusion}
 
 \appendix
 \singlespacing

@@ -1,4 +1,4 @@
-%% Creator: Inkscape inkscape 0.91+devel, www.inkscape.org
+%% Creator: Inkscape inkscape 0.91, www.inkscape.org
 %% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
 %% Accompanies image file 'rnn-multi-unrolled.pdf' (pdf, eps, ps)
 %%
@@ -49,43 +49,43 @@
   \global\let\svgscale\undefined%
   \makeatother%
   \begin{picture}(1,0.76753915)%
-    \put(0.15352711,0.18913655){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t-1}$}}}%
+    \put(0.15352715,0.18913655){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t-1}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=1]{rnn-multi-unrolled.pdf}}%
-    \put(0.38567544,0.01697122){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
+    \put(0.38567548,0.01697123){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{time}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=2]{rnn-multi-unrolled.pdf}}%
-    \put(0.37909988,0.06293234){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.37909989,0.26578211){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.8554139,0.06210104){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.8554139,0.26495088){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.37909991,0.06293234){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.37909993,0.26578212){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.85541393,0.06210105){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.85541393,0.26495088){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=3]{rnn-multi-unrolled.pdf}}%
-    \put(0.37990268,0.70548905){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.37990268,0.52651479){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.85621676,0.70465781){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
-    \put(0.85621676,0.52568355){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.37990271,0.70548905){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.37990271,0.52651479){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.85621679,0.70465781){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
+    \put(0.85621679,0.52568355){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\cdots$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=4]{rnn-multi-unrolled.pdf}}%
-    \put(0.26131427,0.38401929){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Unroll}}}%
-    \put(0.15352711,0.44986923){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t-1}$}}}%
-    \put(0.12903661,0.26210083){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z^{-1}$}}}%
+    \put(0.2613143,0.38401929){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{Unroll}}}%
+    \put(0.15352715,0.44986923){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t-1}$}}}%
+    \put(0.12903665,0.26210084){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z^{-1}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=5]{rnn-multi-unrolled.pdf}}%
-    \put(0.12983942,0.52283351){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z^{-1}$}}}%
+    \put(0.12983945,0.52283351){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$z^{-1}$}}}%
     \put(0,0){\includegraphics[width=\unitlength,page=6]{rnn-multi-unrolled.pdf}}%
-    \put(1.15834228,0.11768564){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
-    \put(1.20003923,0.56830531){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26554371\unitlength}\raggedright \end{minipage}}}%
-    \put(0.71753379,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t+1}$}}}%
-    \put(0.71753379,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t+1}$}}}%
-    \put(0.71753379,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t+1}$}}}%
-    \put(0.71753379,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t+1}$}}}%
-    \put(0.6137669,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t}$}}}%
-    \put(0.6137669,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t}$}}}%
-    \put(0.6137669,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t}$}}}%
-    \put(0.6137669,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t}$}}}%
-    \put(0.48812733,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t-1}$}}}%
-    \put(0.48812733,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t-1}$}}}%
-    \put(0.48812733,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t-1}$}}}%
-    \put(0.48812733,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t-1}$}}}%
-    \put(0.01468387,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t}$}}}%
-    \put(0.01468387,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t}$}}}%
-    \put(0.01468387,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t}$}}}%
-    \put(0.01468387,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t}$}}}%
+    \put(1.15834231,0.11768564){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{}}}%
+    \put(1.20003926,0.56830532){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.26554371\unitlength}\raggedright \end{minipage}}}%
+    \put(0.71753383,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t+1}$}}}%
+    \put(0.71753383,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t+1}$}}}%
+    \put(0.71753383,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t+1}$}}}%
+    \put(0.71753383,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t+1}$}}}%
+    \put(0.61376693,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t}$}}}%
+    \put(0.61376693,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t}$}}}%
+    \put(0.61376693,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t}$}}}%
+    \put(0.61376693,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t}$}}}%
+    \put(0.48812736,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t-1}$}}}%
+    \put(0.48812736,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t-1}$}}}%
+    \put(0.48812736,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t-1}$}}}%
+    \put(0.48812736,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t-1}$}}}%
+    \put(0.0146839,0.06851285){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{x}_{t}$}}}%
+    \put(0.0146839,0.2620488){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(1)}_{t}$}}}%
+    \put(0.0146839,0.52278154){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{h}^{(2)}_{t}$}}}%
+    \put(0.0146839,0.70688086){\color[rgb]{0,0,0}\makebox(0,0)[lb]{\smash{$\vec{y}_{t}$}}}%
   \end{picture}%
 \endgroup%
