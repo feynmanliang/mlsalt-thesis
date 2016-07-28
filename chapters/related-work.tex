@@ -25,8 +25,35 @@
 % much. The correct choice will depend on what you're writing up, and
 % your own personal preference.
 
-Eck Schmidhuber \todo{Cite} LSTM blues wrap data around to only a single octave, don't
-model when a note is released.
+One broad way to classify AI approaches to algorithmic composition is
+as either s
+
+
+Regular grammars: LSTM vs simple RNN (Elman 1998) \& RTRL/BPTT (Zipser \& Smith).
+LSTMs solve the task after ~10k iters, RTRL, RCC, and ECC 100k+
+
+Context free / context sensitive. (Wiles \& Elman 95 solves $20\%$ $A^n B^n$ CFG learning tasks with
+$n = 11$ at train a, LSTM solves $1000/1000$ using less training data. LSTM + Kalman (Perez 2002)
+
+Simple regular, context free, context sensitive grammars ( Gers , 2000)
+
+\todo{Plot output unit activations over time, sum/average pool over all activations between chord boundary
+delimiters: should yield a density over chords to be played for each time}
+\todo{Plot hidden states over time, show that state trajectories suggest a use of history (how?)}
+
+RNN music composition: Mozer, Tood
+
+(Gers, 2001) Self-sustaining oscillation: LSTM can learn to make sharp nonlinear spikes every $n$ steps
+
+Metalearning (Hochreiter , 2001). LSTM with 5000 weights and 5 months of training time
+learns an algorithm for fiting quadratic functions which is faster than backprop, $O(30)$ vs $O(1000)$
+
+Learning the Blues \cite{Eck2002}. Shows that long term music structure such as motifs can be learned.
+Modeled chords and melody separately.
+Only considered pitch classes, only permits simultaneous articulation of all
+notes in chords (ie. doesn't allow some notes to be held while others are
+articulated), initialized with $28$ seconds of initial hidden state.
+
 
 Boulanger sampled at every quarter note for JCB: we do every 8th \todo{or 16th?}
 
@@ -39,6 +66,8 @@ to build a system for improvizing blues music, demonstrating the success of
 LSTMs on musical data. They decompose the task into modelling chords
 then notes, feeding the outputs of a chord LSTM into a melody LSTM.
 
+Sturm trains character-level LSTMs on music encodeded using high-level ABC format. 
+
 \cite{Allan2005} uses HMMs to harmonize Bach chorales. \todo{How is this different}
 
 \cite{Brien2016} compared RNN models for Bach chorales. However, their data format does not permit independent
@@ -46,11 +75,11 @@ articulation of parts. More importantly, their training implementation resets th
 sequence, limiting the time-range of learned dynamics to be at most the sequence length.
 
 \cite{Boulanger-Lewandowski2012} propose a RNN-RBM model to model arbitrary
-piano roll representations. \todo{Expand upon this} In a RNN-RBM, the hidden
-state is used to compute the parameters for a restricted Boltzmann machine at
-each timestep. The RBM parameterizess a multivariate categorical distribution,
-which can be either over the four parts or the entire piano roll. This work was
-extended in \cite{Lyu2015} to yield state of the art results.
+polyphonic music using piano roll. In a RNN-RBM, the hidden state is used to
+compute the parameters for a restricted Boltzmann machine at each timestep. The
+RBM parameterizess a multivariate categorical distribution, which can be either
+over the four parts or the entire piano roll. This work was extended in
+\cite{Lyu2015} to yield state of the art results.
 
 \cite{Liu2014} uses LSTMs on Bach chorales.
 
