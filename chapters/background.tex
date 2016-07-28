@@ -11,10 +11,18 @@ networks. It introduce the definitions and notation used in later sections.
 
 Music theory is a branch of musicology concerned with the study of the rules
 and practices of music. While the general field includes study of acoustic
-qualities such as dynamics and timbre, we restrict the scope of our research
-and discussion to modeling notes within the musical composition and neglect
-issues related to articulation instructions (e.g. staccato, trill, accents) as
-well as synthesis/generation of the physical acoustic waveforms.
+qualities such as dynamics and timbre, we restrict the scope of our research to
+modeling musical \emph{scores} (e.g. \autoref{fig:eg-score}) and neglect issues
+related to articulation and performance (e.g. dynamics, accents, changes in
+tempo) as well as synthesis/generation of the physical acoustic waveforms.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth]{Figures/bwv133-6-original-score-1.png}
+    \caption{Sheet music representation of some bars from a musical score
+    (BWV133.6) with articulation instructions removed.}
+    \label{fig:eg-score}
+\end{figure}
 
 This is justified because the phsyical waveforms are more closely related
 to the skill of the performers and instruments used and are likely to vary
@@ -27,9 +35,10 @@ notes, suggesting that notes are the defining element for a piece of music.
 
 A \emph{note} is the most fundamental element of music composition and
 represents a sound played at a certain \emph{pitch} for a certain
-\emph{duration}. As a music \emph{score} can be viewed as a collection of notes
-along with when they are played (i.e. their \emph{offsets}), notes are the
-fundamental building blocks for musical compositions.
+\emph{duration}. In sheet music such as \autoref{fig:eg-score}, the are denoted
+by the filled/unfilled black heads which may also possess protruding stems.
+As a \emph{score} can be viewed as a collection of notes over time, notes are
+the fundamental building blocks for musical compositions.
 
 \subsubsection{Pitch}
 
@@ -74,7 +83,7 @@ a \emph{tone} or \emph{whole-step}.
 When discussing music, \emph{note names} which enable succinct specification of
 a musical pitch are often employed. In \emph{scientific pitch notation},
 \emph{pitch classes} which represent a pitch modulo the octave are specified by
-a letter ($C, D, E, F, G, A, B$) and optionally a single \emph{accidental}. Pitch
+a letter ranging from $A$ to $G$ and optionally a single \emph{accidental}. Pitch
 classes without accidentals are called \emph{natural} and correspond to the white
 keys on a piano. Two accidentals are possible: sharps ($\#$) raise the natural
 pitch class up one semitone and flats ($\flat$) lower by one semitone.
@@ -106,17 +115,7 @@ horizontal lines and four spaces).
     \label{fig:pitch-class}
 \end{figure}
 
-\subsubsection{Transposition invariance}
-
-Note that the discussion of pitch thus far has not made any direct connection
-between pitch and frequency. Indeed, this lack of dependence on absolute
-physical frequency highlights music's \emph{transposition invariance property}:
-many semantically relevant features in music are present the relative relations
-between pitches rather than absolute frequencies and hence remain invariant
-when the entire piece of music is offset by a constant frequency. However, a
-fixed reference frequency is oftentimes required for performance and
-reproduction purposes. To convert from pitch notation to physical frequencies,
-common modern practice is to tune $A4$ to 440 Hz (a practice known as A440).
+\subsubsection{Duration}
 
 In addition to pitch, a note also possesses a \emph{duration}. The duration of
 a note indicates how long it is to be played and is measured in fractions of a
@@ -135,19 +134,120 @@ denoted near the start of the piece in beats per minute.
     \label{fig:note-durations}
 \end{figure}
 
-Our work focuses in particular on \emph{tonal music}, a genre of music
-characterized by the prevalence of one pitch class (the \emph{tonic}) around
-which the melody and harmony are built.
+\subsection{Key signature}
 
-A basic concept within tonal music is the \emph{scale}, which defines a subset
-of pitch classes that are ``in key'' with respect to the tonic. Two fundamental
-scales are the major (with step pattern
-whole-whole-half-whole-whole-whole-half) and minor scales
-(whole-half-whole-whole-half-whole-whole). The choice of tonic and scale is
-collectively referred to as the \emph{key}. Many musical phenomena such as
-stability, mood, expectation, and resolution can be attributed to choice of key
-and \emph{modulations} (i.e. changes in key during the middle of a piece of
-music).
+\emph{Tonal music} is a genre of music encompassing most of Western classical
+music. It is characterized by the prevalence of one pitch class (the
+\emph{tonic}) around which the remainder of the piece is built.
+
+A basic concept within tonal music is \emph{mode}, which defines a subset of
+pitch classes that are ``in key'' with respect to the tonic.
+\autoref{tab:mode-intervals} illustrates the pitch intervals between adjacent
+pitch classes within two important modes: the \emph{major} (Ionian, I) and
+\emph{minor} (Aeolian, VI) modes. The choice of tonic and mode is collectively
+referred to as the \emph{key signature}.
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{lc}
+        \toprule
+        Mode & Pitch Intervals (semitones) \\
+        \midrule
+        Major (Ionian, I) & +2, +2, +1, +2, +2, +2 \\
+        Minor (Aeolian, VI) & +2, +1, +2, +2, +1, +2 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Pitch intervals for the two most important modes\cite{freedman2015correlational}. The pitches
+    in a scale can be found by starting at the tonic and successively
+    offsetting by the given pitch intervals.}
+    \label{tab:mode-intervals}
+\end{table}
+
+\subsection{Polyphony, chords, and chord progressions}
+
+Whereas \emph{monophonic} music is characterized by the presence of a single
+\emph{part} sounding at most one note at any given time, \emph{polyphonic}
+music contains multiple parts potentially sounding multiple pitches at the same
+time. Just as notes form the basis of monophonic music, chords are the fundamental
+building blocks for polyphonic music.
+
+\subsubsection{Chords: basic units for representing simultaneously sounding notes}
+
+A \emph{chord} is a collection of three or more pitches all sounding
+simultaneously\cite{randel1999harvard}. In Western classical music, they
+typically consist of a \emph{root note} whose pitch class forms a base from
+which successive notes are built upon. The intervals between the pitch classes
+in a chord are commonly labeled using \emph{qualities}, which are invariant
+across octaves. Different realizations of the same chord (e.g. octave choices
+for each pitch class) are called \emph{voicings}.
+
+\autoref{tab:chord-qualities} lists some common chord qualities and their
+corresponding intervals from the root note. Chord names are given as a root
+pitch class followed by a quality, for example: $C$ major, $A$ minor, or $G$
+half-diminished $7$th.
+
+\begin{table}[htpb]
+    \centering
+    \begin{tabular}{lc}
+        \toprule
+        Chord quality & Intervals from root pitch class \\
+        \midrule
+        Major & +4, +7 \\
+        Major 6th & +4, +7, +8 \\
+        Major 7th & +4, +7, +11 \\
+        Minor & +3, +7 \\
+        Minor 6th & +3, +7, +9 \\
+        Minor 7th & +3, +7, +10 \\
+        Dominant 7th & +4, +7, +10 \\
+        Augmented & +4, +8 \\
+        Diminished & +3, +6 \\
+        Diminished 7th & +3, +6, +9 \\
+        Half-diminished 7th & +3, +6, +10 \\
+        \bottomrule
+    \end{tabular}
+    \caption{Common chord qualities and their corresponding intervals\cite{freedman2015correlational}}
+    \label{tab:chord-qualities}
+\end{table}
+
+The lowest note in a chord is called the \emph{bass} note and is oftentimes the
+root note. However, alternative voicings called \emph{inversions} can place the
+root note on a different octave and cause the bass and root notes to
+differ.
+
+\subsubsection{Chord progressions and phrases}
+
+Sequences of chords are called \emph{chord progressions}, which are oftentimes
+grouped with adjacent progressions within a score into coherent units called
+\emph{phrases}. Many psychoacoustic phenomena such as stability, mood, and
+expectation can be attributed to phrase structure and choice of chord
+progressions. For example, chord progressions called \emph{harmonic cadences}
+are commonly used to conclude a phrase and create a sense of
+resolution\cite{randel1999harvard}. Another important example are
+\emph{modulations}, where a chord progression is used to transition the music
+into a different key signature.
+
+As chords can be overlapping and contain notes straddling between two chords or
+involve uncommon chord qualities, identifying chord progresssions involves a
+degree of subjectivity. A common method for analyzing chord progressions is
+\emph{roman numeral analysis}, where I denotes the tonic pitch class,successive
+roman numerals correspond to successive pitch classes in the key, and
+capitalization is used to denote major/minor. For example, the chord
+progression $C$ major -- $A$ minor -- $D$ major 7th -- $G$ major in the $C$
+major key signature would be represented as $I$ -- $ii$ -- $IImaj7$ -- $V$.
+
+\subsubsection{Transposition invariance}
+
+A common theme throughout our discussion has been ambiguity of the tonic. When
+discussing key signatures, the mode was defined using intervals relative to a
+choice of tonic. Similarly, roman numeral analysis of chord progressions is
+also conducted relative to a tonic. Even if a chord progression and tonic are
+both transposed by arbitrary pitch interval, the roman numeral analysis will
+remain unchanged.
+
+The \emph{transposition invariance} of chord progressions and modes is an
+important property of music. It enables us to offset an entire score by an
+arbitrary pitch interval without affecting the important psychoacoustic
+qualities captured by chord progressions and choice of mode.
 
 \section{Neural sequence probability modeling}
 
@@ -233,7 +333,7 @@ cannot be directly applied to sequential data $\x = (\x_t)_{t=1}^T$ where $T$ ma
 vary.
 
 A naive method for extending feedforward networks would be to independently
-apply a feedforward network to compute $\y_t = f(\x_t \theta)$ at each timestep
+apply a feedforward network to compute $\y_t = f(\x_t \vec{\theta})$ at each timestep
 $1 \leq t \leq T$. However, this approach is only correct when each output
 $\y_t$ depends only on the input at the current time $\x_t$ and is independent of
 all prior inputs $\{\x_k\}_{k < t}$. This assumption is false in musical data:
@@ -244,7 +344,15 @@ This shortcoming motivates \emph{recurrent neural networks} (RNNs), which
 generalize feedforward networks by introducing time-delayed recurrent
 connections between hidden layers (Elman networks \cite{elman1990finding}) or
 from the output layers to the hidden layers (Jordan networks
-\cite{jordan1997serial}). \autoref{fig:nn-rnn} illustrates an Elman-type
+\cite{jordan1997serial}). Mathematically, an (Elman-type) RNN is a discrete time
+dynamical system commonly parameterized as:
+\begin{eqnarray}
+    \h_t &=& \W_{xh} \sigma_{xh} \left( \x_t \right) + \W_{hh} \sigma_{hh} \left( \h_{t-1} \right) \label{eq:rnn-ht}\\
+    \y_t &=& \W_{hy} \sigma_{hy} \left( \h_t \right) \label{eq:rnn-yt}
+\end{eqnarray}
+where $\sigma_{\cdot \cdot}(\cdot)$ are activation functions acting
+element-wise and $\theta = \{ \W_{xh}, \W_{hh}, \W_{hy}\}$ are the learned
+parameters. \autoref{fig:nn-rnn} provides a graphical illustration of such a
 network. Notice that apart from the edges between hidden nodes, the network is
 identical to a regular feedforward network (\autoref{fig:nn-ffw}).
 
@@ -369,29 +477,25 @@ at each depth.
 
 \subsection{Training RNNs: backpropogation through time}
 
-Mathematically, a RNN is a discrete time dynamical system commonly
-parameterized as:
-\begin{eqnarray}
-    \h_t &=& \W_{xh} \sigma_{xh} \left( \x_t \right) + \W_{hh} \sigma_{hh} \left( \h_{t-1} \right) \label{eq:rnn-ht}\\
-    \y_t &=& \W_{hy} \sigma_{hy} \left( \h_t \right) \label{eq:rnn-yt}
-\end{eqnarray}
-where $\sigma_{\cdot \cdot}(\cdot)$ are activation functions acting element-wise
-and the parameters $\theta = \{ \W_{xh}, \W_{hh}, \W_{hy}\}$
-are learned from data to minimize a cost $\mathcal{E} = \sum_{1 \leq t \leq T}
-\mathcal{E}_t(\x_t)$ measuring the performance of the network on some task.
+The parameters $\vec{\theta}$ of a RNN are typically learned from data to
+minimize a cost $\mathcal{E} = \sum_{1 \leq t \leq T} \mathcal{E}_t(\x_t)$
+measuring the performance of the network on some task. This optimization is
+commonly carried out using iterative gradient descent methods, which require
+computation of the gradients $\frac{\pd \mathcal{E}}{\pd \vec{\theta}}$ at each
+iteration.
 
-One approach for computing the necessary gradients is \emph{backpropogation through
-time} (BPTT)\cite{At}, an adaptation of the backpropogation algorithm \todo{cite}
-to the unrolled RNN computation graph. Letting $\theta$ denote the model parameters,
-we can apply the chain rule to the unrolled RNN's computation graph
-in \autoref{fig:rnn-bptt} to obtain
+One approach for computing the necessary gradients is \emph{backpropogation
+through time} (BPTT)\cite{goller1996learning}, an adaptation of the backpropogation
+algorithm\cite{linnainmaa1970representation} to the unrolled RNN computation
+graph. We can apply the chain rule to the unrolled RNN's computation graph in
+\autoref{fig:rnn-bptt} to obtain
 \begin{eqnarray}
-    \frac{\pd \mathcal{E}}{\pd \theta} &=& \sum_{1 \leq t \leq T} \frac{\pd \mathcal{E}_t}{\pd \theta} \\
-    \frac{\pd \mathcal{E}_t}{\pd \theta} &=& \sum_{1 \leq k \leq t} \left(
+    \frac{\pd \mathcal{E}}{\pd \vec{\theta}} &=& \sum_{1 \leq t \leq T} \frac{\pd \mathcal{E}_t}{\pd \vec{\theta}} \\
+    \frac{\pd \mathcal{E}_t}{\pd \vec{\theta}} &=& \sum_{1 \leq k \leq t} \left(
         \frac{\pd \mathcal{E}_t}{\pd \y_t}
         \frac{\pd \y_t}{\pd \h_t}
         \frac{\pd \h_t}{\pd \h_k}
-        \frac{\pd \h_k}{\pd \theta}
+        \frac{\pd \h_k}{\pd \vec{\theta}}
     \right) \label{eq:error-t}\\
     \frac{\pd \h_t}{\pd \h_k} &=&
     \prod_{t \geq i > k} \frac{\pd \h_i}{\pd \h_{i-1}}
@@ -411,7 +515,7 @@ of \emph{temporal contributions} $
 \frac{\pd \mathcal{E}_t}{\pd \y_t}
 \frac{\pd \y_t}{\pd \h_t}
 \frac{\pd \h_t}{\pd \h_k}
-\frac{\pd \h_k}{\pd \theta}$
+\frac{\pd \h_k}{\pd \vec{\theta}}$
 measuring how $\theta$'s impact on $\h_k$ affects the cost at some future
 time $t > k$. The factors in \autoref{eq:error-transfer} measures the affect
 of the hidden state $\h_k$ on some future state $\h_t$ where $t > k$
@@ -462,25 +566,28 @@ Hence, we see that a sufficient condition for vanishing gradients is
 for $\gamma_{\W} \gamma_\sigma < 1$, in which case $\left\| \frac{\pd \h_t}{\pd \h_k} \right\| \to 0$
 exponentially for long timespans $t \gg k$. $\qed$
 
-For common activation functions, $\gamma_\sigma$ is bounded and reasonably
-small (e.g. $\gamma_\sigma = 1$ for $\sigma_{hh} = \tanh$, $\gamma_\sigma =
-0.25$ for $\sigma_{hh} = \sigmoid$). This enables us to write the sufficient
-condition for vanishing gradients as
+If $\gamma_\sigma$ is bounded, sufficient
+conditions for vanishing gradients to occur may be written as
 \begin{equation}
-    \gamma_{\W} = \| \W_{hh}^\tp \| \leq \frac{1}{\gamma_\sigma}
+    \gamma_{\W} < \frac{1}{\gamma_\sigma}
     \label{eq:vanishing-gradients-suff}
 \end{equation}
+This is true for commonly used activation functions (e.g. $\gamma_\sigma = 1$
+for $\sigma_{hh} = \tanh$, $\gamma_\sigma = 0.25$ for $\sigma_{hh} =
+\sigmoid$). 
+
 The converse of the proof implies that $\| \W_{hh}^\tp \| \geq
 \frac{1}{\gamma_\sigma}$ are necessary conditions for $\gamma_{\W}
 \gamma_\sigma > 1$ and exploding gradients to occur.
 
 \subsection{Long short term memory: solving the vanishing gradient}
 
-As \autoref{eq:vanishing-gradients-suff} provide sufficient conditions for
-vanishing gradients, any model which we may hope to successfuly learn long range
-dependencies must have $\gamma_{\W} \gamma_\sigma \geq 1$.
+In order to build a model which learns long range dependencies, vanishing
+gradients must be avoided. This requires us to design our memory cells holding
+the hidden state $\h$ such that \autoref{eq:vanishing-gradients-suff} does
+not hold.
 
-The \emph{long short term memory} (LSTM) model was proposed by Hochreiter and
+The \emph{long short term memory} (LSTM) memory cell was proposed by Hochreiter and
 Schmidhuber \cite{hochreiter1997long} as a method for dealing with
 the vanishing gradient problem. It does so by enforcing \emph{constant error flow}
 on \autoref{eq:error-transfer}, that is
@@ -496,23 +603,21 @@ Since this should hold for any hidden state $\h_{t}$, this means that:
     \item $\sigma_{hh}$ must be linear
     \item $\W_{hh} \circ \sigma_{hh} = \matr{I}$
 \end{enumerate}
-In LSTMs, this is ensured by setting $\sigma_{hh} = \W_{hh} = \matr{I}$, effectively removing
-time dynamics from the hidden state. In the literature, this is referred to as
-the \emph{constant error carousel} (CEC).
 
-In addition to the CEC, LSTMs possess three sets of gates controlling access to
-the CEC:
+In the \emph{constant error carousel} (CEC), this is ensured by setting
+$\sigma_{hh} = \W_{hh} = \I$. This may be interpreted as removing time dynamics
+on $\h$ in order to permit error signals to be transferred backwards in time
+(\autoref{eq:error-transfer}) without modification (i.e. $\forall t \geq k: \frac{\pd
+\h_t}{\pd \h_k} = \I$).
+
+In addition to using a CEC, a LSTM introduces three gates controlling access to the CEC:
 \begin{itemize}
-    \item \textbf{Input gate}: scales input $x_t$ elementwise by $i_t \in [0,1]$, \emph{writes} to $h_t$
-    \item \textbf{Output gate}: scales output $y_t$ elementwise by $o_t \in [0,1]$, \emph{reads} from $h_t$
-    \item \textbf{Forget gate}: scales previous cell value $h_{t-1}$ by $f_t \in [0,1]$, \emph{resets} $h_t$
+    \item \textbf{Input gate}: scales input $\x_t$ elementwise by $\i_t \in [0,1]$, \emph{writes} to $\h_t$
+    \item \textbf{Output gate}: scales output $\y_t$ elementwise by $\o_t \in [0,1]$, \emph{reads} from $\h_t$
+    \item \textbf{Forget gate}: scales previous cell value $\h_{t-1}$ by $\f_t \in [0,1]$, \emph{resets} $\h_t$
 \end{itemize}
-These gates imbue the model with the ability to read, write, and reset the hidden state.
-This mirrors the instructions available on memory abstractions in models of computation,
-motivating the view that a LSTM is learning a ``program'' which computes $\y$
-from $\x$ \cite{hochreiter1997long}.
 
-Mathematically, LSTM is defined by the following set of equations:
+Mathematically, the LSTM model is defined by the following set of equations:
 \begin{eqnarray}
     \i_t &=& \sigmoid(\W_{xi} \x_t + \W_{yi} \y_{t-1} + \b_i) \\
     \o_t &=& \sigmoid(\W_{xo} \x_t + \W_{yo} \y_{t-1} + \b_o) \\
@@ -521,30 +626,53 @@ Mathematically, LSTM is defined by the following set of equations:
     \y_t &=& \o_t \odot \tanh(\h_t)
 \end{eqnarray}
 where $\odot$ denotes elementwise multiplication of vectors.
-\autoref{fig:lstm-cell} depicts a single LSTM cell. Notice that it implements
-the memory cell interface, so the prior discussion on RNNs is applicable here.
+
+Notice that the gates ($\i_t$, $\o_t$, and $\f_t$) controlling flow in and out
+of the CEC are all time varying. This can be interpreted as a mechanism
+enabling LSTM to explicitly learn which error signals to trap in the CEC and
+when to release them \cite{hochreiter1997long}, enabling error signals to
+potentially be transported across long time lags.
 
 \begin{figure}[htpb]
     \centering
     \input{Figures/lstm-unit-2.pdf_tex}
-    \caption{Schematic for a single LSTM cell.}
+    \caption{Schematic for a single LSTM memory cell. Notice how the gates $\i_t$, $\o_t$, and $\f_t$ control
+    access to the constant error carousel (CEC).}
     \label{fig:lstm-cell}
 \end{figure}
 
 Some authors define LSTMs such that $\h_t$ is not used to compute gate
 activations, referring to the case where $\h_t$ is connected as ``peephole
-connections''\cite{gers2002learning}. We will use \emph{LSTM} to refer to the
-system of equations given above.
+connections''\cite{gers2002learning}. We will use LSTM to refer to the
+system of equations as written above.
 
-As a consequence of \autoref{eq:lstm-dynamics}, 
-LSTMs protect from vanishing gradient, but not exploding gradient. Research has shown
-that gradient clipping is essential to permit successful applications \cite{Pascanu2012}.
-\begin{enumerate}
-    \item
-\end{enumerate}
+\subsubsection{Practicalities for successful applications of LSTMs}
 
-\todo{Truncated BPTT}
-\todo{Gradient clipping for avoiding exploding gradient}
+Many applications of LSTMs \todo{cite examples} share some common practical
+techniques for ensuring successful training. Perhaps most important is
+\emph{gradient norm clipping} \cite{Mikolov2012}\cite{Pascanu2012} where the
+gradient is rescaled whenever it exceeds a threshold. This is necessary because
+while vanishing gradients are mitigated by the use of CECs, LSTMs do not
+explicitly protect against exploding gradients.
+
+Another common practice is the use of methods for reducing overfitting and
+improving generalization. In particular, \emph{dropout}
+\cite{srivastava2014dropout} can be applied to the connections between memory
+cells in a stacked RNN to regularize the learned features to be more robust to
+noise \cite{zaremba2014recurrent}. Additionally, \emph{batch
+normalization}\cite{ioffe2015batch} can also be applied to to the memory cell
+hidden states to reduce co-variate shifts, accelerate training, and improve
+generalization.
+
+Finally, applications of RNNs to long sequences can incur a prohibitively high
+cost for a single parameter update\cite{citeulike:13881859}. For instance,
+computing the gradient of an RNN on a sequence of length $1000$ costs the
+equivalent of a forward and backward pass on a $1000$ layer feedforward
+network. This issue is typically addressed by only back-propogating error
+signals a fixed number of timesteps back in the unrolled network, a technique
+known as \emph{truncated BPTT}\cite{williams1990efficient}. As the hidden
+states in the unrolled network have nevertheless been exposed to many timesteps,
+learning of long range structure is still possible.
 
 \printbibliography
 
