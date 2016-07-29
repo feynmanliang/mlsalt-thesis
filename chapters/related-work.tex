@@ -25,77 +25,187 @@
 % much. The correct choice will depend on what you're writing up, and
 % your own personal preference.
 
-One broad way to classify AI approaches to algorithmic composition is
-as either s
-
-
-Regular grammars: LSTM vs simple RNN (Elman 1998) \& RTRL/BPTT (Zipser \& Smith).
-LSTMs solve the task after ~10k iters, RTRL, RCC, and ECC 100k+
-
-Context free / context sensitive. (Wiles \& Elman 95 solves $20\%$ $A^n B^n$ CFG learning tasks with
-$n = 11$ at train a, LSTM solves $1000/1000$ using less training data. LSTM + Kalman (Perez 2002)
-
-Simple regular, context free, context sensitive grammars ( Gers , 2000)
-
-\todo{Plot output unit activations over time, sum/average pool over all activations between chord boundary
-delimiters: should yield a density over chords to be played for each time}
-\todo{Plot hidden states over time, show that state trajectories suggest a use of history (how?)}
-
-RNN music composition: Mozer, Tood
-
-(Gers, 2001) Self-sustaining oscillation: LSTM can learn to make sharp nonlinear spikes every $n$ steps
-
-Metalearning (Hochreiter , 2001). LSTM with 5000 weights and 5 months of training time
-learns an algorithm for fiting quadratic functions which is faster than backprop, $O(30)$ vs $O(1000)$
-
-Learning the Blues \cite{Eck2002}. Shows that long term music structure such as motifs can be learned.
-Modeled chords and melody separately.
-Only considered pitch classes, only permits simultaneous articulation of all
-notes in chords (ie. doesn't allow some notes to be held while others are
-articulated), initialized with $28$ seconds of initial hidden state.
-
-
-Boulanger sampled at every quarter note for JCB: we do every 8th \todo{or 16th?}
+\section{Computational musicology and automated composition}
 
 Machine learning on music has a rich history in classification and analysis tasks.
 \cite{Herlands2014} describe a system to classify music style.
-
-\cite{Eck2002} first looked at LSTMs for music composition, noting a lack of global
-structure and long-range dependencies. The same authors \cite{Eck2002-blues} go on
-to build a system for improvizing blues music, demonstrating the success of
-LSTMs on musical data. They decompose the task into modelling chords
-then notes, feeding the outputs of a chord LSTM into a melody LSTM.
-
-Sturm trains character-level LSTMs on music encodeded using high-level ABC format. 
-
-\cite{Allan2005} uses HMMs to harmonize Bach chorales. \todo{How is this different}
-
-\cite{Brien2016} compared RNN models for Bach chorales. However, their data format does not permit independent
-articulation of parts. More importantly, their training implementation resets the LSTM state for each input
-sequence, limiting the time-range of learned dynamics to be at most the sequence length.
-
-\cite{Boulanger-Lewandowski2012} propose a RNN-RBM model to model arbitrary
-polyphonic music using piano roll. In a RNN-RBM, the hidden state is used to
-compute the parameters for a restricted Boltzmann machine at each timestep. The
-RBM parameterizess a multivariate categorical distribution, which can be either
-over the four parts or the entire piano roll. This work was extended in
-\cite{Lyu2015} to yield state of the art results.
-
-\cite{Liu2014} uses LSTMs on Bach chorales.
 
 Computational musicology has been greatly aided by modern tools, including
 \texttt{music21} \cite{Scott2015}. \cite{Cuthbert2011} demonstrates machine
 learning on rich music representations using \texttt{music21}.
 
-On the music theory side, \cite{Tymoczko2009} proposed three different metrics
-for musical data and demonstrated their relationships using tools from geometry
-and topology.
+\section{Representation formats for music}
 
-LSTM architectures have been adapted for music. \cite{Koutnik2014} proposes a
-clockwork RNN, which updates different subvectors of the hidden state at
-different periods in order to capture both short-term and long-term dynamics.
-\cite{Mikolov2015} proposes the structurally cosntrained RNN (SCRN), a simple
-architecture achieving comparable performance to LSTMs.
+\cite{franklin2004recurrent} proposes Circle of Thirds. Alternatives
+include overlapping subharmonics representation\cite{laden1989representation}
+as used in \cite{mozer1994neural}.
+
+\cite{eck2008learning} explicitly accounts for \emph{meter} \todo{Use when
+justifying meter plots}. Extends \cite{Eck2002} with time-delayed
+autocorrelation-based predictor of metrical structure.
+
+
+\section{Systems for automatic composition}
+
+One broad way to classify AI approaches to algorithmic composition is as either
+symbolic (rule based) or connectionist (NNs)\cite{toiviainen2000symbolic}.
+Rule based incorporate prior knowledge, connectionist avoid subjective theories
+on harmony and music cognition when defining rules and tolerates noise/distortion.
+
+\subsection{Symbolic AI / rule-based systems}
+
+CHORAL \cite{ebciouglu1988expert} is a rule based expert system (symbolic) for
+harmonizing 4-part chorales.
+
+Extracting rules and building augmented transition network (ATN) first
+described in Experiments in Musical Intelligence (EMI) \cite{cope1992computer}.
+Bach in a Box \cite{spangler1998bach} rule based automatic composition system,
+learns harmonic rules expressed as rule-based neural networks. Incorporates a
+priori knowledge into rulebase.
+
+\cite{cruz1998learning} applies grammitcal inference to learn regular grammars
+for modeling musical style. Applied to Automatic Composition and Style
+Recognition. Points out the importance of coding scheme on results.
+
+\cite{tsang1991harmonizing} uses constraint logic programming.
+
+\subsection{Connectionist methods for algorithmic composition}
+
+\cite{griffith1999musical} provides a comprehensive review of connectionist
+methods for computational musicology, with the fourth part relating to
+composition.
+
+First connectionist model for music \cite{todd1988sequential}
+\cite{todd1989connectionist} \cite{bharucha1989modeling}. Note-by-note Jordan
+RNN. \emph{Normalizes sequences to common tonic} (transposition invariance).
+\emph{Hierarchy of networks at different timescales}
+
+Michael Mozer \cite{mozer1994neural} presents CONCERT, a \emph{BPTT} RNN
+for \emph{note-by-note composition}. Novel because brought to light issues on
+\emph{psychologically-based representations} of pitch, duration, and harmonic
+structure \cite{shepard1982geometrical}. Additional encoding method uses
+\emph{distributed embedding} of \cite{laden1989representation} originally trained for
+chord classification \todo{Motivates our word2vec} to represent temporal
+context with \emph{two levels of resolution}. The model passes objective evaluations
+by faithfully reproducing scales but ``while the local contours made sense, the
+pieces were not musically coherent, lacking thematic structure and having
+minimal phrase structure and rhythmic organization.``
+
+HARMONET \cite{hild1991harmonet} is a connectionist NN + formal rules system
+for harmonizing Bach chorales. Uses domain-specific pipeline: melody $\to$
+extract, harmonic skeleton (quantize to 4th, roman numeral analysis i.e. module
+inversions/characteristic dissonances) $\to$ expand harmonies to chords (formal rules) $\to$
+ornamentation to add 8th notes (formal rules). Too specific to harmonization of chorales.
+\emph{Assumes sequential left to right order, just like ours}.
+
+MELONET \cite{feulner1994melonet} builds on top of harmonic modelling by
+HARMONET to construct chorale variations (partita) where one of the input
+voices is varied in a harmonically believable way. \emph{Multiple timescales
+via delayed update units (like clockwork) and hierarchy (including motif
+classifier subnet) to explicitly force motifs to be generated}. Used
+RProp\cite{riedmiller1993direct}, seen again in \cite{Liu2014}. Only have 18
+Pachelbel chorales for original training set \cite{hornel1997melonet}.
+Extended in MELONET II \cite{hornel1996learning} to use \emph{distributed
+representaiton for motifs} along with multi-scale neural network. Also pioneers
+genetic algorithm training.
+
+\section{LSTMs: background and motivation}
+
+CECs were first proposed by \cite{hochreiter1997long}. Forget gate on LSTM
+in \cite{gers2000learning} to prevent state from growing indefinitely.
+
+RTRL \cite{robinson1987utility} and BPTT \cite{williams1995gradient} are two
+methods for training RNNs. Truncated BPTT \cite{williams1990efficient}.
+TD\cite{sutton1998reinforcement}used for learning LSTM in
+\cite{franklin2004predicting}.
+
+Regular grammars: LSTM vs Elman RNN (\cite{elman1990finding}) \& RTRL/BPTT (Zipser \& Smith).
+LSTMs solve the task after ~10k iters, RTRL, RCC, and ECC 100k+
+
+Context free / context sensitive. (\cite{wiles1995learning} solves $20\%$ $A^n
+B^n$ CFG learning tasks with $n = 11$ at train a, LSTM\cite{gers2001lstm}
+solves $1000/1000$ using less training data. LSTM + Kalman \cite{gers2002dekf}.
+
+CHIME \cite{franklin2001learning} adopted \cite{todd1989connectionist} (Jordan type) and
+added a second training phase using reinforcement learning (actor-critic, \cite{sutton1998reinforcement})
+and critic based on on ``music rules.'' Use chord decomposition just
+like \cite{Eck2002}.
+
+Online adaptatoin at test time proposed as \emph{dynamic evaluation}
+\cite{Mikolov2010} \cite{Mikolov2012} and improved using Kalman filter
+\cite{gers2002dekf}.
+
+\subsection{Applications of LSTMs to to music}
+
+\cite{gers2000recurrent}\cite{gers2002learning} shows RNNs take into account
+for size of time intervals between events, a feature ignored by HMMs.
+Introduced ``peephole connections'' and showed that that LSTM could learn to
+produce self-sustaining oscillation: LSTM can learn to make sharp nonlinear
+spikes every $n$ steps. \emph{Motivates frame-based processing} because it ``forces
+the network to learn the relative duration of notes, making it easier for the
+counting and timing mechanisms to work''\cite{Eck2002}.
+
+Learning the Blues \cite{Eck2002} \cite{Eck2002-blues}. Shows that long term
+music structure such as motifs can be learned. ``no explicit way to determine
+when a note ends.'' Decomposed into two tasks: chord progression, then melody synthesis
+given the chord progression. Also localist data representation like
+\cite{todd1989connectionist} because implicitly multi-voice and easy to
+generate distributions over notes. However, their encoding only consider $12$
+chords and $13$ pitch classes and only permits simultaneous articulation of all
+notes in chords (ie. doesn't allow some notes to be held while others are
+articulated). Also quantized to eigth notes: we do 16th.
+
+LSTM model for jazz melodies with separate units for duration and note\cite{franklin2005jazz}.
+\cite{Koutnik2014} clockwork RNN generalized framework of multi-timescale.
+
+\cite{franklin2006recurrent} evaluates on variety of tasks, claims: ``while we have found a task
+that challenges a single LSTM network, we do not believe that any other recurrent networks we have used
+would be able to learn these songs.'''
+
+\cite{sturm2015folk} \cite{sturm2016music} trains character-level LSTMs on folk
+music encodeded using high-level ABC format for composition.
+
+\section{Computational methods applied to Bach chorales}
+
+Bellgard and Tsaing investigate harmonizing 4-part chorales using effective
+Boltzmann machine \cite{bellgard1994harmonizing} to model local contexts and
+sample to harmonize. Generative model: can be conditioned to harmonize, sampled
+to generate, queried for analysis/scoring. \textbf{Only considers local contexts, approximates
+long-range dependencies but not well. Also quantized to half-notes!}.
+
+\cite{Allan2005} uses HMMs to harmonize Bach chorales.
+
+\cite{Boulanger-Lewandowski2012} propose a RNN-RBM model extending RTRBM \cite{sutskever2009recurrent}
+to model arbitrary polyphonic music using piano roll. In a RNN-RBM, the hidden
+state is used to compute the parameters for a restricted Boltzmann machine at
+each timestep. The RBM parameterizess a multivariate categorical distribution,
+which can be either over the four parts or the entire piano roll. This work was
+extended in \cite{Lyu2015} to yield state of the art results. Boulanger sampled
+at every quarter note for JCB: we do every 8th \todo{or 16th?}
+
+\cite{Liu2014} uses LSTMs on Bach chorales, but use squared error criterion. Claim RProp
+is novel, but actually applied before \cite{riedmiller1993direct} in same context. Quantized
+to quarter notes, suffered from not modelling articulation like \cite{Eck2002}.
+
+\cite{Koutnik2014} proposes a clockwork RNN, which updates different subvectors
+of the hidden state at different periods in order to capture both short-term
+and long-term dynamics. \cite{Mikolov2015} proposes the structurally
+cosntrained RNN (SCRN), a simple architecture achieving comparable performance
+to LSTMs.
+
+\cite{Brien2016} compared RNN models for Bach chorales. However, their data format does not permit independent
+articulation of parts. More importantly, their training implementation resets the LSTM state for each input
+sequence, limiting the time-range of learned dynamics to be at most the sequence length.
+
+\section{Evaluation}
+
+\cite{pearce2001towards} addresses difficulty in quantitative evaluation,
+suggesting the use of a learned critic in a manner similar to GANs
+\cite{goodfellow2014generative}. In a later report,
+\cite{pearce2002motivations} attribute difficulty in evaluation due to lack
+aim: algorithmic composition, design of compositional tools, and computational
+modelling of musical styles or music cognition all have different motivations
+and should thus be evaluated differently.
 
 \printbibliography
 

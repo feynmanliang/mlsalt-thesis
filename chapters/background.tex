@@ -3,6 +3,12 @@
 
 \chapter{Background}
 
+\todo{Try mimicking \cite{franklin2006recurrent}}.
+
+\todo{Long-term dependencies are at the heart of what defines a style of music, with
+events spanning several notes or bars contributing to the formation of metrical and phrasal
+structure \cite{cooper1963rhythmic}.}
+
 This chapter provides background information on two topics heavily utilized
 throughout this dissertation: Western music theory and recurrent neural
 networks. It introduce the definitions and notation used in later sections.
@@ -486,7 +492,7 @@ iteration.
 
 One approach for computing the necessary gradients is \emph{backpropogation
 through time} (BPTT)\cite{goller1996learning}, an adaptation of the backpropogation
-algorithm\cite{linnainmaa1970representation} to the unrolled RNN computation
+algorithm\cite{linnainmaa1970representation} \cite{rumelhart1988learning} to the unrolled RNN computation
 graph. We can apply the chain rule to the unrolled RNN's computation graph in
 \autoref{fig:rnn-bptt} to obtain
 \begin{eqnarray}
@@ -643,7 +649,7 @@ potentially be transported across long time lags.
 
 Some authors define LSTMs such that $\h_t$ is not used to compute gate
 activations, referring to the case where $\h_t$ is connected as ``peephole
-connections''\cite{gers2002learning}. We will use LSTM to refer to the
+connections''\cite{gers2000recurrent}. We will use LSTM to refer to the
 system of equations as written above.
 
 \subsubsection{Practicalities for successful applications of LSTMs}

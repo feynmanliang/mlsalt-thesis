@@ -3,6 +3,43 @@
 
 \chapter{Chorale harmonization}
 
+Could use bidirectional \cite{Graves2005} since entire sequence is known.
+
+\section{Background}
+
+A chorale consists of four parts: soprano, alto, tenor, and bass. Chorale harmonization
+involves producing the alto, tenor, and bass parts given a fixed soprany melody. As described
+by Walter Piston \cite{piston1978harmony}:
+
+\begin{quote}
+  True harmonisation, then, means a consideration of the alternatives in available chords, the reasoned selection of one
+  of these alternatives, and the tasteful arrangement of the texture of the added parts with due regard
+  for consistency of style
+\end{quote}
+
+The Baroque style employed by Bach has specific guidelines
+such as disallowing parallel fifths and parallel octaves as well as
+considerations for voice leading \cite{piston1978harmony}.
+
+For a music student studying chorale harmonization, a common pedagogical
+exercise \cite{denny1960oxford}\cite{piston1978harmony} is a sequence of tasks increasing in difficulty:
+\begin{enumerate}
+  \item Providing either alto and tenor given fixed soprano and bass
+  \item Providing both alto and tenor parts given fixed soprano and bass
+  \item Providing all remaining parts given only the soprano line
+\end{enumerate}
+
+There are no definitive formalization of the harmonization process, making
+evaluation difficult. Attenpts to formalize the process using Shenkerian
+structural analysis \cite{oswald1973harmony} and symbolic methods such as
+generative grammars \cite{lerdahl1983jackendoff}\cite{winograd1968linguistics}
+exist, but involve human analytical process.
+
+``Clamp'' the generative model and have it ``fill-in'' missing bits
+\cite{hinton1986learning}.
+
+\section{Harmonizing}
+
 Recall that sampling from the generative model involves drawing from a multinomial
 \[
   \hat{P}(w_{t+1} = w | w_{t:1}) = \frac{\exp \{ y_{t,w} / T \}}{\sum_{w' \in V} \exp \{ y_{t,w'} / T \}}
