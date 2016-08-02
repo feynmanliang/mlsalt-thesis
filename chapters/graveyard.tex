@@ -250,6 +250,84 @@ back-off N-grams and other interpolated language models.
 Fortunately, low order N-grams and standard HMM-based models are sampleable and
 thus can be used as baselines.
 
+\section{Related work}
+
+\cite{Cuthbert2011} used
+\texttt{music21} to generate rich feature representations for music for
+downstream machine learning tasks.
+
+The application of machine learning to music has a rich history.
+\cite{Herlands2014} describe a system to classify music into homogeneous
+styles. However, they focus on the discriminative task and do not consider
+how to generate novel scores.
+
+
+\section{LSTMs: background and motivation}
+
+Two prominent methods for training RNNs include real-time recurrent learning (RTRL)
+\cite{robinson1987utility} and backpropogation through time (BPTT) \cite{williams1995gradient}.
+\cite{williams1990efficient} introduces truncated BPTT to address computational complexity
+when learning over very long sequences. Temporal difference \cite{sutton1998reinforcement} has
+also been proposed as a method for learning RNNs \cite{franklin2004predicting}.
+
+The first LSTM models, which did not include forget gates, was introduced in
+\cite{hochreiter1997long}. \cite{gers2000learning} later revised the LSTM model
+to include forget gates in order to prevent hidden states from growing
+indefinitely.
+
+LSTMs have been demonstrated to outperform traditional RNNs on a variety of
+tasks. \cite{gers2001lstm} demonstrates a LSTM correctly recognizing $1000$
+instances from the context-free grammar $A^n B^n$ while an Elman RNN achieves
+only $20\%$ accuracy.
+
+Online adaptation at test time using a Kalman filter was described in \cite{gers2002dekf}.
+\cite{Mikolov2010} \cite{Mikolov2012} refers to this as ``dynamic evaluation.''
+
+In \emph{Bach in a Box} \cite{spangler1998bach},
+harmonic rules are collected in a database and then used to build rule-based
+neural networks. This enables encoding of prior knowledge as rules in the
+rulebase.
+
+\cite{eck2008learning} attempts to model meter by introducing time-delayed
+connections in \cite{Eck2002}
+
+\subsection{Representation of music data}
+
+\cite{mozer1994neural} 
+discusses the importance of music representation, settling on
+\emph{psychologically-based representations} of pitch, duration, and harmonic
+structure \cite{shepard1982geometrical}.
+
+Many attempts to represent musical data have been investigated. Attempts which
+explicitly model harmonic structure include a Circle of Thirds representation
+\cite{franklin2004recurrent} or overlapping subharmonics
+representation\cite{laden1989representation}, both of which have been studied
+in the context of generative RNN models \cite{franklin2004recurrent}
+\cite{mozer1994neural}. Other representations attempt to model notions such as
+musical distance in terms of voice leading, orbifolds, and tuning
+lattices\cite{Tymoczko2009}.
+
+LSTM model for jazz melodies with separate units for duration and note\cite{franklin2005jazz}.
+
+The success of these methods are varied and it remains ambiguous if any
+is better. Furthermore,
+
+\subsection{Evaluation of models}
+
+\cite{pearce2001towards} addresses difficulty in quantitative evaluation,
+suggesting the use of a learned critic in a manner similar to GANs
+\cite{goodfellow2014generative}. In a later report,
+\cite{pearce2002motivations} attribute difficulty in evaluation due to lack
+aim: algorithmic composition, design of compositional tools, and computational
+modelling of musical styles or music cognition all have different motivations
+and should thus be evaluated differently.
+
+\cite{ariza2009} criticizes a musical Turing test as providing little data about
+how to improve the system, suggesting that listener studies using music experts
+may be more insightful.
+
+
+
 
 \printbibliography
 

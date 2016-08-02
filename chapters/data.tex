@@ -18,6 +18,9 @@ the Soprano part and the remaining parts harmonize the melody.
 
 \section{Preprocessing}
 
+Motivated by transposition invariance and prior work \cite{mozer1994}, notes are
+normalized to a common tonic.
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-original-score-1.png}
@@ -93,6 +96,7 @@ We represent musical scores using a piano roll representation. Firstly, time is
 discretized into constant timestep frames. For each frame, a set of (note, tie)
 pairs representing which a note's pitch and whether it is tied
 (continuing a note from the previous frame) or newly played notes.
+localist data representation supported by \cite{todd1989connectionist}.
 
 
 We transpose all scores with major key signatures to C major and minor key
@@ -104,6 +108,11 @@ not alter the tonal properties of the music.
     \item Strip all dynamics info
     \item Restrict to 4/4
 \end{enumerate}
+
+LSTM could learn to produce self-sustaining oscillation: LSTM can learn to make
+sharp nonlinear spikes every $n$ steps. \emph{Motivates frame-based processing}
+because it ``forces the network to learn the relative duration of notes, making
+it easier for the counting and timing mechanisms to work''\cite{Eck2002}.
 
 Both frame-based processing and quantization to eighth notes justified by Eck
 and Smidhuber LSTM Blues \todo{cite}. Eight network time steps are required to

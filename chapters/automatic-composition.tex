@@ -6,6 +6,9 @@
 Teacher forcing \cite{williams1989learning} preesents target outputs as
 recurrent inputs rather than actual outputs since they are not yet correct
 during training.
+\todo{Don't plagarize: Following Mozer (1994) we will train the network to
+predict the probability density over all possible notes at time $t$ using as
+input the note (and chord) values at time $t-1$}
 
 Differs from composition because sequential in nature: don't have the next note.
 
@@ -74,6 +77,9 @@ one measure of difference between predictions and \todo{justify cross-entropy}
 
 \section{Polyphonic modeling}
 
+\cite{Nayebi2015} reports LSTMs significantly
+outperform GRUs in music applications.
+
 \section{Technical details}
 
 \todo{We use teacher forcing \cite{williams1989learning}}
@@ -116,6 +122,10 @@ and gradients are accumulated during each \texttt{backward} pass.
 
 Research in grid LSTMs suggests that we can go deeper by introducing
 gates along the depth dimension to help permit information flow \todo{cite gird LSTMs}.
+
+\section{Results}
+
+Compare with \cite{Allan2005} and \cite{Brien2016}.
 
 \printbibliography
 
