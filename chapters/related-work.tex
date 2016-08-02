@@ -32,13 +32,13 @@
 
 \section{Machine learning on musical data}
 
-Computational methods applied to large corpuses of music was first described in
+Computational methods applied to large corpora of music was first described in
 \cite{coutinho2005computational}, which termed the phrase ``computational
 musicology.'' Since then, development modern tools have greatly aided research
 efforts. \texttt{music21} \cite{Scott2015} is a Python programming environment
 for performing computations over musical composition data which has been
 utilized for a variety of computational musicology tasks ranging from
-heirarchical modeling of metrical structure \cite{ariza2010modeling}, feature
+hierarchical modelling of metrical structure \cite{ariza2010modeling}, feature
 generation for downstream machine learning\cite{Cuthbert2011}, and style
 classification \cite{Herlands2014}.
 
@@ -46,7 +46,7 @@ Focusing on machine learning applications, most research can be
 classified under one or more of the following tasks:
 \begin{enumerate}
   \item Classification: the style, composer, or other musical attribute is to be classified
-  \item Harmonization: a melody is given and the remaining parts are to be generated
+  \item Harmonisation: a melody is given and the remaining parts are to be generated
   \item Completion: given the beginning of a score, the remainder is to be generated
   \item Automatic Composition: a complete unconstrained score is to be generated
 \end{enumerate}
@@ -60,7 +60,7 @@ work in this area to solve our research goals of music synthesis\todo{of what?}.
 
 \section{Models for music synthesis}
 
-Unlike classification, the other tasks (harmonization, completion, automatic
+Unlike classification, the other tasks (harmonisation, completion, automatic
 composition) require synthesis of novel music. One broad classification of
 music synthesis methods \cite{toiviainen2000symbolic} distinguishes between
 symbolic (i.e. rule based) versus connectionist (i.e. neural networks).
@@ -68,14 +68,14 @@ symbolic (i.e. rule based) versus connectionist (i.e. neural networks).
 \subsection{Symbolic rule-based methods}
 
 CHORAL \cite{ebciouglu1988expert} is one of the first rule based expert system
-for harmonizing Bach chorales. It uses 350 manually defined rules as well as
+for harmonising Bach chorales. It uses 350 manually defined rules as well as
 hand-tuned search heuristics. A later system called \emph{Experiments in Music
 Intelligence} (EMI) \cite{cope1992computer} automatically extracted rules to
 build an augmented transition network\cite{wanner1980atn}. In
 \cite{cruz1998learning}, grammatical inference is used to learn regular
-grammars over chord progressions for modeling musical style.
+grammars over chord progressions for modelling musical style.
 \cite{tsang1991harmonizing} applies constraint logic programming for generating
-harmonizations which satisfy certain harmonic constraints.
+harmonisations which satisfy certain harmonic constraints.
 
 While symbolic methods can easily incorporate domain-specific knowledge and are
 more interpretable than connectionist models, they are also inherently biased
@@ -89,7 +89,7 @@ noise and limit creativity by disallowing deviation from the defined rules.
 
 Neural networks have been previously applied to music with varying degrees of
 success\cite{griffith1999musical}. The earliest connectionist music models
-utilized note-level Jordan RNNs on melody generation and harmonization tasks
+utilized note-level Jordan RNNs on melody generation and harmonisation tasks
 \cite{todd1988sequential} \cite{todd1989connectionist}
 \cite{bharucha1989modeling}. \todo{say more}
 
@@ -101,21 +101,21 @@ embedding originally trained for style classification
 \cite{laden1989representation}. The model passes objective evaluations by
 faithfully reproducing scales but ``while the local contours made sense, the
 pieces were not musically coherent, lacking thematic structure and having
-minimal phrase structure and rhythmic organization`` \cite{mozer1994neural}.
+minimal phrase structure and rhythmic organisation`` \cite{mozer1994neural}.
 
 \cite{Boulanger-Lewandowski2012} proposed the RNN-RBM. a time-varying RBM with
 hidden units evolving over time according to a RNN, to model polyphonic music
 on a piano roll representation. However, training the RNN-RBM requires an
-expensive contrastive divergence sampling step at each timeframe and a
-nontrivial Hessian-free optimization routine. Furthermore, the authors
-quantized music to eigth-notes. In contrast, our work uses the well-understood
+expensive contrastive divergence sampling step at each timestep and a
+nontrivial Hessian-free optimisation routine. Furthermore, the authors
+quantized music to eighth-notes. In contrast, our work uses the well-understood
 truncated BPTT algorithm for training and quantizes to sixteenth-notes to achieve
 two-times higher time resolution.
 
 \cite{Lyu2015} extended the RNN-RBM\cite{Boulanger-Lewandowski2012} to use a
-LSTM instead of a RNN for modeling hidden unit time dynamics. Unfortunately,
-the authors do not evaluate their model beyond stating ``LSTM-RTRBM could learn
-melody lines\ldots while RTRBM generates incosistent and unpleasant sample
+LSTM instead of a RNN for modelling hidden unit time dynamics. Unfortunately,
+the authors do not evaluate their model beyond stating ``LSTM-RBM could learn
+melody lines\ldots while RNN-RBM generates inconsistent and unpleasant sample
 sequences.''
 
 \subsection{Hybrid methods}
@@ -129,7 +129,7 @@ domain-specific processing pipeline consisting of:
   \item Harmonic modelling: Predict harmonic skeleton (i.e. Roman numerals
   quantized to quarter-notes) using a neural network
   \item Expand each Roman numeral to chords using formal rules
-  \item Ornamentation: add eigth-notes using formal rules
+  \item Ornamentation: add eighth-notes using formal rules
 \end{enumerate}
 The specialized architecture of HARMONET makes it unable to generalize
 to other tasks such as automatic composition or composition scoring\todo{Define this task}.
@@ -143,7 +143,7 @@ ideas which have been rediscovered in recent years, including:
 \begin{enumerate}
   \item Delayed update units to model multiple timescales (described again in Clockwork
   RNNs \cite{Koutnik2014})
-  \item Use of Resilient Propogation (RProp) \cite{riedmiller1993direct} for training (
+  \item Use of Resilient Propagation (RProp) \cite{riedmiller1993direct} for training (
   described again in \cite{Liu2014})
 \end{enumerate}
 Additionally, MELONET utilizes a motif classification neural network to
@@ -174,12 +174,12 @@ RNN architectures on variety of music tasks and concludes: ``while we have
 found a task that challenges a single LSTM network, we do not believe that any
 other recurrent networks we have used would be able to learn these songs.'''
 
-One of the first applications of LSTMs to music was to improvize blues melody
+One of the first applications of LSTMs to music was to improvise blues melody
 lines \cite{Eck2002}\cite{Eck2002-blues}. Using a LSTM to model blues chord
 progressions and another to model melody lines given chords, the authors
 reported that LSTM can learn long term music structure such as repeated motifs
-can be learned without explicit modeling (e.g. MELONET). However, the music
-representation quantized to 8th notes, used considered pitch classes without
+can be learned without explicit modelling (e.g. MELONET). However, the music
+representation quantized to eighth notes, used considered pitch classes without
 accounting for octaves, and limited the model to $12$ possible chords.
 Additionally, there was ``no explicit way to determine when a note ends,''
 prohibiting discrimination between four consecutive articulations of a note at
@@ -199,17 +199,17 @@ explicitly address polyphony and present exclusively monophonic results.
 Many variants of the LSTM architecture have been proposed. Perhaps the most
 well known is the gated recurrent unit (GRU)\cite{cho2014learning}, which
 constrains the input and forget gates to sum to $1$. \cite{Mikolov2015}
-proposed the structurally cosntrained RNN (SCRN), a simple architecture
+proposed the structurally constrained RNN (SCRN), a simple architecture
 achieving comparable performance to LSTMs. Of most relevance to music,
-\cite{Koutnik2014} proposed the clockwork RNN for explicitly modeling phenomena
-occuring at multiple timescales by updating different blocks of the hidden
+\cite{Koutnik2014} proposed the clockwork RNN for explicitly modelling phenomena
+occurring at multiple timescales by updating different blocks of the hidden
 state at different periods. Whether these differences matter is not definitive:
 \cite{greff2015lstm} performed 5400 experiments on eight different
 architectures and found no significant difference in performance compared to
 the original LSTM architecture. \cite{Nayebi2015} reports LSTMs significantly
 outperform GRUs in music applications.
 
-\section{Generative modeling of Bach Chorales}
+\section{Generative modelling of Bach Chorales}
 
 One of the first generative models for harmonizing Bach chorales is Bellgard
 and Tsaing's effective Boltzmann machine model \cite{bellgard1994harmonizing}. Their model
