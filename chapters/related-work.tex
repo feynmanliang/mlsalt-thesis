@@ -46,7 +46,7 @@ Focusing on machine learning applications, most research can be
 classified under one or more of the following tasks:
 \begin{enumerate}
   \item Classification: the style, composer, or other musical attribute is to be classified
-  \item Harmonisation: a melody is given and the remaining parts are to be generated
+  \item harmonization: a melody is given and the remaining parts are to be generated
   \item Completion: given the beginning of a score, the remainder is to be generated
   \item Automatic Composition: a complete unconstrained score is to be generated
 \end{enumerate}
@@ -60,7 +60,7 @@ work in this area to solve our research goals of music synthesis\todo{of what?}.
 
 \section{Models for music synthesis}
 
-Unlike classification, the other tasks (harmonisation, completion, automatic
+Unlike classification, the other tasks (harmonization, completion, automatic
 composition) require synthesis of novel music. One broad classification of
 music synthesis methods \cite{toiviainen2000symbolic} distinguishes between
 symbolic (i.e. rule based) versus connectionist (i.e. neural networks).
@@ -75,7 +75,7 @@ build an augmented transition network\cite{wanner1980atn}. In
 \cite{cruz1998learning}, grammatical inference is used to learn regular
 grammars over chord progressions for modelling musical style.
 \cite{tsang1991harmonizing} applies constraint logic programming for generating
-harmonisations which satisfy certain harmonic constraints.
+harmonizations which satisfy certain harmonic constraints.
 
 While symbolic methods can easily incorporate domain-specific knowledge and are
 more interpretable than connectionist models, they are also inherently biased
@@ -89,7 +89,7 @@ noise and limit creativity by disallowing deviation from the defined rules.
 
 Neural networks have been previously applied to music with varying degrees of
 success\cite{griffith1999musical}. The earliest connectionist music models
-utilized note-level Jordan RNNs on melody generation and harmonisation tasks
+utilized note-level Jordan RNNs on melody generation and harmonization tasks
 \cite{todd1988sequential} \cite{todd1989connectionist}
 \cite{bharucha1989modeling}. \todo{say more}
 
@@ -236,6 +236,7 @@ clockwork RNNs and LSTMs was very small ($6.5$ vs $6.75$ cross-entropy loss) and
 implementation resets the LSTM state when truncating gradients during BPTT, limiting the
 time-range of learned dynamics to be at most the sequence length.
 
+\todo{Tom Collins work}
 
 \printbibliography
 

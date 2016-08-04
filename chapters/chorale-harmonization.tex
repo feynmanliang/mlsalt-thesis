@@ -3,7 +3,13 @@
 
 \chapter{Chorale harmonization}
 
-Could use bidirectional \cite{Graves2005} since entire sequence is known.
+Unlike automatic composition, in harmonization tasks we are given the entire sequence of notes
+for one or more parts. As one of the parts is now fixed, the model is no longer able to freely
+compose and harmonic deviations from the fixed parts will result in dissonances and conflicting
+expectations. This lack of accountability for future expectations is one of the failure modes of our models.
+One potential method for mitigating this is bidirectional LSTMs\cite{Graves2005}, which account
+for both the future and prior contexts. However, a bidirectional LSTM cannot be sequentially
+sampled to perform automatic composition.
 
 \section{Background}
 

@@ -5,16 +5,42 @@
 
 \todo{Try mimicking \cite{franklin2006recurrent}}.
 
+\todo{Motivation: Long-term dependencies are at the heart of what defines a style of music, with
+events spanning several notes or bars contributing to the formation of metrical and phrasal
+structure \cite{cooper1963rhythmic}.}
+
+\todo{Describe automatic composition vs harmonization vs analysis/scoring}
 Generative models are preferrable because they can be:
 \begin{enumerate}
   \item Conditioned for harmonization
   \item Sampled for automatic composition
   \item Queried for analysis/scoring
 \end{enumerate}
+Automatic composition can be described\cite{papadopoulos1999ai} as:
+\begin{quote}
+  a sequence (set) of rules (instructions, operations) for solving (accomplishing) a [particular] problem (task)
+  [in a finite number of steps] of combining musical parts (things, elements) into a whole (composition)
+\end{quote}
+\cite{pearce2002motivations} emphasizes \emph{algorithmic composition} should ``be applied exclusively
+to activities in which the motivations have this artistic character.''
 
-\todo{Long-term dependencies are at the heart of what defines a style of music, with
-events spanning several notes or bars contributing to the formation of metrical and phrasal
-structure \cite{cooper1963rhythmic}.}
+
+
+\todo{Describe piano roll vs sheet music}
+\emph{Piano roll} music transcriptions
+(\autoref{fig:piano-roll-effects-preproc}) are quantized both in time ($t \in
+T$) and note frequencies ($n \in N$). frequencies quantized to a piano roll.
+\todo{Motivate quantization with Western music}.
+
+We can represent a piano roll transcription as a high-dimensional vecctor
+$X_{t,n} \in \RR^{|T| \times |N|}$ where $X_{t,n}$ denotes the note
+velocities for note $n$ at time $t$.
+
+\todo{Describe MIDIs 127 iquantized pitches, isomorphic to musicXML}
+
+\todo{Describe Bach and chorales, 4 parts, soprano lead with ATB harmony,
+regular phrases, fermatas to denote phrase ends}
+
 
 This chapter provides background information on two topics heavily utilized
 throughout this dissertation: Western music theory and recurrent neural
