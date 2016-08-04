@@ -40,6 +40,7 @@ Schmuckler key-finding algorithm \cite{krumhansl2001cognitive} and then
 transposed according to \todo{Table XYZ} such that the transposed key is
 C-major for major mode scores and A-minor for minor mode scores.
 
+\todo{Update time quantization to 16ths (currently 8ths): is this even lossy?}
 Next, we perform \emph{time quantization} by aligning note start and end times
 to the nearest multiple of some minimum duration. Our model uses a minimum
 duration of one $1/16$th note, exceeding the time resoltuions of
@@ -236,15 +237,37 @@ for resolving this discrepancy and may help the model better learn to predict
 using generated symbols rather than relying on ground truth to be always
 provided as input.
 
-\subsection{Exploration of model architectures}
+\subsection{Comparing memory cells for music data}
 
+Using theanets
 
+One-hot encoding, 64 dimensional vector embedding, RNN layer, fully connected layer, softmax.
 
+\autoref{fig:theanets-architecture} compares various RNN architecture performance
+through training a RNN with \texttt{num\_layers=1}, \texttt{rnn\_size=130},
+\texttt{wordvec=64}.
 
-This is consistent with \cite{Nayebi2015}, which reports that LSTMs outperform
-GRUs in music applications.
+90/10 train/test split.
 
-\section{Technical details}
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/theanets-architecture.png}
+    \caption{theanets-architecture}
+    \label{fig:theanets-architecture}
+\end{figure}
+
+The LSTM and GRU architectures achieve the lowest training errors, consistent with expectations
+since these architectures have the most parameters.
+All yielded comparable validation loss which increased over time, motivating regularization.
+
+LSTMs and GRUs trained much faster and achieved lower training loss, suggesting higher capacity.
+\cite{Nayebi2015} reports that LSTMs outperform GRUs in music applications, motivating
+our final choice for GRUs.
+
+\subsection{Optimizing the LSTM architecture}
+
+Switched to torch-rnn. \todo{Discrepancy between above architectures and below losses because
+  we are perturbing about best model}
 
 We construct multi-layer LSTM models with \texttt{num\_layers} number of
 layers, each containing \texttt{rnn\_size} hidden units. The inputs $x_t$ are
@@ -263,9 +286,116 @@ epochs. The back-propogation through time gradients were clipped
 at $t$ \todo{cite Mikolov} and truncated after \texttt{seq\_length} time steps.
 We use a mini-batch size of $50$.
 
+\subsubsection{Overall best model}
+
+We identified our best model to be \todo{what is it?}.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/torch-rnn-best-model-trace.png}
+  \caption{Figures/torch-rnn-best-model-Trace}
+  \label{fig:Figures/torch-rnn-best-model-trace}
+\end{figure}
+
+In the following sections, we investigate pertubations about this model and the
+effects of various hyperparameters. A complete listing of results are available
+in
+\autoref{tab:torch-rnn-config-perfs}.
+\begin{table}[htpb]
+    \centering
+    \caption{Performance of various LSTM configurations}
+    \label{tab:torch-rnn-config-perfs}
+    \input{tables/torch-rnn-config-perfs.tex}
+\end{table}
+
+\subsubsection{Regularization}
+
+The increasing validation error in \autoref{fig:theanets-architecture} confirmed
+that our models were overfitting and required regularization. \texttt{dropout}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/torch-rnn-dropout.png}
+  \caption{Figures/torch-rnn-Dropout}
+  \label{fig:Figures/torch-rnn-dropout}
+\end{figure}
+
+\todo{Batch normalization experiments}
+
+\subsubsection{Network capacity}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/torch-rnn-network-params.png}
+    \caption{torch-rnn-network-params}
+    \label{fig:torch-rnn-network-params}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/torch-rnn-network-params-num-layers.png}
+  \caption{Figures/torch-rnn-network-params-num-Layers}
+  \label{fig:Figures/torch-rnn-network-params-num-layers}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/torch-rnn-network-params-rnn-size.png}
+  \caption{Figures/torch-rnn-network-params-rnn-size}
+  \label{fig:Figures/torch-rnn-network-params-rnn-size}
+\end{figure}
+
+Sensitivity to network structure: \texttt{num\_layers} and \texttt{rnn\_size}.
+\begin{itemize}
+    \item Larger \texttt{rnn\_size} leads to higher capacity and lower training loss
+        \begin{itemize}
+            \item Presents as overfitting on validation, where the lowest capacity
+                model \texttt{rnn\_size} appears to be improving in generalization while
+                others are flat/increasing
+        \end{itemize}
+    \item Training curves about the same wrt \texttt{num\_layers}, validation curves have interesting story
+        \begin{itemize}
+            \item Depth matters: small 64 and 128 hidden unit RNNs saw improvements up to 0.09
+            \item Expressivity gained from depth furthers overfitting: 256
+                hidden unit RNN has some of the best validation performance at
+                depth 1 but is the worst generalizing model for depths 2
+                and 3 even though training loss is low
+        \end{itemize}
+    \item \texttt{rnn\_size=128} undisputably best generalizing, optimized at
+        \texttt{num\_layers=2}: will continue with these settings
+\end{itemize}
+
+\subsubsection{Network input parameters}
+
+\todo{Is seq\_length an input parameter, or the BPTT parameters?}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=\linewidth]{Figures/torch-rnn-input-params.png}
+    \caption{torch-rnn-input-params}
+    \label{fig:torch-rnn-input-params}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/torch-rnn-input-params-wordvec.png}
+  \caption{Figures/torch-rnn-input-params-Wordvec}
+  \label{fig:Figures/torch-rnn-input-params-wordvec}
+\end{figure}
+
+Sensitivity to network inputs: \texttt{seq\_length} and \texttt{wordvec}
+\begin{itemize}
+    \item Training losses are about the same across all \texttt{wordvec}s
+    \item Validation losses suggest that increasing \texttt{seq\_length} important for
+        good performance \todo{investigate further}
+    \item \texttt{wordvec=128} overfits for all cases, the other two depend on
+        \texttt{seq\_length} and vary an order of magnitude smaller than the
+        performance gains from increasing \texttt{seq\_length}
+\end{itemize}
+
 \section{Results}
 
-Compare with \cite{Allan2005} and \cite{Brien2016}.
+\todo{Compare with \cite{Allan2005} and \cite{Brien2016}}.
 
 \printbibliography
 
