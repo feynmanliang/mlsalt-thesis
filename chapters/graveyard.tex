@@ -326,8 +326,29 @@ and should thus be evaluated differently.
 how to improve the system, suggesting that listener studies using music experts
 may be more insightful.
 
-\section{Data}
+\section{Automatic Composition}
 
+\subsection{Multi-GPU implementation}
+
+To accelerate model training, we parallelize models across multiple GPUs. This is possible
+thanks to the summation operation in noisy gradient estimators:
+
+\begin{equation}
+  \frac{1}{N} \sum_{i=1}^N \nabla L_i(\theta) \approx \frac{1}{N} \sum_{i=1}^N \nabla L_i(\theta)
+\end{equation}
+\todo{Real citations on noisy gradient}
+
+In particular, training RNNs with hidden state requires sequential traversal
+of the dataset. Parallelizing sequential iteration is accomplished by first segmenting
+into equal length segments and then initializing parallel iterators each
+pointing at a different segment. Each iterator sequentially reads data
+into GPU memory.
+
+Model parameters are broadcast out to all GPUs on each \texttt{forward} pass
+and gradients are accumulated during each \texttt{backward} pass.
+
+Research in grid LSTMs suggests that we can go deeper by introducing
+gates along the depth dimension to help permit information flow \todo{cite gird LSTMs}.
 
 
 \printbibliography

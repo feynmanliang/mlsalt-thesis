@@ -10,52 +10,43 @@
 %%   SMH, May 2010.
 \documentclass[a4paper,12pt,twoside,openright]{report}
 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[english]{babel}
+
 \usepackage{subfiles}
 \usepackage[
     backend=bibtex,
-    style=numeric
+    style=authoryear-comp
 ]{biblatex} % TODO: use biber backend
 \addbibresource{refs.bib}
 
 % Don't expand \printbibliography in subfiles
 \makeatletter
-
 \newrobustcmd*{\nobibliography}{%
   \@ifnextchar[%]
     {\blx@nobibliography}
     {\blx@nobibliography[]}}
-
 \def\blx@nobibliography[#1]{}
-
 \appto{\skip@preamble}{\let\printbibliography\nobibliography}
-
 \makeatother
-
-\usepackage[T1]{fontenc}
-\usepackage{textcomp}
-\usepackage[utf8]{inputenc}
-
-\usepackage[english]{babel}
 
 \usepackage{epsfig,graphicx,parskip,setspace,tabularx,xspace}
 \usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{booktabs,longtable}
 
-% TODO: eliminate
-\usepackage{tikz,ifthen}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,dsfont}
+\usepackage[bold]{hhtensor}
+\usepackage{mathtools}
+
+\usepackage{tikz,ifthen} % TODO: eliminate when graveyard removed
 \usetikzlibrary{positioning}
 
 % Inkscape pdf_tex exports
-%\usepackage{import}
 \usepackage{float,subcaption}
 \graphicspath{{Figures/}}
-
-\usepackage{amsmath,amsfonts,amssymb,amsthm,dsfont}
-\usepackage{xcolor}
-
-\usepackage{booktabs,longtable}
-
-\usepackage[bold]{hhtensor}
-\usepackage{mathtools}
 
 \input{macros.tex}
 

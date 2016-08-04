@@ -40,6 +40,7 @@ velocities for note $n$ at time $t$.
 
 \todo{Describe Bach and chorales, 4 parts, soprano lead with ATB harmony,
 regular phrases, fermatas to denote phrase ends}
+\todo{Define meter}
 
 
 This chapter provides background information on two topics heavily utilized
@@ -513,6 +514,84 @@ $\h^{(2)}_{t-1} \to \h^{(2)}_t$ or $\h^{(1)}_{t-1} \to
 hidden state transitions occur on two seperate memory cells so parameters
 need not be tied and the stacked RNN can learn different time dynamics
 at each depth.
+
+\subsection{Modeling assumptions}
+
+\todo{Integrate better}
+
+We make the following assumptions about the sequence $\x_{1:T}$, $\y_{1:T}$, and $\h_{0:T}$:
+\begin{enumerate}
+  \item Modified Markov assumption:
+    \begin{equation}
+      \label{eq:modified-markov}
+      \forall t: P(\h_t | \h_{0:t-1}, \x_{1:t}) = P(\h_t | \h_{t-1}, \x_t)
+    \end{equation}
+  \item Hidden State Stationarity:
+    \begin{equation}
+      \label{eq:hidden-state-stationarity}
+      \forall t_1, t_2: P(\h_{t_1} = \k | \h_{t_{1}-1} = \i, \x_{t_1} = \j) = P(\h_{t_2} = \k | \h_{t_{2}-1} = \i, \x_{t_2} = \j)
+   \end{equation}
+  \item Output Stationarity:
+    \begin{equation}
+      \label{eq:output-stationarity}
+      \forall t_1, t_2: P(\y_{t_1} = \j | \h_{t_1} = \i) = P(\y_{t_2} = \j | \h_{t_2} = \i)
+   \end{equation}
+  \item Output independence:
+   \begin{equation}
+     \label{eq:output-independence}
+     P(\y_{1:T} | \h_{0:T}, \x_{1:T}) = \prod_{t=1}^T P(\y_t | \h_{t}, \x_t)
+   \end{equation}
+\end{enumerate}
+
+These assumptions imply the sequential factorization:
+\begin{align}
+  &P(\y_{1:T}, \h_{1:T} | \h_0, \x_{1:T})  &\\
+  &= P(\y_{1:T} | \h_{0:T}, \x_{1:T}) P(\h_{1:T} | \h_0, \x_{1:T})  &\\
+  &= \left( \prod_{t=1}^T P(\y_t | \h_t) \right) P(\h_{1:T}| \h_0, \x_{1:T}) &\text{\autoref{eq:output-independence}}\\
+  &= \left( \prod_{t=1}^T P(\y_t | \h_t) \right) \left(\prod_{t=1}^T P(\h_{t}| \h_{0:t-1}, \x_{1:t})\right) &\\
+  &= \left( \prod_{t=1}^T P(\y_t | \h_t) \right) \left(\prod_{t=1}^T P(\h_{t}| \h_{t-1}, \x_{t})\right) &\text{\autoref{eq:modified-markov}}\\
+  &= \prod_{t=1}^T P(\y_t | \h_t, \x_t) P(\h_{t}| \h_{t-1}, \x_{t}) & \\
+\end{align}
+\autoref{eq:hidden-state-stationarity} combined with \autoref{eq:output-stationarity} imply that $P(\y_t | \h_t)$
+and $P(\h_{t}| \h_{t-1}, \x_{t})$ are time-invariant and can be modelled by the same recurrent function.
+
+In RNNs, the hidden state dynamics $P(\h_t | \h_{t-1}, \x_t)$ are deterministic:
+\begin{equation}
+  \h_t = f_h(\x_t, \h_{t-1})
+\end{equation}
+Which means that $P(\y_{1:T}, \h_{1:T} | \h_0, \x_{1:T}) = P(\y_{1:T} | \h_0, \x_{1:T})$.
+This yields the factorization
+\begin{equation}
+  P(\y_{1:T} | \h_0, \x_{1:T})
+  = P(\y_{1:T}, \h_{1:T} | \h_0, \x_{1:T})
+  = \prod_{t=1}^T P(\y_t | \h_t, \x_t) f_h(\x_t, \h_{t-1})
+\end{equation}
+\todo{Draw PGM}
+
+However, one minor problem remains. Let $\z_t = f_y(f_h(\x_t, \h_{t-1}))$ (with
+$f_y$ and $f_h$ as defined in \todo{ref}) denote the outputs of the RNN model
+at time $t$. Note that $\z_t$ can be any real vector in $\RR^{|V|}$
+\todo{Define $V$ to be the vocabulary}, but $P(\x_{t+1} | \h_{t-1}, \x_{t})$ is
+a probability vector constrained to sum to one.
+
+Fortunately, we can treat $\z_t$ as the \emph{scores} for a \emph{Boltzmann
+distribution} (aka softmax):
+\begin{equation}
+    \label{eq:boltzmann-dist}
+    P( \y_{t} = s | \h_{t-1}, \x_t )
+    = \frac{\exp \left(-\z_{t,s}/T\right) }{ \sum_{k=1}^{K} \left(\exp -\z_{t,k}/T\right)}
+\end{equation}
+where $T \in \RR^+$ is a \emph{temperature} parameter (set to $T=1$ during training and varied during sampling).
+To keep notation compact, we omit writing this explicitly and understand $P(\y_t | \h_{t-1}, \x_t)$ to mean
+the Boltzmann distribution parameterized by the scores $f_y(f_h(\x_t, \h_{t-1}))$.
+
+Note the similarity between \autoref{eq:modified-markov}--\autoref{eq:output-independence}
+and the assumptions for Hidden Markov models \cite{ramage2007hidden}. Discrepancies are due
+to the presence of an input sequence $\x_{1:T}$ in our sequence-to-sequence model.
+
+\todo{Discuss validity of assumptions, namely output independence assuming hidden state and input summarize
+all prior context}
+
 
 \subsection{Training RNNs: backpropogation through time}
 

@@ -3,6 +3,14 @@
 
 \chapter{Chorale harmonization}
 
+\todo{Talk about how correct harmonization is equivalent to conditioning on
+  future hidden state over all possible $\h$ trajectories passing through it.
+  Intractable conditioning, so we approximate by neglecting to constrain (i.e.
+  don't account for future at all) and instead do teacher forcing. Hope that
+  teacher forcing induces the hidden state to go in a reasonable trajectory,
+but results show otherwise}
+
+
 Unlike automatic composition, in harmonization tasks we are given the entire sequence of notes
 for one or more parts. As one of the parts is now fixed, the model is no longer able to freely
 compose and harmonic deviations from the fixed parts will result in dissonances and conflicting
