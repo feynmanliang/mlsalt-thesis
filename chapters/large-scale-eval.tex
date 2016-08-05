@@ -32,6 +32,49 @@ samples, one generated and one original Bach, and tasks the user to select the
 original. In addition to the question response, we collect data on the time
 spent on a questions and number of times each sample is played.
 
+\section{Results}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/responses-ageGroup-musicExperience.png}
+  \caption{Demographic breakdown of participants}
+  \label{fig:responses-ageGroup-musicExperience}
+\end{figure}
+
+\todo{\autoref{fig:responses-mask} suggests performance is weakest on
+  harmonizations. Unsurprising because we only do 1-best and don't account
+  for future. Bidirectional LSTM or N-best lattice search (reference marcin)
+  would do better}
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/responses-mask.png}
+  \caption{Figures/responses-Mask}
+  \label{fig:responses-mask}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/responses-mask-musicExperience.png}
+  \caption{Figures/responses-mask-MusicExperience}
+  \label{fig:responses-mask-musicExperience}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/responses-mask-agegroup.png}
+  \caption{Figures/responses-mask-Agegroup}
+  \label{fig:responses-mask-agegroup}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/responses-name.png}
+  \caption{Proportion of correct responses broken down by individual questions.}
+  \label{fig:responses-name}
+\end{figure}
+
+\todo{Analyze why bad questions in \autoref{fig:responses-name} are happening}
+
 \section{User feedback}
 
 The modulations and part writing were the giveaway for me (and once or twice the phrasing)
