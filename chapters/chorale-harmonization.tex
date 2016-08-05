@@ -49,20 +49,8 @@ structural analysis \cite{oswald1973harmony} and symbolic methods such as
 generative grammars \cite{lerdahl1983jackendoff}\cite{winograd1968linguistics}
 exist, but involve human analytical process.
 
-``Clamp'' the generative model and have it ``fill-in'' missing bits
-\cite{hinton1986learning}.
-
 \section{Harmonizing}
 
-Recall that sampling from the generative model involves drawing from a multinomial
-\[
-  \hat{P}(w_{t+1} = w | w_{t:1}) = \frac{\exp \{ y_{t,w} / T \}}{\sum_{w' \in V} \exp \{ y_{t,w'} / T \}}
-\]
-where $T \in \RR^+$ is the \emph{temperature} and $y_{t,w'}$ is the \emph{score for word $w' \in V$}
-at time $t$. We parameterize the score $y_{t,w'} = f(w'; y_{t-1}, h_{t-1}, x_t)$ using a recurrent
-neural network.
-
-\todo{Talk about how LSTMs are also making  a Markov assumption}
 
 For chorale harmonization, we are interested in predicting the notes for a part
 given the other parts. Concretely, suppose we wish to predict a $L \in \NN$
@@ -73,10 +61,12 @@ corresponding to the given parts. We are interested in finding
   w_{1:L}^* = \argmax_{w_{1:L}} P(w_{1:L} | w_{\alpha})
 \end{equation}
 
-We can constrain the set of candidate sequences by first noting any solution
-$\hat{w_{1:L}}$ must satisfy $\hat{w}_\alpha = w_\alpha$. We can apply this
-constraint and greedily sample from our generative model to approximately solve
-the problem:
+
+``Clamp'' the generative model and have it ``fill-in'' missing bits
+\cite{hinton1986learning}. We can constrain the set of candidate sequences by
+first noting any solution $\hat{w_{1:L}}$ must satisfy $\hat{w}_\alpha =
+w_\alpha$. We can apply this constraint and greedily sample from our generative
+model to approximately solve the problem:
 \begin{equation}
   \hat{w_{t}} = \begin{cases}
     w_{\alpha_t} &\mbox{if}~t \in \alpha \\
@@ -119,14 +109,45 @@ provides a baseline for comparing performance against.
 
 \section{Datasets}
 
-We create datasets where one or more parts are masked. Of particular interest is the
-Alto+Tenor dataset. Bach oftentimes only wrote the Soprano and Bass parts of a piece,
-leaving the middle parts to be filled in by students. Our networks performance on this task
-can be used as a benchmark for an easier task. Another intersting configuration is Alto+Tenor+Bass,
-which corresponds to harmonizing a given melody (i.e. Soprano line) and can be compared
-against prior work \todo{cite williams}.
+We create datasets where one or more parts are masked:
+\begin{itemize}
+  \item A single voice: Soprano (S), Alto (A), Tenor (T), or Bass (B)
+  \item The middle two voices (AT)
+  \item All voices except Soprano (ATB), aka \emph{harmonization}
+\end{itemize}
+Of particular interest is the Alto+Tenor dataset. Bach oftentimes only wrote
+the Soprano and Bass parts of a piece, leaving the middle parts to be filled in
+by students. Our networks performance on this task can be used as a benchmark
+for an easier task. Another intersting configuration is Alto+Tenor+Bass, which
+corresponds to harmonizing a given melody (i.e. Soprano line) and can be
+compared against prior work \todo{cite williams}.
 
 \section{Results}
+
+\begin{table}[htpb]
+  \centering
+  \caption{caption}
+  \begin{tabular}{lcccc}
+    \toprule
+    Masked Parts & TER & TER (PC) & FER & FER (PC) \\
+    \midrule
+    S & & & & \\
+    A & & & & \\
+    T & & & & \\
+    B & & & & \\
+    AT & & & & \\
+    ATB & & & & \\
+    \bottomrule
+  \end{tabular}
+  \label{tab:harmonization-ters}
+\end{table}
+\todo{Fill this in}
+
+\section{Other applications}
+
+\todo{Harmonize hello world}
+
+\todo{Complete partial chorales}
 
 \printbibliography
 

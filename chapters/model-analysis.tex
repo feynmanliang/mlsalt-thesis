@@ -1,11 +1,11 @@
 \documentclass[dissertation.tex]{subfiles}
 \begin{document}
 
-\chapter{Model Analysis}
+\chapter{Exploration of learned representations}
 
-\section{Embeddings}
+\section{Token-level embeddings}
 
-\subsection{Notes}
+Filter to notes
 
 \begin{figure}[htpb]
     \centering
@@ -21,28 +21,18 @@
     \label{fig:tsne-notes}
 \end{figure}
 
-\section{Additional music theory}
+\subsection{Variable-length embeddings}
 
-\subsection{Meter}
+\todo{LSTM hidden state after consuming chord (chord boundary, do they
+    cluster?), phrase (up to fermata, do similar phrases embed similarly),
+    whole pieces (difficult to evaluate)}
 
-\cite{eck2008learning} first addressed. \emph{Meter} is the sense of a periodic
-pattern of strong and weak beats which arise from periodic articulation of
-notes in common locations. It is implied in Western music, where bars establish
-perodic measures of equal length \cite{handel1993listening}. Meter provides us
-with key information about musical structure which can be used to predict chord
-changes and repepetition boundaries \cite{cooper1963rhythmic}.
+\section{LSTM Layer activations}
 
-\subsection{Theory tasks}
+\todo{Probabilistic piano roll}
 
-From \cite{franklin2006recurrent}:
+\subsection{Interesting neurons}
 
-given a dominant 7th chord as input, output in sequence the four chord tones
-
-given each of 14 pairs of five-pitch sequences, output 1 at the end if the second, third, and fourth notes in the sequence are ordered chromatically and otherwise output 0
-
-learn to reproduce one specific 32 note melody of the form AABA, given only the first note as input.
-
-having a pitch-focused network and duration-focused network learn a jazz melody.
 
 \printbibliography
 
