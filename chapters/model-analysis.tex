@@ -9,14 +9,14 @@ Filter to notes
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/PCA-notes.png}
+    \includegraphics[width=1.0\linewidth]{Figures/PCA-notes.png}
     \caption{PCA embedding of note tokens}
     \label{fig:pca-notes}
 \end{figure}
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=0.8\linewidth]{Figures/tSNE-notes.png}
+    \includegraphics[width=1.0\linewidth]{Figures/tSNE-notes.png}
     \caption{tSNE embedding of note tokens}
     \label{fig:tsne-notes}
 \end{figure}
@@ -33,7 +33,7 @@ Inputs
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-input-score-1.png}
+    \includegraphics[trim={0 13cm 0 3.5cm},clip,width=0.95\linewidth]{Figures/model-analysis-input-score.pdf}
     \includegraphics[width=1.0\linewidth]{Figures/model-analysis-input-piano-roll.png}
     \caption{}
     \label{fig:}
@@ -69,12 +69,30 @@ Pooling over chords
 Probabilistic piano roll
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-probabilistic-piano-roll.png}
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-input-piano-roll.png}
+    \includegraphics[trim={0 0 0 1.4cm},clip,width=0.995\linewidth]{Figures/model-analysis-probabilistic-piano-roll.png}
     \caption{Figures/model-analysis-probabilistic-piano-Roll}
     \label{fig:Figures/model-analysis-probabilistic-piano-roll}
 \end{figure}
 
 \subsection{Interesting neurons}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-piano-roll.png}
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-1.png}
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-2.png}
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-3.png}
+    \caption{model-analysis-cells-Softmax}
+    \label{fig:model-analysis-cells-softmax}
+\end{figure}
+
+\begin{figure}[htpb]
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-individual.png}
+    \caption{Figures/model-analysis-cells-Individual}
+    \label{fig:Figures/model-analysis-cells-individual}
+\end{figure}
 
 
 \printbibliography
