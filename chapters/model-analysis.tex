@@ -27,7 +27,7 @@ Filter to notes
     cluster?), phrase (up to fermata, do similar phrases embed similarly),
     whole pieces (difficult to evaluate)}
 
-\section{Memory cells exhibit sensitivity to musical concepts}
+\section{Investigation of neuron activation responses to applied stimulus}
 
 One method for gaining insight into what a connectionist model has learned is
 to apply some stimulus and measure neuron activations at different layers.
@@ -79,12 +79,12 @@ Let $\z^{(l)}_{{t_m}:{t_n}}$ denote the activations of layer $l$ from the $t_m$t
 to the $t_n$th input token $\x_{t_n}$. Suppose that $\x_{t_m}$ and $\x_{t_n}$ are respectively the
 $m$th and $n$th chord boundary delimiters within the input sequence. Define the
 \textbf{max-pooled frame-level activations} $\tilde{\z}^{(l)}_n$ to be the
-element-wise maximum of $\z^{(l)}_{{t_m}:{t_n}}$, concretely:
+element-wise maximum of $\z^{(l)}_{{t_m}:{t_n}}$, that is:
 \begin{equation}
     \tilde{\z}^{(l)}_n \coloneqq \left[
-        \max_{t_m < t < t_n} \z^{(l)}_{t,1},
-        \max_{t_m < t < t_n} \z^{(l)}_{t,2},
-        \cdots,
+        \max_{t_m < t < t_n} \z^{(l)}_{t,1},\quad
+        \max_{t_m < t < t_n} \z^{(l)}_{t,2},\quad
+        \cdots,\quad
         \max_{t_m < t < t_n} \z^{(l)}_{t,N^{(l)}}
     \right]^\tp
 \end{equation}
@@ -98,6 +98,15 @@ of each neuron over the frame. While pooling methods (e.g. sum pooling, average
 pooling) are possible, we did not find significant differences in the
 visualizations produced.
 
+The max-pooled frame-level activations are shown in
+\autoref{fig:model-analysis-frame}. As a result of pooling, the horizontal axis
+can be aligned and compared against the stimulus
+\autoref{fig:model-analysis-stimulus}. Notice the appearance of vertical bands
+corresponding to when a chord/rest is held for multiple frames. In particular,
+the vector embedding corresponding to rests (e.g. near frames $30$ and $90$ in
+\autoref{fig:model-analysis-frame} top) are sparse, showing up as white smears
+not only in the embedding layer but on all LSTM memory cells.
+
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/model-analysis-chords-0.png}
@@ -110,42 +119,95 @@ visualizations produced.
     \label{fig:model-analysis-frames}
 \end{figure}
 
-\begin{equation}
-     \coloneqq
-\end{equation}
+\subsection{Probabilistic piano roll: likely variations of the stimulus}
 
-\autoref{fig:model-analysis-probabilistic-piano-roll} shows the next-chord
-predictions
-
-probabilistic piano
-roll
+The bottom panel in \autoref{fig:model-analysis-frames} shows the model's predictions
+for tokens in the next frames, where the tokens are arranged according to (arbitrary)
+index within the vocabulary. As the tokens correspond to pitches, they can be sorted
+according to pitch to reconstruct a {\bf probabilistic piano roll}\cite{eck2008learning}
+consisting of the model's sequence of next-frame predictions as it processes the input.
 
 \begin{figure}[htpb]
     \centering
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-input-piano-roll.png}
-    \includegraphics[trim={0 0 0 1.4cm},clip,width=0.995\linewidth]{Figures/model-analysis-probabilistic-piano-roll.png}
-    \caption{Figures/model-analysis-probabilistic-piano-Roll}
+    ~~\includegraphics[width=0.99\linewidth]{Figures/model-analysis-input-piano-roll.png}
+    \includegraphics[trim={0 0 0 1.4cm},clip,width=1.0\linewidth]{Figures/model-analysis-probabilistic-piano-roll.png}
+    \caption{Top: piano roll of stimulus (included for reference); Bottom: probabilistic piano roll}
     \label{fig:model-analysis-probabilistic-piano-roll}
 \end{figure}
 
-\subsection{Interesting neurons}
+Notice that the probabilistic piano roll in
+\autoref{fig:model-analysis-probabilistic-piano-roll} closely resembles the
+stimulus. This is unsurprising because the recurrent inputs are taken from the
+stimulus rather than sampled from the model's predictions (a.k.a.
+cite{williams1989learning}), so a model which predicts to only continue holding
+its input would produce a probabilistic piano roll identical to the stimulus
+delayed by one frame.
 
-\begin{figure}[htpb]
-    \centering
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-piano-roll.png}
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-1.png}
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-2.png}
-    \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-softmax-3.png}
-    \caption{model-analysis-cells-Softmax}
-    \label{fig:model-analysis-cells-softmax}
-\end{figure}
+Two interesting rows of \autoref{fig:model-analysis-probabilistic-piano-roll}
+are the rows corresponding to frame delimiters (fourth from top, ``|||'') and
+fermatas (third from top ``(.)''). Notice that the predictions for chord
+delimiters are particularly strong during rests. This is because rests are
+encoded as empty frames, so the large probability values indicate that the
+model has learned to prolong periods of rests. At the end of rest periods, the
+model tends to assign probability across a wide range of notes, consistent with
+the intuition that the possible notes occuring directly after a rest is less
+constrained than \todo{cite the intuition?} those occuring in the middle of a
+phrase. Finally, notice that the probability assigned to fermatas is larger
+near the ends of phrases, suggesting that the model has successfully learned
+the concept of phrasing within music.
+
+The probabilistic piano roll can be interpreted as variations on the stimulus
+which the model finds likely and may serve as a useful computational tool for
+generating likely chorale variations.
+
+\subsection{Neurons specific to musical concepts}
+
+Research in convolutional networks has shown that individual neurons within the
+network oftentimes specialize and specifically detect certain high-level visual
+features\todo{Cite deconvolution}. Extending the analogy to musical data, we
+might expect certain neurons within our learned model to act as specific
+detectors to certain musical concepts.
+
+To investigate this further, we look at the activations over time of individual
+neurons within the LSTM memory cells. Our results confirm our hypothesis: we
+discover certain neurons whose activities are correlated to specific motifs,
+chord progression, and phrase structures. The activity profiles of these
+neurons are shown in \autoref{model-analysis-cells-individual}.
 
 \begin{figure}[htpb]
     \centering
     \includegraphics[width=1.0\linewidth]{Figures/model-analysis-cells-individual.png}
-    \caption{Figures/model-analysis-cells-Individual}
-    \label{fig:Figures/model-analysis-cells-individual}
+    \caption{Activation profiles of neurons within our model which have learned
+    high-level musical concepts}
+    \label{fig:model-analysis-cells-individual}
 \end{figure}
+
+For notational clarity, we will use the ordered tuple $(l,i)$ to refer to the
+$i$th neuron in layer $l$.
+
+The first three neurons ($(1,64)$, $(1,138)$, $(1,207)$) shown in the 2nd to
+4th panel from top of \autoref{fig:model-analysis-cells-individual} effectively
+behave like cadence detectors. While they all exhibit activity when the
+stimulus contains $V$ chords (i.e. G-major). $(1,64)$ and $(1,138)$ are both
+specific to perfect cadences (i.e. $V -- I$ chord progressions) used to
+conclude phrases and differ only in the chord inversions which they are most
+sensitive to. In contrast, $(1,207)$ only exhibits activity for the $V$ chord
+associated with the imperfect cadences near frames $150$ and $180$.
+
+The next two neurons in \autoref{fig:model-analysis-cells-individual}, $(1,87)$
+and $(1,151)$, act as motif detectors. Activity in $(1,151)$ peaks when a $vi-vii-vi$
+progression is present in the stimulus. $(1,87)$ exhibits large spikes on $I--V--I$,
+
+$(2,37)$ exhibits less specificity, but has large spikes right before the $IV$ chord
+in $I--IV$ chord progressions.
+
+$(2,82)$ peaks at the top of an ascending harmonic progressions, right before a descending
+major scale is to follow.
+
+$(2, 243)$ is specific to $v -- vi$ progressions, with large spikes occuring at
+the $v -- vi$ progressions near frames $55$, $120$, $130$, and a lower intensity spike at
+$170$. Some activity is also observed for the $V -- vi$ around frame $230$ despite
+the first chord being a major mode $V$ rather than minor $v$.
 
 
 \printbibliography
