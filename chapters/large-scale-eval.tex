@@ -19,12 +19,24 @@ To evaluate our success, we employ a subjective evaluation method.
 how to improve the system, suggesting that listener studies using music experts
 may be more insightful.
 
-
-
 The frontend utilizes React and Redux, allowing us to collect fine-grained user
 action data. Azure App Service is used to host an Express web-service which
 randomizes experimental questions and collects responses. The data is stored to
 Azure Data Storage and processed in batch MapReduce using Azure HDInsight.
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/question-screen.png}
+  \caption{Figures/question-Screen}
+  \label{fig:Figures/question-screen}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[width=1.0\linewidth]{Figures/user-info-form.png}
+  \caption{Figures/}
+  \label{fig:user-info-form}
+\end{figure}
 
 We ask users to rate themselves on their musical skills (0-10) and present the
 user with five questions. Each questions asks the user to listen to two
@@ -33,6 +45,26 @@ original. In addition to the question response, we collect data on the time
 spent on a questions and number of times each sample is played.
 
 \section{Results}
+
+\subsection{Participant backgrounds and demographics}
+
+\begin{figure}[htpb]
+  \centering
+  \begin{subfigure}[b]{0.98\textwidth}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/participants-by-country.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \includegraphics[width=1.0\linewidth]{Figures/user-demographics-pie.png}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.48\textwidth}
+    \centering
+    \input{tables/user-countries.tex}
+  \end{subfigure}
+  \caption{Figures/user-demographics-Pie}
+  \label{fig:Figures/user-demographics-pie}
+\end{figure}
 
 \begin{figure}[htpb]
   \centering
