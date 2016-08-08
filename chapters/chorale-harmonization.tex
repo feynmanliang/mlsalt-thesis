@@ -10,7 +10,6 @@
   teacher forcing induces the hidden state to go in a reasonable trajectory,
 but results show otherwise}
 
-
 Unlike automatic composition, in harmonization tasks we are given the entire sequence of notes
 for one or more parts. As one of the parts is now fixed, the model is no longer able to freely
 compose and harmonic deviations from the fixed parts will result in dissonances and conflicting
@@ -131,11 +130,28 @@ compared against prior work \todo{cite williams}.
   \label{fig:Figures/harmonization-results}
 \end{figure}
 
-\section{Other applications}
+\subsection{``Bachifying'' other music}
 
-\todo{Harmonize hello world}
+In addition to being able to harmonize Bach chorales, we found that BachBot was capable
+of generating Baroque acompanyments to a variety of pieces. \cref{fig:harm-happy-birthday}
+shows BachBot's proposed ATB harmonization for happy birthday\todo{cite? public domain}
+and \cref{fig:harm-twinkle-twinkle} for twinkle twinkle little star\todo{cite?}.
 
-\todo{Complete partial chorales}
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[trim={0 19cm 0 3.7cm},clip,width=0.9\linewidth]{Figures/happy-birthday-score.pdf}
+  \caption{Happy birthday soprano melody, ATB harmonized by BachBot}
+  \label{fig:harm-happy-birthday}
+\end{figure}
+
+\begin{figure}[htpb]
+  \centering
+  \includegraphics[trim={0 10cm 0 3.7cm},clip,width=0.9\linewidth]{Figures/twinkle-twinkle-score.pdf}
+  \caption{Twinkle-twinkle soprano melody, ATB harmonized by BachBot}
+  \label{fig:harm-twinkle-twinkle}
+\end{figure}
+
+\todo{EXPERIMENT: Given the head, fill in the rest.}
 
 \printbibliography
 
