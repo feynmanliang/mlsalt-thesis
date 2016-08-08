@@ -53,13 +53,14 @@ We consider only note pitches and durations, neglecting changes in timing
 accents, staccatos, legatos).
 
 An example of the effects of our preprocessing steps is provided in
-\autoref{fig:score-effects-preproc} (sheet music notation) and
-\autoref{fig:piano-roll-effects-preproc} (piano roll) \todo{Reference
+\cref{fig:score-effects-preproc} (sheet music notation) and
+\cref{fig:piano-roll-effects-preproc} (piano roll) \todo{Reference
 background}.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\linewidth]{Figures/bwv133-6-original-score-1.png}
+    \vspace{1cm}
     \includegraphics[width=0.8\linewidth]{Figures/bwv133-6-preproc-score-1.png}
     \caption{First 4 bars of JCB Chorale BWV 133.6 before (top) and after (bottom) preprocessing. Note
     the transposition down by a semitone to C-major as well as quantization of the
@@ -71,7 +72,7 @@ background}.
     \centering
         \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-original-piano-roll.png}
         \includegraphics[width=1.0\linewidth]{Figures/bwv133-6-preproc-piano-roll.png}
-    \caption{Piano roll representation of the same 4 bars from \autoref{fig:score-effects-preproc}
+    \caption{Piano roll representation of the same 4 bars from \cref{fig:score-effects-preproc}
     before and after preprocessing.}
     \label{fig:piano-roll-effects-preproc}
 \end{figure}
@@ -81,7 +82,7 @@ background}.
 To assess the effects introduced by key normalization and time quantization,
 we analyze corpus level statistics related to pitch and duration.
 
-\autoref{fig:pitch-key-standardization} plots a histogram of pitch usage counts
+\cref{fig:pitch-key-standardization} plots a histogram of pitch usage counts
 before and after key normalization. Notice that the overall range of pitches
 has increased after key normalization. This can be explained by noting that
 Bach's chorales were to be performed by vocalists and hence were restricted to
@@ -98,7 +99,7 @@ types.
     \label{fig:pitch-key-standardization}
 \end{figure}
 
-In \autoref{fig:pc-key-standardization}, we visualize histograms of pitch class usages.
+In \cref{fig:pc-key-standardization}, we visualize histograms of pitch class usages.
 As expected, key normalization has increased the usage of pitch classes in the key of
 C-major / A-minor (i.e. those which possess no accidentals) and decreased out of key
 pitch classes (e.g. C\#, F\#).
@@ -118,7 +119,7 @@ pitch classes (e.g. C\#, F\#).
 \end{figure}
 
 We investigate the effects of time quantization in
-\autoref{fig:note-lengths-time-quantization}, which shows histograms of note
+\cref{fig:note-lengths-time-quantization}, which shows histograms of note
 duration usages before and after quantization. \todo{Update plots... are they affected}.
 
 \begin{figure}[htpb]
@@ -206,14 +207,14 @@ generative model. Unlike many prior models for music data, we intentially avoid
 injection of domain-specific knowledge into our model architectures such as
 distinguishing between chords versus notes
 \cite{hild1991harmonet}\cite{mozer1994neural} \cite{Eck2002} and explicitly
-modelling of meter \cite{eck2008learning} or motifs \cite{feulner1994melot}.
+modelling of meter \cite{eck2008learning} or motifs \cite{feulner1994melonet}.
 Through this fundamental connectionist approach, we aim to minimize biases
 introduced by prior assumptions and force the model itself to learn musical
 structure from data.
 
 \subsection{Training and evaluation criteria}
 
-Following \cite{1994neural}, we will train the model to predict a distribution
+Following \cite{mozer1994neural}, we will train the model to predict a distribution
 distribution over all possible tokens next $\x_{t+1}$ given the current token
 $\x_{t}$ and the previous hidden state $\h_{t-1}$. This is equivalent to
 setting the target sequence to be the input sequence delayed by one timestep:
@@ -243,7 +244,7 @@ Using theanets
 
 One-hot encoding, 64 dimensional vector embedding, RNN layer, fully connected layer, softmax.
 
-\autoref{fig:theanets-architecture} compares various RNN architecture performance
+\cref{fig:theanets-architecture} compares various RNN architecture performance
 through training a RNN with \texttt{num\_layers=1}, \texttt{rnn\_size=130},
 \texttt{wordvec=64}.
 
@@ -300,7 +301,7 @@ We identified our best model to be \todo{what is it?}.
 In the following sections, we investigate pertubations about this model and the
 effects of various hyperparameters. A complete listing of results are available
 in
-\autoref{tab:torch-rnn-config-perfs}.
+\cref{tab:torch-rnn-config-perfs}.
 \begin{table}[htpb]
     \centering
     \caption{Performance of various LSTM configurations}
@@ -310,7 +311,7 @@ in
 
 \subsubsection{Regularization}
 
-The increasing validation error in \autoref{fig:theanets-architecture} confirmed
+The increasing validation error in \cref{fig:theanets-architecture} confirmed
 that our models were overfitting and required regularization. \texttt{dropout}
 
 \begin{figure}[htpb]

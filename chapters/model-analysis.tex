@@ -35,7 +35,7 @@ One method for gaining insight into what a connectionist model has learned is
 to apply some stimulus and measure neuron activations at different layers.
 
 We use as stimulus the music score shown in
-\autoref{fig:model-analysis-stimulus}, which has been preprocessed according to
+\cref{fig:model-analysis-stimulus}, which has been preprocessed according to
 \todo{cite preprocessing}. To aid in relating neuron activities back to music
 theory, chords are annotated with Roman numerals obtained using {\tt music21}'s
 automated analysis.
@@ -49,7 +49,7 @@ automated analysis.
     \label{fig:model-analysis-stimulus}
 \end{figure}
 
-In \autoref{fig:model-analysis-tokens} we visualize the network activations as
+In \cref{fig:model-analysis-tokens} we visualize the network activations as
 the stimulus is sequentially applied. Note that as a consequence of the
 variable-length encoding format described in \todo{ref}, the horizontal axis
 (number of tokens processed) does correspond directly to time. Rather, time
@@ -101,12 +101,12 @@ pooling) are possible, we did not find significant differences in the
 visualizations produced.
 
 The max-pooled frame-level activations are shown in
-\autoref{fig:model-analysis-frame}. As a result of pooling, the horizontal axis
+\cref{fig:model-analysis-frames}. As a result of pooling, the horizontal axis
 can be aligned and compared against the stimulus
-\autoref{fig:model-analysis-stimulus}. Notice the appearance of vertical bands
+\cref{fig:model-analysis-stimulus}. Notice the appearance of vertical bands
 corresponding to when a chord/rest is held for multiple frames. In particular,
 the vector embedding corresponding to rests (e.g. near frames $30$ and $90$ in
-\autoref{fig:model-analysis-frame} top) are sparse, showing up as white smears
+\cref{fig:model-analysis-frames} top) are sparse, showing up as white smears
 not only in the embedding layer but on all LSTM memory cells.
 
 \begin{figure}[htpb]
@@ -123,7 +123,7 @@ not only in the embedding layer but on all LSTM memory cells.
 
 \subsection{Probabilistic piano roll: likely variations of the stimulus}
 
-The bottom panel in \autoref{fig:model-analysis-frames} shows the model's predictions
+The bottom panel in \cref{fig:model-analysis-frames} shows the model's predictions
 for tokens in the next frames, where the tokens are arranged according to (arbitrary)
 index within the vocabulary. As the tokens correspond to pitches, they can be sorted
 according to pitch to reconstruct a {\bf probabilistic piano roll}\cite{eck2008learning}
@@ -138,14 +138,14 @@ consisting of the model's sequence of next-frame predictions as it processes the
 \end{figure}
 
 Notice that the probabilistic piano roll in
-\autoref{fig:model-analysis-probabilistic-piano-roll} closely resembles the
+\cref{fig:model-analysis-probabilistic-piano-roll} closely resembles the
 stimulus. This is unsurprising because the recurrent inputs are taken from the
 stimulus rather than sampled from the model's predictions (a.k.a.
 cite{williams1989learning}), so a model which predicts to only continue holding
 its input would produce a probabilistic piano roll identical to the stimulus
 delayed by one frame.
 
-Two interesting rows of \autoref{fig:model-analysis-probabilistic-piano-roll}
+Two interesting rows of \cref{fig:model-analysis-probabilistic-piano-roll}
 are the rows corresponding to frame delimiters (fourth from top, ``|||'') and
 fermatas (third from top ``(.)''). Notice that the predictions for chord
 delimiters are particularly strong during rests. This is because rests are
@@ -174,7 +174,7 @@ To investigate this further, we look at the activations over time of individual
 neurons within the LSTM memory cells. Our results confirm our hypothesis: we
 discover certain neurons whose activities are correlated to specific motifs,
 chord progression, and phrase structures. The activity profiles of these
-neurons are shown in \autoref{model-analysis-cells-individual}.
+neurons are shown in \cref{fig:model-analysis-cells-individual}.
 
 \begin{figure}[htpb]
     \centering
@@ -188,7 +188,7 @@ For notational clarity, we will use the ordered tuple $(l,i)$ to refer to the
 $i$th neuron in layer $l$.
 
 The first three neurons ($(1,64)$, $(1,138)$, $(1,207)$) shown in the 2nd to
-4th panel from top of \autoref{fig:model-analysis-cells-individual} effectively
+4th panel from top of \cref{fig:model-analysis-cells-individual} effectively
 behave like cadence detectors. While they all exhibit activity when the
 stimulus contains $V$ chords (i.e. G-major). $(1,64)$ and $(1,138)$ are both
 specific to perfect cadences (i.e. $V -- I$ chord progressions) used to
@@ -196,7 +196,7 @@ conclude phrases and differ only in the chord inversions which they are most
 sensitive to. In contrast, $(1,207)$ only exhibits activity for the $V$ chord
 associated with the imperfect cadences near frames $150$ and $180$.
 
-The next two neurons in \autoref{fig:model-analysis-cells-individual}, $(1,87)$
+The next two neurons in \cref{fig:model-analysis-cells-individual}, $(1,87)$
 and $(1,151)$, act as motif detectors. Activity in $(1,151)$ peaks when a $vi-vii-vi$
 progression is present in the stimulus. $(1,87)$ exhibits large spikes on $I--V--I$,
 
