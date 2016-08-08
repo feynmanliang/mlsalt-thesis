@@ -10,7 +10,7 @@ A common choice is the logistic function $\sigma(z)
 include $\sigma = \tanh$, in which case $[L, U] = [-1, 1]$.
 
 It is common to represent feedforward neural networks as directed acyclic
-graphs (\autoref{fig:nn-layer}). Here, each node denotes a data value and
+graphs (\todo{CITE: fig:nn-layer}). Here, each node denotes a data value and
 an edge from $s$ to $t$ notates that the value at $s$ is used to compute the
 value at $t$.
 
@@ -22,7 +22,7 @@ value at $t$.
 \end{figure}
 
 Multiple layers can be composed together by treating the outputs from the previous layer
-as the inputs to the next layer. \autoref{fig:ffw-nn} illustrates this on a 2-layer
+as the inputs to the next layer. \todo{CITE: fig:ffw-nn} illustrates this on a 2-layer
 feedforward neural network where the outputs of the first layer are used as the
 inputs to the second layer (i.e. $x^{(1)} = y^{(0)}$).
 
@@ -52,7 +52,7 @@ network can only model affine transformations.}
 A neural network can be used to model the distribution of a categorical random
 variable $o$ by treating the final layer activations $\vec{z}^{(L)}$ as the
 energies of a Boltzmann distribution (i.e.\ $\softmax$). This implies a
-probability mass function on $o$ given by \autoref{eq:softmax}.
+probability mass function on $o$ given by \todo{CITE: eq:softmax}.
 
 \begin{equation}
     \label{eq:softmax}
@@ -75,7 +75,7 @@ computations.
 
 
 Training of recursive neural networks is typically performed using
-backpropogation through time (BPTT)\cite{At}, a technique computationally
+backpropogation through time (BPTT)\todo{Cite}, a technique computationally
 equivalent to feedforward training of the unrolled computation graph. This is
 easily seen: unrolling of a RNN yields a feed-forward structure where the
 standard back-propogation algorithm applies.
@@ -85,8 +85,8 @@ standard back-propogation algorithm applies.
 
 \subsubsection{Vanishing gradients}
 
-The solution is to rewrite \autoref{eq:ht-from-ht-1} such that
-\autoref{eq:prod-hi} does not vanish/explode for large $t - k$.
+The solution is to rewrite \todo{CITE: eq:ht-from-ht-1} such that
+\todo{CITE: eq:prod-hi} does not vanish/explode for large $t - k$.
 One possibility would be
 
 \begin{equation}
@@ -105,7 +105,7 @@ loss function $L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ between the network
 outputs $\vec{z}^{(L)}_{1:N}$ and the true labels $\hat{o}_{1:N}$. For
 probabilistic classification, a common choice is to assume independence
 across training examples and use \textbf{cross-entropy loss}
-(\autoref{eq:cross-entropy-loss}):
+(\todo{CITE: eq:cross-entropy-loss}):
 
 \begin{align}
     L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})
@@ -115,7 +115,7 @@ across training examples and use \textbf{cross-entropy loss}
 
 Gradient descent proceeds by using the Jacobian (i.e.\ gradient) $\nabla_\theta
 L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ to iteratively update the network
-parameters using successive first-order approximations (\autoref{eq:nn-training-iteration-scheme}).
+parameters using successive first-order approximations (\todo{CITE: eq:nn-training-iteration-scheme}).
 
 \begin{align}
     \label{eq:nn-training-iteration-scheme}
@@ -123,12 +123,12 @@ parameters using successive first-order approximations (\autoref{eq:nn-training-
     - \eta_t \left[ \nabla_\theta L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N}) \right]_{\theta = \theta^{(t)}}
 \end{align}
 
-Variants of \autoref{eq:nn-training-iteration-scheme} which adaptively set the
+Variants of \todo{CITE: eq:nn-training-iteration-scheme} which adaptively set the
 step size $\eta_t$ or incorporate/estimate the Hessian $\nabla^2_{\theta}
 L(\cdot, \cdot)$ can yield performance when applied to neural network training.
 However, their discussion is out of scope. \todo{Discuss RMSprop?}
 
-To apply \autoref{eq:nn-training-iteration-scheme}, the gradient $\nabla_\theta
+To apply \todo{CITE: eq:nn-training-iteration-scheme}, the gradient $\nabla_\theta
 L(\vec{z}^{(L)}_{1:N}, \hat{o}_{1:N})$ must be computed. This can be
 accomplished using \textbf{backpropogation} \todo{cite}, an algorithm which
 exploits the independence structure to avoid unnecessary computations and make
@@ -141,7 +141,7 @@ with a Boltzmann distribution yields
 
 \begin{align*}
     \delta^{(L)}_{j}
-    &= - \sum_{i=1}^{N} \sum_{k} \frac{\pd}{\pd z^{(L)}_j} \delta_{\hat{o}_i,k} \log P(o=k | \vec{z}^{(L)}_i ) &\mbox{\autoref{eq:cross-entropy-loss}} \\
+    &= - \sum_{i=1}^{N} \sum_{k} \frac{\pd}{\pd z^{(L)}_j} \delta_{\hat{o}_i,k} \log P(o=k | \vec{z}^{(L)}_i ) &\mbox{\todo{CITE: eq:cross-entropy-loss}} \\
     &= \sum_{i=1}^{N} \left( P(o=k | \vec{z}^{(L)}_i ) - y_i \right) & \mbox{Softmax derivative}
 \end{align*}
 
@@ -167,7 +167,7 @@ The back-propogation algorithm consists of two steps:
     \item \emph{Forward pass}: Using current model parameters $\theta^{(t)}$,
         feed the data into the network to compute the activations $\vec{z}^{(l)}$,
         $1 \leq l \leq L$
-    \item \emph{Backward pass}: Recursively iterate \autoref{eq:backprop}
+    \item \emph{Backward pass}: Recursively iterate \todo{CITE: eq:backprop}
         to compute $\vec{\delta}^{(l)}$, $1 \leq l \leq L$ using the activations
         $\vec{z}^{(l)}$ obtained from the forward pass
 \end{enumerate}
@@ -322,7 +322,7 @@ aim: algorithmic composition, design of compositional tools, and computational
 modelling of musical styles or music cognition all have different motivations
 and should thus be evaluated differently.
 
-\cite{ariza2009} criticizes a musical Turing test as providing little data about
+\cite{ariza2009interrogator} criticizes a musical Turing test as providing little data about
 how to improve the system, suggesting that listener studies using music experts
 may be more insightful.
 
